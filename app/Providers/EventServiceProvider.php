@@ -2,6 +2,14 @@
 
 namespace App\Providers;
 
+use App\Listeners\Order\OrderBalanceEventSubscriber;
+use App\Listeners\Order\OrderBonusesEventSubscriber;
+use App\Listeners\Order\OrderContactDetailsEventSubscriber;
+use App\Listeners\Order\OrderDeliveryEventSubscriber;
+use App\Listeners\Order\OrderIndexEventSubscriber;
+use App\Listeners\UserBalanceEventSubscriber;
+use App\Listeners\UserBonusEventSubscriber;
+use App\Listeners\UserEventSubscriber;
 use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
@@ -18,10 +26,22 @@ class EventServiceProvider extends ServiceProvider
         ],
     ];
 
+
+    protected $subscribe = [
+        UserEventSubscriber::class,
+        OrderIndexEventSubscriber::class,
+        OrderContactDetailsEventSubscriber::class,
+        OrderDeliveryEventSubscriber::class,
+        OrderBonusesEventSubscriber::class,
+        UserBonusEventSubscriber::class,
+        UserBalanceEventSubscriber::class,
+        OrderBalanceEventSubscriber::class,
+    ];
+
     /**
      * Register any other events for your application.
      *
-     * @param  \Illuminate\Contracts\Events\Dispatcher  $events
+     * @param  \Illuminate\Contracts\Events\Dispatcher $events
      * @return void
      */
     public function boot(DispatcherContract $events)

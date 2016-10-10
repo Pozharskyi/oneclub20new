@@ -80,18 +80,18 @@
                     <div class="col-md-12">
 
                         <div class="logo-wrap">
-                            <a href="{{ url('/') }}"><img src="{{ url('img/logotype.png') }}" alt=""></a>
+                            <a href="{{ url('/') }}"><img src="{{ url('/img/logotype.png') }}" alt=""></a>
                         </div>
 
                         <ul class="phones-wrap">
                             <li class="call-wrap">
-                                <a href="#popup1"><img src="{{ url('img/phone.png') }}" alt=""></a>
+                                <a href="#popup1"><img src="{{ url('/img/phone.png') }}" alt=""></a>
                                 <span class='number'>+380 44 359-08-99</span>
-                                <a href="#popup1"><img src="{{ url('img/arrow.png') }}" alt=""></a><br>
+                                <a href="#popup1"><img src="{{ url('/img/arrow.png') }}" alt=""></a><br>
                                 <span class='work-hour'>Пн-Вс: 9:00 - 21:00</span>
                             </li>
                             <li class="login-wrap">
-                                <img src="{{ url('img/login.png') }}" alt="">
+                                <img src="{{ url('/img/login.png') }}" alt="">
 
                                 @if( Auth::guest() )
                                     <a href="{{ url('/login') }}" class="login-text">
@@ -106,7 +106,7 @@
                             <li class="search-wrap">
                                 <form action="#">
                                     <input type="text" placeholder="Поиск...">
-                                    <img src="{{ url('img/search.png') }}" alt="">
+                                    <img src="{{ url('/img/search.png') }}" alt="">
                                 </form>
                             </li>
                             <li class="actions-catalog">
@@ -133,11 +133,11 @@
                         </div>
 
                         <ul class="main-mnu">
-                            <li><a href="http://localhost:8081/list/men">Мужчинам</a></li>
-                            <li><a href="http://localhost:8081/list/women">Женщинам</a></li>
-                            <li><a href="http://localhost:8081/list/children">Детям</a></li>
-                            <li><a href="http://localhost:8081/list/cosmetic">Косметика</a></li>
-                            <li><a href="http://localhost:8081/list/home">Для дома</a></li>
+                            <li><a href="{{ url('/list/men') }}">Мужчинам</a></li>
+                            <li><a href="{{ url('/list/women') }}">Женщинам</a></li>
+                            <li><a href="{{ url('/list/children') }}">Детям</a></li>
+                            <li><a href="{{ url('/list/cosmetic') }}">Косметика</a></li>
+                            <li><a href="{{ url('/list/home') }}">Для дома</a></li>
                             <li><a href="#">Бренды</a></li>
                         </ul>
                     </div>
