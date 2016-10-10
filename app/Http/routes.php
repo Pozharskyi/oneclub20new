@@ -14,10 +14,9 @@
 
 Route::get('/', 'IndexController@actionIndex');
 
-Auth::routes();
-
 Route::get('/home', 'HomeController@index');
 
+Route::post('login', 'Auth\AuthController@login');
 Route::get('/login', 'Auth\AuthorizationController@index');
 Route::get('logout', 'Auth\LoginController@logout');
 
