@@ -13,7 +13,9 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        // Commands\Inspire::class,
+        \App\Console\Commands\ClearBasketCommand::class,
+        \App\Console\Commands\MakeImportCommand::class,
+        \App\Console\Commands\MakeUpdateCommand::class,
     ];
 
     /**
@@ -24,7 +26,13 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+        $schedule->command('clear_basket')
+            ->dailyAt('04:00');
+
+        $schedule->command('import')
+            ->hourly();
+
+        $schedule->command('update')
+            ->hourly();
     }
 }
