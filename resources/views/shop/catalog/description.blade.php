@@ -27,7 +27,7 @@
 
                 <h5>Код товара: {{ $collection->product_store_id }}</h5>
 
-                @if(!empty($sizeCharts))
+                @if(!empty($sizeCharts->first()))
                     @include('shop.catalog.size_chart')
                 @endif
 
