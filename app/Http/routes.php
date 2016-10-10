@@ -18,7 +18,15 @@ Route::get('/home', 'HomeController@index');
 
 Route::post('login', 'Auth\AuthController@login');
 Route::get('/login', 'Auth\AuthorizationController@index');
-Route::get('logout', 'Auth\LoginController@logout');
+
+Route::get('/register', 'Auth\AuthController@showRegistrationForm');
+Route::post('register', 'Auth\AuthController@register');
+
+Route::get('/logout', 'Auth\LoginController@logout');
+
+Route::get('password/reset/{token?}', 'Auth\PasswordController@showResetForm');
+Route::post('password/email', 'Auth\PasswordController@sendResetLinkEmail');
+Route::post('password/reset', 'Auth\PasswordController@reset');
 
 /**
  * Route @for Collecting data

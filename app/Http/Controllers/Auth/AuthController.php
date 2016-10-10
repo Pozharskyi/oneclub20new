@@ -28,7 +28,7 @@ class AuthController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/';
+    protected $redirectTo = '/home';
 
     /**
      * Create a new authentication controller instance.
@@ -49,9 +49,15 @@ class AuthController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6|confirmed',
+
+            // CUSTOM FIELDS
+            'f_name' => 'required|max:255',
+            'l_name' => 'required|max:255',
+            'phone' => 'required|max:255',
+            'confirmation' => 'required',
+            // END CUSTOM FIELDS
         ]);
     }
 
@@ -63,10 +69,21 @@ class AuthController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-        ]);
+        $user = new User;
+
+        $user->name = $data['f_name'] . ' ' . $data['l_name'];
+        $user->email = $data['email'];
+        $user->password = bcrypt( $data['password'] );
+
+        $user->f_name = $data['f_name'];
+        $user->l_name = $data['l_name'];
+        $user->phone = $data['phone'];
+        $user->gender = $data['gender'];
+
+        $user->save();
+
+        UsersBonusesController::actionInsertIntoBonuses( $user->id );
+
+        return $user;
     }
 }
