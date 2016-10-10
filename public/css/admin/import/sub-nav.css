@@ -1,0 +1,30 @@
+.breadcrumb {
+    display: none !important;
+}
+
+#nav {
+    text-align: center;
+}
+
+#nav > li {
+    display: inline-block;
+    float: none;
+    margin-left: 35px;
+    margin-right: 35px;
+}
+
+#nav > li > a {
+    font-size: 18px;
+    text-decoration: none !important;
+}
+
+.divider {
+    width: 60%;
+    margin: 15px auto 15px auto;
+    background-color: #e4e4e4;
+    height: 1px;
+}
+
+.documentation > h3 {
+    color: rgb(240, 0, 140);
+}

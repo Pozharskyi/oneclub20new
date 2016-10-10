@@ -1,0 +1,20 @@
+.attendance {
+    color: rgb( 240, 0, 140 );
+}
+
+.documentation > li {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.success {
+    color: lightgreen;
+}
+
+.underlined {
+    text-decoration: underline;
+}
+
+.uppercase {
+    text-transform: uppercase;
+}
