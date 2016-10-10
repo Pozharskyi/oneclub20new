@@ -36,12 +36,18 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name',
+        'email',
+        'password',
 
         // CUSTOM FIELDS
-        'f_name', 'l_name',
-        'phone', 'gender', 'date_of_birth',
-        'provider', 'social_id',
+        'f_name',
+        'l_name',
+        'phone',
+        'gender',
+        'date_of_birth',
+        'provider',
+        'social_id',
         // END CUSTOM FIELDS
     ];
 
@@ -54,26 +60,27 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password',
+        'remember_token',
     ];
 
     public static function boot()
     {
         parent::boot();
 
-        static::created(function($user) {
+        static::created(function ($user) {
             Event::fire('App\Events\UserCreated', $user);
         });
 
-        static ::updating(function($user){
+        static::updating(function ($user) {
             Event::fire('App\Events\UserBeforeUpdated', $user);
         });
 
-        static :: updated(function($user){
+        static:: updated(function ($user) {
             Event::fire('App\Events\UserUpdated', $user);
         });
 
-        static :: deleted(function($user){
+        static:: deleted(function ($user) {
             Event::fire('App\Events\UserDeleted', $user);
         });
     }
@@ -110,7 +117,8 @@ class User extends Authenticatable
 
     public function subscribe()
     {
-        return $this->belongsToMany(SubscribationModel::class, 'dev_users_subscribations', 'user_id', 'subscribation_id')->withPivot('user_id', 'subscribation_id');
+        return $this->belongsToMany(SubscribationModel::class, 'dev_users_subscribations', 'user_id',
+            'subscribation_id')->withPivot('user_id', 'subscribation_id');
     }
 
     public function importParties()
