@@ -60,6 +60,7 @@
                         $('#selectUserTbody').append(
                                 "<tr><td>" + v.email +
                                 "</td><td>" + "<a href=/admin/users/" + v.id + ">" + v.name + "</a>" +
+                                "</td><td>" + "<a href=/admin/users/" + v.id + "/manage_role"+">" + "Редактировать роли " + "</a>" +
                                 "</td></tr>"
                         );
                     });
