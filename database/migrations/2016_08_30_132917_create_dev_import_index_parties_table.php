@@ -23,6 +23,7 @@ class CreateDevImportIndexPartiesTable extends Migration
             $table->integer('buyer_id')->unsigned();
             $table->integer('support_id')->unsigned();
             $table->integer('import_index_categories_id')->unsigned();
+            $table->integer('import_parties_status_id')->unsigned();
 
             $table->timestamps();
             $table->softDeletes();
@@ -37,6 +38,8 @@ class CreateDevImportIndexPartiesTable extends Migration
                 ->on('users');
             $table->foreign('import_index_categories_id')->references('id')
                 ->on('dev_import_index_categories');
+            $table->foreign('import_parties_status_id')->references('id')
+                ->on('dev_import_parties_statuses');
         });
     }
 

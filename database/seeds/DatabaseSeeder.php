@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
 
         // IMPORT AREA
 
+        $this->call(ImportPartiesStatusesTableSeeder::class);
         $this->call(ImportIndexSuppliersTableSeeder::class);
         $this->call(ImportIndexCategoriesTableSeeder::class);
         $this->call(ImportIndexPartiesTableSeeder::class);

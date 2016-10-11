@@ -27,7 +27,7 @@ class ImportIndexPartiesModel extends Model
 
     public function supplier()
     {
-        return $this->hasMany(ImportIndexSuppliersModel::class, 'import_supplier_id');
+        return $this->hasMany(ImportIndexSuppliersModel::class, 'id', 'import_supplier_id');
     }
 
     public function madeBy()
@@ -68,6 +68,11 @@ class ImportIndexPartiesModel extends Model
     public function salesAssociationLog()
     {
         return $this->hasMany(ImportSalesAssociationLogModel::class, 'id', 'import_index_party_id');
+    }
+
+    public function partiesStatus()
+    {
+        return $this->belongsTo(ImportPartiesStatusesModel::class, 'import_parties_status_id');
     }
 
 }
