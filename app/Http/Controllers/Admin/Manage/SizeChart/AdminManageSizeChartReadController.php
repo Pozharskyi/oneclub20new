@@ -27,8 +27,7 @@ class AdminManageSizeChartReadController extends Controller implements AdminImpo
 
         $measurementNames = MeasurementNameModel::all(['id', 'name']);
         $sizeCharts = SizeChartModel::with(['measurements.name', 'brand', 'size', 'category'])->get();
-//        dd($sizeCharts);
-//        dd($measurementNames->toArray());
+
         return view('admin.manage.size_chart.read', compact('sizeCharts', 'alert', 'measurementNames'));
     }
 }

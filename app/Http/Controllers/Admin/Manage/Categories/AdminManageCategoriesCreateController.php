@@ -33,10 +33,14 @@ class AdminManageCategoriesCreateController extends Controller
 
         $existence = AdminManageCategoriesValidationController::actionValidateIfCategoryExists( $category_name,  $category_parent_id);
 
+        $isParentCategoryValid = AdminManageCategoriesValidationController::actionValidateParentCategory($category_parent_id);
         if( $existence === false )
         {
             try
             {
+                if(! $isParentCategoryValid){
+                    return redirect('/admin/manage/categories?alert=failed');
+                }
                 CategoryModel::create([
                     'category_name' => $category_name,
                     'parent_id' => $category_parent_id,

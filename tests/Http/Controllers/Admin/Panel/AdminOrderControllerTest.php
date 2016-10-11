@@ -570,7 +570,10 @@ class AdminOrderControllerTest extends TestCase
         $this->call('PUT', '/admin/users/' . $user->id . '/orders/' . $order->id
             . '/orderPayment/update', array_merge([$order->payment_type_id], $params));
 
+//        $newOrder = \App\Models\Order\OrderModel::finndOrFail($order->id);
+
         $newOrderPaymentType = PaymentTypesModel::findOrFail($order->payment_type_id);
+        $this->assertNotEmpty($newOrderPaymentType->payment_type);
 //        $newOrderPaymentType = $order->orderPaymentType()->firstOrFail();
 
         $this->seeInDatabase('dev_log_from_to_string', ['to' => $newOrderPaymentType->payment_type]);
@@ -586,7 +589,7 @@ class AdminOrderControllerTest extends TestCase
 
         //TODO
 //        $this->see($newOrderPaymentType->payment_type);
-////        $this->see($newOrderPaymentType->field_changed);
+//        $this->see($newOrderPaymentType->field_changed);
 
         //TODO
 //        $this->seeJsonContains($newOrderLog->makeHidden(['loggable_type', 'field_changed'])->toArray());

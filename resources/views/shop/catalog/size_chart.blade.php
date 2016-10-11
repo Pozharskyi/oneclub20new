@@ -11,9 +11,11 @@
                     <tr>
                         <th>Международный размер</th>
                         <th>Размер производителя</th>
-                        @foreach($sizeCharts->first()->measurements as $measurement)
-                            <th>{{$measurement->name->name}}</th>
-                        @endforeach
+                        @if(isset($sizeCharts->first()->measurements))
+                            @foreach($sizeCharts->first()->measurements as $measurement)
+                                <th>{{$measurement->name->name}}</th>
+                            @endforeach
+                        @endif
                     </tr>
                     </thead>
                     <tbody>
@@ -21,9 +23,11 @@
                         <tr>
                             <td>{{ $sizeChart->size->name }}</td>
                             <td>{{ $sizeChart->brand_size }}</td>
-                            @foreach($sizeChart->measurements as $measurement)
-                                <td>{{$measurement->value}}</td>
-                            @endforeach
+                            @if(isset($sizeCharts->first()->measurements))
+                                @foreach($sizeChart->measurements as $measurement)
+                                    <td>{{$measurement->value}}</td>
+                                @endforeach
+                            @endif
                         </tr>
                     @endforeach
                     </tbody>

@@ -21,8 +21,10 @@
         ]); ?>
     </script>
     <script src="{{ url('/js/jquery-3.1.0.min.js') }}"></script>
+    <script src="{{ url('/js/bootstrap_min.js') }}"></script>
 
-    <!-- Template Basic Images Start -->
+
+            <!-- Template Basic Images Start -->
     <meta property="og:image" content="path/to/image.jpg">
     <link rel="shortcut icon" href="{{ url('/img/favicon/favicon.ico') }}" type="image/x-icon">
     <link rel="apple-touch-icon" href="{{ url('/img/favicon/apple-touch-icon.png"') }}">

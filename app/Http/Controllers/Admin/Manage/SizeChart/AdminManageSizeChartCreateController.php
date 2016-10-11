@@ -9,6 +9,7 @@ use App\Models\Product\ProductSizeModel;
 use App\Models\SizeChart\MeasurementModel;
 use App\Models\SizeChart\MeasurementNameModel;
 use App\Models\SizeChart\SizeChartModel;
+use DB;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -25,22 +26,17 @@ class AdminManageSizeChartCreateController extends Controller implements AdminIm
      */
     public function actionGetCreateView(Request $request)
     {
-        //get 3-d level categories
-        $categories = CategoryModel::all(['id', 'category_name', 'parent_id']);
-        $newCategories = Collection::make();
-        foreach($categories as $category){
-            if(isset($category->parent->parent)){
-                $newCategories->push($category);
-            }
-        }
+        //get 3 level categories prepared for view - with all parent level
+        $categories3level = AdminManageSizeChartGetCategoriesHelper::get3levelCategoriesWithParents();
+
 
         $brands = BasicBrandsModel::all(['id', 'brand_name']);
         $sizes = ProductSizeModel::all(['id', 'name']);
 
         $measurementsNames = MeasurementNameModel::all(['id', 'name']);
 
-        return view( 'admin.manage.size_chart.create')
-            ->with('categories', $newCategories)
+        return view('admin.manage.size_chart.create')
+            ->with('categories3level', $categories3level)
             ->with('brands', $brands)
             ->with('sizes', $sizes)
             ->with('names', $measurementsNames);
@@ -60,18 +56,33 @@ class AdminManageSizeChartCreateController extends Controller implements AdminIm
         //get values for  measurement name
         $values = $request->input('values');
 
-        $sizeChart = SizeChartModel::create($request->all());
+        // begin Transaction
+        DB::beginTransaction();
+        try {
 
-        //save Measurements
-        foreach($nameIds as $nameId) {
-            $measurement = new MeasurementModel([
-                'value' => $values[$nameId - 1],             //get value for  measurement name
-                'measurements_names_id' => $nameId,
-            ]);
-            $measurement->sizeChart()->associate($sizeChart);
-            $measurement->save();
+            $sizeChart = SizeChartModel::create($request->all());
+
+            //save Measurements
+            if (!$nameIds) {
+                return redirect('/admin/manage/size_chart?alert=created');
+
+            }
+            foreach ($nameIds as $nameId) {
+                $measurement = new MeasurementModel([
+                    'value' => $values[$nameId - 1],             //get value for  measurement name
+                    'measurements_names_id' => $nameId,
+                ]);
+                $measurement->sizeChart()->associate($sizeChart);
+                $measurement->save();
+            }
+            // if succeed do
+            DB::commit();
+            return redirect('/admin/manage/size_chart?alert=created');
+
+        } catch (\Exception $e) {
+            // else rollback all queries
+            DB::rollBack();
+            return redirect('/admin/manage/size_chart?alert=failed');
         }
-
-        return redirect('/admin/manage/size_chart?alert=created');
     }
 }
