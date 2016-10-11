@@ -12,9 +12,8 @@
     <div class="container">
 
         <div class="text-center" style="margin-bottom: 30px;">
-            <h2>Страница просмотра расзмерных сеток</h2>
+            <h2>Страница просмотра размерных сеток</h2>
         </div>
-
         <div class="row">
 
             <table class="table table-striped">
@@ -55,9 +54,9 @@
                                 @endif
                             @endforeach
                             @if($isInSizeChartNameIds)
-                                <th>{{$measurementValue}}</th>
+                                <td class="measurementName_{{$measurementNames[$i]->id}}">{{$measurementValue}}</td>
                             @else
-                                <th>-</th>
+                                <td class="measurementName_{{$measurementNames[$i]->id}}">-</td>
                             @endif
                         @endfor
                         <td>{{ $sizeChart->created_at }}</td>

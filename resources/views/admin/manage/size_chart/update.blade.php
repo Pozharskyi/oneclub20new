@@ -42,13 +42,13 @@
                         @foreach($categories as $category)
                             @if($category->id === $sizeChart->category->id)
                                 <option selected value="{{$category->id}}">{{$category->category_name}}
-                                    /{{$category->parent->category_name}}
-                                    /{{$category->parent->parent->category_name}}
+                                    /{{$category->parent1->category_name}}
+                                    /{{$category->parent2->category_name}}
                                 </option>
                                 @else
                                 <option value="{{$category->id}}">{{$category->category_name}}
-                                    /{{$category->parent->category_name}}
-                                    /{{$category->parent->parent->category_name}}
+                                    /{{$category->parent1->category_name}}
+                                    /{{$category->parent2->category_name}}
                                 </option>
                             @endif
 
@@ -59,7 +59,7 @@
                     <label for="size_id">Выберите международный размер</label>
                     <select id="size_id" name="size_id" size="1" class="form-control">
                         @foreach($sizes as $size)
-                            @if($size->id === $sizeChart->id)
+                            @if($size->id === $sizeChart->size->id)
                                 <option selected value="{{$size->id}}">
                                     {{$size->name}}
                                 </option>

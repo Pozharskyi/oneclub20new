@@ -9,6 +9,7 @@ use App\Models\Product\ProductSizeModel;
 use App\Models\SizeChart\MeasurementModel;
 use App\Models\SizeChart\MeasurementNameModel;
 use App\Models\SizeChart\SizeChartModel;
+use DB;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 
@@ -23,14 +24,9 @@ class AdminManageSizeChartUpdateController extends Controller implements AdminIm
         $sizeChart = SizeChartModel::with(['brand', 'category', 'size', 'measurements.name'])
             ->find($size_chart_id);
 
-        //get 3-d level categories
-        $categories = CategoryModel::all(['id', 'category_name', 'parent_id']);
-        $newCategories = Collection::make();
-        foreach ($categories as $category) {
-            if (isset($category->parent->parent)) {
-                $newCategories->push($category);
-            }
-        }
+        //get 3 level categories prepared for view - with all parent level
+        $categories3level = AdminManageSizeChartGetCategoriesHelper::get3levelCategoriesWithParents();
+
 
         $brands = BasicBrandsModel::all(['id', 'brand_name']);
         $sizes = ProductSizeModel::all(['id', 'name']);
@@ -38,7 +34,7 @@ class AdminManageSizeChartUpdateController extends Controller implements AdminIm
         $measurementsNames = MeasurementNameModel::all(['id', 'name']);
 
         return view('admin.manage.size_chart.update', compact('sizeChart', 'brands', 'sizes', 'measurementsNames'))
-            ->with('categories', $newCategories);
+            ->with('categories', $categories3level);
     }
 
     /**
@@ -48,49 +44,59 @@ class AdminManageSizeChartUpdateController extends Controller implements AdminIm
      */
     public function actionUpdate(Request $request)
     {
+        // begin Transaction
+        DB::beginTransaction();
+        try {
+            $sizeChart = SizeChartModel::findOrFail($request->size_chart_id);
+            $sizeChart->update($request->all());
 
-        $sizeChart = SizeChartModel::findOrFail($request->size_chart_id);
-        $sizeChart->update($request->all());
+            //get id from measurement name table
+            $nameIds = $request->input('nameIds');
 
-        //get id from measurement name table
-        $nameIds = $request->input('nameIds');
+            //get values for  measurement name
+            $values = $request->input('values');
+            //get oldMeasurements from old sizeChart
+            $measurements = $sizeChart->measurements()->get();
 
-        //get values for  measurement name
-        $values = $request->input('values');
-        //get oldMeasurements from old sizeChart
-        $measurements = $sizeChart->measurements()->get();
-
-        //save Measurements
-        foreach ($nameIds as $nameId) {
-
-            //if new name added - create new measurements
-            if (! $measurements->pluck('name_id')->search($nameId)) {
-                $measurement = new MeasurementModel([
-                    'value' => $values[$nameId - 1],             //get value for  measurement name
-                    'measurements_names_id' => $nameId,
-                ]);
-                $measurement->sizeChart()->associate($sizeChart);
-                $measurement->save();
-
+            //save Measurements
+            foreach ($nameIds as $nameId) {
                 //update existed measurements
-            } else {
-                //get old measurements by $nameId and update
-                $measurement = $measurements->where('name_id', $nameId)->first();
-                $measurement->update(
-                    ['value' => $values[$nameId - 1],             //get value for  measurement name
+                if (in_array($nameId, $measurements->pluck('measurements_names_id')->toArray())) {
+                    //get old measurements by $nameId and update
+                    $measurement = $measurements->where('measurements_names_id', $nameId)->first();
+                    $measurement->update(
+                        [
+                            'value' => $values[$nameId - 1],             //get value for  measurement name
+                            'measurements_names_id' => $nameId,
+                        ]);
+                    //if new name added - create new measurements
+                } else {
+                    $measurement = new MeasurementModel([
+                        'value' => $values[$nameId - 1],             //get value for  measurement name
                         'measurements_names_id' => $nameId,
                     ]);
-            }
+                    $measurement->sizeChart()->associate($sizeChart);
+                    $measurement->save();
 
-        }
-        //if removed existed
-        foreach($measurements->pluck('name_id') as $existedNameId){
-            if(! in_array($existedNameId, $nameIds)){
-                $measurement = $measurements->where('name_id',$existedNameId)->first();
-                $measurement->delete();
+                }
+
             }
+            //if removed existed
+            foreach ($measurements->pluck('measurements_names_id') as $existedNameId) {
+                if (!in_array($existedNameId, $nameIds)) {
+                    $measurement = $measurements->where('measurements_names_id', $existedNameId)->first();
+                    $measurement->delete();
+                }
+            }
+            // if succeed do
+            DB::commit();
+            return redirect('/admin/manage/size_chart?alert=success');
+
+        } catch (\Exception $e) {
+            // else rollback all queries
+            DB::rollBack();
+            return redirect('/admin/manage/size_chart?alert=failed');
         }
-        return redirect( '/admin/manage/size_chart?alert=success' );
+
     }
-
 }

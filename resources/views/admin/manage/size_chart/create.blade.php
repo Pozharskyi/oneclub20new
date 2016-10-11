@@ -33,10 +33,10 @@
 
                     <label for="category_id">Выберите категорию</label>
                     <select id="category_id" name="category_id" size="1" class="form-control">
-                        @foreach($categories as $category)
+                        @foreach($categories3level as $category)
                             <option value="{{$category->id}}">{{$category->category_name}}
-                                /{{$category->parent->category_name}}
-                                /{{$category->parent->parent->category_name}}
+                                /{{$category->parent1->category_name}}
+                                /{{$category->parent2->category_name}}
                             </option>
 
                         @endforeach

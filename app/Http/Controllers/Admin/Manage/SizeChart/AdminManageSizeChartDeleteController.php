@@ -31,7 +31,6 @@ class AdminManageSizeChartDeleteController extends Controller implements AdminIm
             $sizeChart->delete();
 
         } catch (\Exception $e) {
-            var_dump($e);
             $result = 'false';
         }
 
