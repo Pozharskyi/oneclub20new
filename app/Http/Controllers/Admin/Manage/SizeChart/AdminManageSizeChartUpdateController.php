@@ -57,13 +57,15 @@ class AdminManageSizeChartUpdateController extends Controller implements AdminIm
             $values = $request->input('values');
             //get oldMeasurements from old sizeChart
             $measurements = $sizeChart->measurements()->get();
-
+//            dd($nameIds);
+//            dd(in_array(2, $measurements->pluck('measurements_names_id')->toArray()));
             //save Measurements
             foreach ($nameIds as $nameId) {
                 //update existed measurements
                 if (in_array($nameId, $measurements->pluck('measurements_names_id')->toArray())) {
                     //get old measurements by $nameId and update
-                    $measurement = $measurements->where('measurements_names_id', $nameId)->first();
+                    $measurement = $measurements->whereLoose('measurements_names_id', $nameId)->first();
+
                     $measurement->update(
                         [
                             'value' => $values[$nameId - 1],             //get value for  measurement name
@@ -84,7 +86,7 @@ class AdminManageSizeChartUpdateController extends Controller implements AdminIm
             //if removed existed
             foreach ($measurements->pluck('measurements_names_id') as $existedNameId) {
                 if (!in_array($existedNameId, $nameIds)) {
-                    $measurement = $measurements->where('measurements_names_id', $existedNameId)->first();
+                    $measurement = $measurements->whereLoose('measurements_names_id', $existedNameId)->first();
                     $measurement->delete();
                 }
             }
@@ -95,6 +97,7 @@ class AdminManageSizeChartUpdateController extends Controller implements AdminIm
         } catch (\Exception $e) {
             // else rollback all queries
             DB::rollBack();
+
             return redirect('/admin/manage/size_chart?alert=failed');
         }
 
