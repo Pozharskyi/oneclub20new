@@ -16,6 +16,28 @@ class DatabaseSeeder extends Seeder
         //disable foreign key check for this connection before running seeders
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
 
+        // IMPORT AREA
+
+        $this->call(ImportIndexSuppliersTableSeeder::class);
+        $this->call(ImportIndexCategoriesTableSeeder::class);
+        $this->call(ImportIndexPartiesTableSeeder::class);
+        $this->call(ImportIndexSalesTableSeeder::class);
+        $this->call(ImportPartiesCoincidenceLogTableSeeder::class);
+        $this->call(ImportPartiesCoincidenceStatusesTableSeeder::class);
+        $this->call(ImportPartiesFileAllocationTableSeeder::class);
+        $this->call(ImportPartiesLogDeleteTableSeeder::class);
+        $this->call(ImportPartiesLogEditTableSeeder::class);
+        $this->call(ImportPartiesPrepareLogTableSeeder::class);
+        $this->call(ImportPartiesPrepareStatusesTableSeeder::class);
+        $this->call(ImportPartiesWorkLogTableSeeder::class);
+        $this->call(ImportPartiesWorkStatusesTableSeeder::class);
+        $this->call(ImportSalesAssociationLogTableSeeder::class);
+        $this->call(ImportSalesAssociationTableSeeder::class);
+        $this->call(ImportSalesLogDeleteTableSeeder::class);
+        $this->call(ImportSalesLogEditTableSeeder::class);
+
+        // END IMPORT AREA
+
         // START USERS AREA
 
         $this->call(UsersCategoriesTableSeeder::class);
@@ -86,10 +108,6 @@ class DatabaseSeeder extends Seeder
         $this->call(OrderStatusListTableSeeder::class);
         // START ORDER INDEX RELATION
 
-        // SUPPLIER
-        $this->call(SupplierSeeder::class);
-        $this->call(ProductSupplierSeeder::class);
-
         // START ADDITIONAL TO PRODUCTS
 
         $this->call(ProductDescriptionTableSeeder::class);
@@ -117,11 +135,11 @@ class DatabaseSeeder extends Seeder
         $this->call(ProductPopularityTableSeeder::class);
 
 
-        // Subscribation Area
+        // Subscription Area
         $this->call(SubscribationsTypeSeeder::class);
         $this->call(SubscribationsSeeder::class);
         $this->call(UsersSubscribationsSeeder::class);
-        //End Subscribation Area
+        //End Subscription Area
 
         $this->call(PaymentReceiveTableSeeder::class);
 

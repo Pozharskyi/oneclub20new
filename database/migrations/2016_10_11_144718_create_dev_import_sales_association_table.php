@@ -19,6 +19,7 @@ class CreateDevImportSalesAssociationTable extends Migration
             $table->integer('made_by')->unsigned();
 
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('import_index_sale_id')->references('id')
                 ->on('dev_import_index_sales');

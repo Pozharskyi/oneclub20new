@@ -16,6 +16,7 @@ class CreateDevImportPartiesCoincidenceStatusesTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('short_phrase');
+            $table->string('import_color');
 
             $table->timestamps();
             $table->softDeletes();

@@ -17,6 +17,7 @@ class CreateDevImportIndexSalesTable extends Migration
             $table->string('sale_name');
             $table->timestamp('sale_start_date');
             $table->timestamp('sale_end_date');
+            $table->integer('sale_days_count');
             $table->integer('made_by')->unsigned();
             $table->integer('buyer_id')->unsigned();
 

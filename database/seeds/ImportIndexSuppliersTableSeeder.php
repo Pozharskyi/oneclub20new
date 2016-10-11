@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class SupplierSeeder extends Seeder
+class ImportIndexSuppliersTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,12 +15,12 @@ class SupplierSeeder extends Seeder
          /**
           * Deleting All previous records
           */
-        DB::table('dev_supplier')->delete();
+        DB::table('dev_import_index_suppliers')->delete();
 
         /**
          * Inserting
          */
-        DB::table('dev_supplier')->insert(
+        DB::table('dev_import_index_suppliers')->insert(
             [
                 [
                     'id' => 1,
