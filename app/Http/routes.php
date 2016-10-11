@@ -165,6 +165,11 @@ Route::get('test_form_liqpay', 'Payments\Receive\TestFormPaymentsReceiveLiqpay@a
 
 Route::group(['prefix'=>'cabinet','namespace'=>'User\Cabinet'], function(){
     /**********
+     * Default route
+     */
+    Route::get('','UserInfoController@ActionIndex');
+
+    /**********
      *  View list user orders
      */
     Route::get('orders','UserOrdersController@ActionIndex');

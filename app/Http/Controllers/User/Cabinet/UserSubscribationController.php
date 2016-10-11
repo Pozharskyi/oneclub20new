@@ -8,6 +8,7 @@
 
 namespace App\Http\Controllers\User\Cabinet;
 
+use App\Http\Controllers\Controller;
 use App\Models\Subscribation\SubscribationTypeModel;
 use App\Models\User\UserSubscribationModel;
 use Illuminate\Support\Facades\Auth;
@@ -15,7 +16,7 @@ use Illuminate\Http\Request;
 use App\User;
 use Session;
 
-class UserSubscribationController
+class UserSubscribationController extends Controller
 {
     /*
      * View user subscriptions
