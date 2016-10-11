@@ -123,26 +123,6 @@ class DatabaseSeeder extends Seeder
         $this->call(UsersSubscribationsSeeder::class);
         //End Subscribation Area
 
-        // IMPORT
-        $this->call(ImportPartiesTableSeeder::class);
-        $this->call(ImportSalesShareTableSeeder::class);
-        $this->call(ImportSalesAssociationTableSeeder::class);
-        $this->call(ImportPartiesProcessTableSeeder::class);
-        $this->call(ImportFatStatusTableSeeder::class);
-
-        $this->call(ImportLogPartiesProcessTableSeeder::class);
-        $this->call(ImportLogSalesAssociationTableSeeder::class);
-        $this->call(ImportLogPartiesTableSeeder::class);
-        $this->call(ImportPartiesCategoriesTableSeeder::class);
-
-        $this->call(ImportUpdateTableSeeder::class);
-        $this->call(ImportUpdateProcessTableSeeder::class);
-        $this->call(ImportLogUpdateProcessTableSeeder::class);
-
-        $this->call(ImportFatAssociationStatusTableSeeder::class);
-        $this->call(ImportFatAllociationStatusTableSeeder::class);
-        // END IMPORT
-
         $this->call(PaymentReceiveTableSeeder::class);
 
         //START SIZE CHART AREA
