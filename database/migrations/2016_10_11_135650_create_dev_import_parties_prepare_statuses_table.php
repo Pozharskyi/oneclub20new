@@ -1,10 +1,9 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class DevImportPartiesCategories extends Migration
+class CreateDevImportPartiesPrepareStatusesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +12,14 @@ class DevImportPartiesCategories extends Migration
      */
     public function up()
     {
-        Schema::create('dev_import_parties_categories', function (Blueprint $table)
-        {
+        Schema::create('dev_import_parties_prepare_statuses', function(Blueprint $table){
             $table->increments('id');
-            $table->string('type');
+            $table->string('name');
+            $table->string('short_phrase');
+            $table->string('file_column_name');
 
             $table->timestamps();
             $table->softDeletes();
-
         });
     }
 
@@ -31,6 +30,6 @@ class DevImportPartiesCategories extends Migration
      */
     public function down()
     {
-        Schema::drop('dev_import_parties_categories');
+        Schema::drop('dev_import_parties_prepare_statuses');
     }
 }

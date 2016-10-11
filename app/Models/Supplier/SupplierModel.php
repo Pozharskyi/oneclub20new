@@ -16,7 +16,7 @@ class SupplierModel extends Model
      *
      * @var string
      */
-    protected $table = 'dev_supplier';
+    protected $table = 'dev_import_index_suppliers';
 
     protected $fillable = [
         'name', 'shop', 'brands', 'phones', 'email',
@@ -29,11 +29,6 @@ class SupplierModel extends Model
 
     public function subProduct(){
         return $this->hasMany(ProductSupplierModel::class, 'supplier_id');
-    }
-
-    public function importParties()
-    {
-        return $this->hasMany(ImportPartiesModel::class, 'supplier_id');
     }
 
     public function buyer()
