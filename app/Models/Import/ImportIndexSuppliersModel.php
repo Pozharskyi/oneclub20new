@@ -1,16 +1,24 @@
 <?php
 
-namespace App\Models\Supplier;
+/**
+ * Created by PHP7.
+ * User: Oleksandr Serdiuk
+ * SSF Framework 1.0
+ * Date: 11.10.2016
+ * Time: 20:29
+ */
 
-use App\Models\Import\ImportPartiesModel;
+namespace App\Models\Import;
+
+use App\Models\Product\SubProductModel;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\Product\ProductSupplierModel;
 
-class SupplierModel extends Model
+class ImportIndexSuppliersModel extends Model
 {
     use SoftDeletes;
+
     /**
      * The table associated with the model.
      *
@@ -18,27 +26,26 @@ class SupplierModel extends Model
      */
     protected $table = 'dev_import_index_suppliers';
 
-    protected $fillable = [
-        'name', 'shop', 'brands', 'phones', 'email',
-        'coefficient', 'product_marga', 'time_of_returns',
-        'work_status', 'work_comment', 'agreement', 'start_working',
-        'payment_form', 'payment_postpone', 'ecommerce_comment',
-        'address_sending', 'logistic_comment', 'address_return',
-        'products_category', 'buyer_id', 'made_by',
-    ];
-
-    public function subProduct(){
-        return $this->hasMany(ProductSupplierModel::class, 'supplier_id');
-    }
+    protected $guarded = ['id'];
 
     public function buyer()
     {
-        return $this->hasOne(User::class, 'id', 'buyer_id');
+        return $this->belongsTo(User::class, 'id');
     }
 
     public function user()
     {
-        return $this->hasOne(User::class, 'id', 'made_by');
+        return $this->belongsTo(User::class, 'id');
+    }
+
+    public function parties()
+    {
+        return $this->belongsTo(ImportIndexPartiesModel::class, 'id');
+    }
+
+    public function subProduct()
+    {
+        return $this->hasMany(SubProductModel::class, 'supplier_id');
     }
 
     public function scopeSearch($query, $search)
@@ -55,5 +62,4 @@ class SupplierModel extends Model
                 ->orWhere('id', $search);
         }
     }
-
 }

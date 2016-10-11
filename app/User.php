@@ -3,27 +3,30 @@
 namespace App;
 
 use App\Models\Basic\BasicBrandsModel;
-use App\Models\Import\ImportLogPartiesModel;
-use App\Models\Import\ImportSalesAssociationModel;
-use App\Models\Import\ImportSalesShareModel;
-use App\Models\Import\ImportUpdateModel;
+use App\Models\Import\ImportIndexPartiesModel;
+use App\Models\Import\ImportIndexSalesModel;
+use App\Models\Import\ImportIndexSuppliersModel;
+use App\Models\Import\ImportPartiesFileAllocationModel;
 use App\Models\Discount\DiscountsModel;
+use App\Models\Import\ImportPartiesLogDeleteModel;
+use App\Models\Import\ImportPartiesLogEditModel;
+use App\Models\Import\ImportSalesAssociationLogModel;
+use App\Models\Import\ImportSalesAssociationModel;
+use App\Models\Import\ImportSalesLogDeleteModel;
+use App\Models\Import\ImportSalesLogEditModel;
 use App\Models\Loging\LogUserModel;
 use App\Models\Order\OrderModel;
 use App\Models\Product\ProductColorModel;
 use App\Models\Product\ProductSizeModel;
-use App\Models\Supplier\SupplierModel;
 use App\Models\User\UserBalanceModel;
 use App\Models\User\UsersBonusesModel;
 use App\Models\User\UsersCategoryModel;
 use Event;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Models\Loging\LogUserBonuses;
 use App\Models\Subscribation\SubscribationModel;
-use App\Models\Import\ImportPartiesModel;
 
 class User extends Authenticatable
 {
@@ -121,29 +124,9 @@ class User extends Authenticatable
             'subscribation_id')->withPivot('user_id', 'subscribation_id');
     }
 
-    public function importParties()
-    {
-        return $this->hasMany(ImportPartiesModel::class, 'made_by');
-    }
-
-    public function importSalesShare()
-    {
-        return $this->hasMany(ImportSalesShareModel::class, 'made_by');
-    }
-
-    public function salesAssociation()
-    {
-        return $this->hasMany(ImportSalesAssociationModel::class, 'id', 'made_by');
-    }
-
-    public function logParties()
-    {
-        return $this->hasMany(ImportLogPartiesModel::class, 'id', 'made_by');
-    }
-
     public function supplier()
     {
-        return $this->hasMany(SupplierModel::class, 'id', 'made_by');
+        return $this->hasMany(ImportIndexSuppliersModel::class, 'id', 'made_by');
     }
 
     public function brand()
@@ -161,9 +144,59 @@ class User extends Authenticatable
         return $this->hasMany(ProductColorModel::class, 'id', 'made_by');
     }
 
-    public function importUpdate()
+    public function partiesMadeBy()
     {
-        return $this->hasMany(ImportUpdateModel::class, 'id', 'made_by');
+        return $this->hasMany(ImportIndexPartiesModel::class, 'id', 'made_by');
+    }
+
+    public function partiesBuyerId()
+    {
+        return $this->hasMany(ImportIndexPartiesModel::class, 'id', 'buyer_id');
+    }
+
+    public function partiesSupportId()
+    {
+        return $this->hasMany(ImportIndexPartiesModel::class, 'id', 'support_id');
+    }
+
+    public function salesMadeBy()
+    {
+        return $this->hasMany(ImportIndexSalesModel::class, 'id', 'made_by');
+    }
+
+    public function salesBuyerId()
+    {
+        return $this->hasMany(ImportIndexSalesModel::class, 'id', 'buyer_id');
+    }
+
+    public function partiesLogDeleteMadeBy()
+    {
+        return $this->hasMany(ImportPartiesLogDeleteModel::class, 'id', 'made_by');
+    }
+
+    public function partiesLogEditMadeBy()
+    {
+        return $this->hasMany(ImportPartiesLogEditModel::class, 'id', 'made_by');
+    }
+
+    public function salesLogDeleteMadeBy()
+    {
+        return $this->hasMany(ImportSalesLogDeleteModel::class, 'id', 'made_by');
+    }
+
+    public function salesLogEditMadeBy()
+    {
+        return $this->hasMany(ImportSalesLogEditModel::class, 'id', 'made_by');
+    }
+
+    public function salesAssociationMadeBy()
+    {
+        return $this->hasMany(ImportSalesAssociationModel::class, 'id', 'made_by');
+    }
+
+    public function salesAssociationLogMadeBy()
+    {
+        return $this->hasMany(ImportSalesAssociationLogModel::class, 'id', 'made_by');
     }
 
     /**
@@ -192,5 +225,10 @@ class User extends Authenticatable
     public function discounts()
     {
         return $this->belongsToMany(DiscountsModel::class, 'dev_discount_user', 'user_id', 'discount_id');
+    }
+
+    public function partiesFileAllocation()
+    {
+        return $this->hasMany(ImportPartiesFileAllocationModel::class, 'id', 'made_by');
     }
 }

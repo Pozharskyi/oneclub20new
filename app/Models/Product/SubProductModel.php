@@ -11,8 +11,7 @@ namespace App\Models\Product;
 
 
 
-use App\Models\Import\ImportLogPartiesProcessModel;
-use App\Models\Import\ImportPartiesModel;
+use App\Models\Import\ImportIndexSuppliersModel;
 use App\Models\Order\OrderIndexSubProductModel;
 use App\Models\Order\OrderStatusModel;
 use App\Models\Shop\Basket\BasketModel;
@@ -55,6 +54,11 @@ class SubProductModel extends Model
         return $this->belongsTo(ProductSizeModel::class, 'dev_product_size_id');
     }
 
+    public function supplier()
+    {
+        return $this->belongsTo(ImportIndexSuppliersModel::class, 'supplier_id');
+    }
+
     public function photos()
     {
         return $this->hasMany(ProductPhotoModel::class, 'sub_product_id');
@@ -79,7 +83,7 @@ class SubProductModel extends Model
     }
 
     public function subProductSupplier(){
-        return $this->hasMany(ProductSupplierModel::class, 'sub_product_id');
+        return $this->hasMany(ImportIndexSuppliersModel::class, 'sub_product_id');
     }
 
     public function orderProducts()
@@ -100,16 +104,6 @@ class SubProductModel extends Model
     public function popularity()
     {
         return $this->hasOne(ProductPopularityModel::class, 'sub_product_id');
-    }
-
-    public function importParties()
-    {
-        return $this->belongsTo(ImportPartiesModel::class, 'dev_import_parties_id');
-    }
-
-    public function importPartiesLog()
-    {
-        return $this->belongsTo(ImportLogPartiesProcessModel::class, 'sub_product_id');
     }
 
     public function scopeSizes( $query, $sizes )
