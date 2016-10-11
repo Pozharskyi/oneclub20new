@@ -13,6 +13,7 @@ use App\Models\Order\OrderModel;
 use App\Models\Product\ProductColorModel;
 use App\Models\Product\ProductSizeModel;
 use App\Models\Supplier\SupplierModel;
+use App\Models\User\RoleModel;
 use App\Models\User\UserBalanceModel;
 use App\Models\User\UsersBonusesModel;
 use App\Models\User\UsersCategoryModel;
@@ -166,6 +167,32 @@ class User extends Authenticatable
         return $this->hasMany(ImportUpdateModel::class, 'id', 'made_by');
     }
 
+
+    public function roles()
+    {
+        return $this->belongsToMany(RoleModel::class, 'dev_user_role', 'user_id', 'role_id');
+    }
+
+    /**
+     * @param $roleName
+     * @return bool
+     * check if user has such role name
+     */
+    public function hasRole($roleName)
+    {
+        if ($this->roles()->where('name', $roleName)->first()) {
+            return true;
+        }
+        return false;
+
+    }
+
+    public function scopeFilterByRole(Builder $query, $role)
+    {
+        $query->whereHas('roles', function($q) use ($role){
+            $q->where('role_id', $role->id);
+        });
+    }
     /**
      * Scope a query to only include users which contain a searching text in the user's name or
      *  in the user's email

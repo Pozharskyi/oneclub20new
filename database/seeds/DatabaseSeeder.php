@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
         $this->call(UsersCategoriesTableSeeder::class);
         $this->call(UsersTableSeeder::class);
         $this->call(UserIndexCategoriesTableSeeder::class);
+        $this->call(RolesTableSeeder::class);
 
         // END USERS AREA
 
