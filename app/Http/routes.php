@@ -399,6 +399,9 @@ Route::group(['prefix' => 'admin/users'], function () {
     Route::put('{user}/removeDiscounts/{discount}', 'Admin\Panel\AdminPanelDiscountUserController@removeDiscounts')
         ->name('AdminPanel.user.removeDiscounts');
 
+    //Role SECTION
+    Route::get('{user}/manage_role', 'Admin\Panel\AdminPanelUserRoleController@getAssignRoleView');
+    Route::post('{user}/manage_role', 'Admin\Panel\AdminPanelUserRoleController@assignRole');
 
     /**Start ADMIN PANEL ORDER AREA */
     Route::group(['prefix' => '{user}/orders/{order}'], function () {
