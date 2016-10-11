@@ -39,3 +39,30 @@
     cursor:pointer;
     display:none; /* basically none */
 }
+
+.dropup {
+    position: fixed;
+    bottom: 0;
+    left: 80px;
+}
+
+.none_found {
+    display: none;
+}
+
+#search {
+    border-box: box-sizing;
+    background-image: url('/images/import/searchicon.png');
+    background-position: 14px 8px;
+    background-repeat: no-repeat;
+    background-size: 18px 18px;
+    font-size: 16px;
+    padding: 5px 20px 1px 45px;
+    outline: none !important;
+    border: none;
+}
+
+.dropdown-menu .divider {
+    margin: 7px 0 0 0;
+}
+

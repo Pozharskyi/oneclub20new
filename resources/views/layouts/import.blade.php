@@ -17,9 +17,9 @@
         <link rel="stylesheet" type="text/css" href="{{ url('/css/admin/import/main.css') }}" />
 
         <!-- Scripts -->
-        <script src="{{ url('/js/jquery-3.1.0.min.js') }}"></script>
-        <script src="{{ url('/admin/import/main.js') }}"></script>
-
+        <script type="text/javascript" src="{{ url('/js/jquery-3.1.0.min.js') }}"></script>
+        <script type="text/javascript" src="{{ url('/js/admin/import/main.js') }}"></script>
+        <script type="text/javascript" src="{{ url('/js/bootstrap_min.js') }}"></script>
     </head>
     <body>
 

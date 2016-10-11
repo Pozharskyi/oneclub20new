@@ -23,3 +23,36 @@ function closePopup()
             }
         );
 }
+
+/* When the user clicks on the button,
+ toggle between hiding and showing the dropdown content */
+function toggleMenu() {
+    //document.getElementById("importMenu").classList.toggle("show");
+    $(".dropdown-content").css({top:300,position:'absolute', display:'block'})
+        .animate({top:-360}, 800, function() {
+            //callback
+        });
+}
+
+function filterFunction() {
+    var input, filter, ul, li, a, i;
+    input = document.getElementById("search");
+    filter = input.value.toUpperCase();
+    div = document.getElementById("importMenu");
+    a = div.getElementsByTagName("a");
+    var k = 0;
+    for (i = 0; i < a.length; i++) {
+        if (a[i].innerHTML.toUpperCase().indexOf(filter) > -1) {
+            a[i].style.display = "";
+        } else {
+            a[i].style.display = "none";
+            k++;
+        }
+    }
+
+    if(k == a.length) {
+        $(".none_found").css("display", "block");
+    } else {
+        $(".none_found").css("display", "none");
+    }
+}
