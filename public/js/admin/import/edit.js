@@ -7,17 +7,17 @@ $( function() {
     $( "#party_end_date" ).datepicker({ dateFormat: 'yy-mm-dd' });
 });
 
-function createParty()
+function editParty()
 {
     var validation = validateForm();
 
     if( validation == 0 ) {
-        var data = $("#partyCreateForm").serialize();
+        var data = $("#partyEditForm").serialize();
 
         getLoading();
 
         $.ajax({
-            url: "/admin/import/parties/create",
+            url: "/admin/import/parties/edit",
             data: data,
             type: "POST",
             headers: {

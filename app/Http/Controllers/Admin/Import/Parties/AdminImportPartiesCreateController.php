@@ -13,7 +13,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\Import\AdminImportDaysControlTrait;
 use App\Http\Controllers\Traits\Import\AdminImportIndexCategoriesTrait;
 use App\Http\Controllers\Traits\Import\AdminImportIndexSuppliersTrait;
-use App\Http\Controllers\Traits\Import\AdminImportRedirectTrait;
 use App\Models\Import\ImportIndexPartiesModel;
 use Illuminate\Http\Request;
 use App\Interfaces\Controllers\Import\AdminImportCreateInterface;

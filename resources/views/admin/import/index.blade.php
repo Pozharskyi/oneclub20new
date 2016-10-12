@@ -52,7 +52,7 @@
         </button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenu2" id="importMenu">
             <li><a id="tp_creation" href="{{ url('#tp_creation') }}">Создание товарной партии</a></li>
-            <li><a href="{{ url('#tp_edition') }}">Редактирование товарной партии</a></li>
+            <li><a id="tp_edit" href="{{ url('#tp_edition') }}">Редактирование товарной партии</a></li>
             <li><a id="tp_deletion" href="{{ url('#tp_deletion') }}">Удаление товарной партии</a></li>
             <li><a href="{{ url('#uploading') }}">Загрузка списка</a></li>
             <li><a href="{{ url('#ta_creation') }}">Создание товарной акции</a></li>
