@@ -11,6 +11,11 @@ class LogFromToIntTableSeeder extends Seeder
      */
     public function run()
     {
+        /**
+         * Deleting All previous records
+         */
+        DB::table('dev_log_from_to_int')->delete();
+
         DB::table('dev_log_from_to_int')->insert(
             [
                 [
