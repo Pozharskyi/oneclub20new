@@ -569,6 +569,12 @@ Route::group(['prefix' => 'admin/import'], function ()
         Route::post('/create',
             [ 'uses' => 'Admin\Import\Parties\AdminImportPartiesCreateController@actionCreate' ]
         );
+        Route::put('/delete',
+            [ 'uses' => 'Admin\Import\Parties\AdminImportPartiesDeleteController@actionGetViewForDelete' ]
+        );
+        Route::delete('/delete',
+            [ 'uses' => 'Admin\Import\Parties\AdminImportPartiesDeleteController@actionDelete' ]
+        );
     });
 
     Route::group(['prefix' => '/sales'], function()

@@ -12,6 +12,27 @@ function clearLoading()
     $("#loading").css("display", "none");
 }
 
+function resetCatalog()
+{
+    var current = $("#current").val();
+
+    if(current == 'self') {
+        var user_id = $("#user_id").val();
+        getParties(user_id);
+    } else if(current == 'parties') {
+        getParties('');
+    } else if(current == 'sales') {
+        getSales();
+    }
+}
+
+function forceGoBack()
+{
+    resetCatalog();
+    closePopup2();
+    closePopup();
+}
+
 $(document).ready(function() {
     var user_id = $("#user_id").val();
     var current = $("#current");
@@ -41,66 +62,99 @@ $(document).ready(function() {
         getPopup();
         getPartyCreateView();
     });
+
+    $("#tp_deletion").click(function()
+    {
+        getPopup();
+        getPartyDeleteView();
+    });
 });
-//{
 
-    function getParties(group)
-    {
-        getLoading();
+function getParties(group)
+{
+    getLoading();
 
-        $.ajax({
-            url: "/admin/import/parties/search/" + group,
-            data: "",
-            type: "PUT",
-            headers: {
-                'X-XSRF-TOKEN': getXsrfToken()
-            },
-            success: function ( result )
-            {
-                $("#result").html( result );
-            }
-        });
+    $.ajax({
+        url: "/admin/import/parties/search/" + group,
+        data: "",
+        type: "PUT",
+        headers: {
+            'X-XSRF-TOKEN': getXsrfToken()
+        },
+        success: function ( result )
+        {
+            $("#result").html( result );
+        }
+    });
 
-        clearLoading();
-    }
+    clearLoading();
+}
 
-    function getSales()
-    {
-        getLoading();
+function getSales()
+{
+    getLoading();
 
-        $.ajax({
-            url: "/admin/import/sales/search",
-            data: "",
-            type: "PUT",
-            headers: {
-                'X-XSRF-TOKEN': getXsrfToken()
-            },
-            success: function ( result )
-            {
-                $("#result").html( result );
-            }
-        });
+    $.ajax({
+        url: "/admin/import/sales/search",
+        data: "",
+        type: "PUT",
+        headers: {
+            'X-XSRF-TOKEN': getXsrfToken()
+        },
+        success: function ( result )
+        {
+            $("#result").html( result );
+        }
+    });
 
-        clearLoading();
-    }
+    clearLoading();
+}
 
-    function getPartyCreateView()
-    {
-        getLoading();
+function getPartyCreateView()
+{
+    getLoading();
 
-        $.ajax({
-            url: "/admin/import/parties/create",
-            data: "",
-            type: "PUT",
-            headers: {
-                'X-XSRF-TOKEN': getXsrfToken()
-            },
-            success: function ( result )
-            {
-                $("#popup_content").html( result );
-            }
-        });
+    $.ajax({
+        url: "/admin/import/parties/create",
+        data: "",
+        type: "PUT",
+        headers: {
+            'X-XSRF-TOKEN': getXsrfToken()
+        },
+        success: function ( result )
+        {
+            $("#popup_content").html( result );
+        }
+    });
 
-        clearLoading();
-    }
-//});
+    clearLoading();
+}
+
+function getPartyDeleteView()
+{
+    getLoading();
+    var party_id = $("#party_id").val();
+
+    $.ajax({
+        url: "/admin/import/parties/delete",
+        data: "party_id=" + party_id,
+        type: "PUT",
+        headers: {
+            'X-XSRF-TOKEN': getXsrfToken()
+        },
+        success: function ( result )
+        {
+            $("#popup_content").html( result );
+        }
+    });
+
+    clearLoading();
+}
+
+function makeActive( party_id )
+{
+    $('.row_tr').removeClass('row_active');
+    $("#row_" + party_id).addClass('row_active');
+
+    $("#party_id").val(party_id);
+}

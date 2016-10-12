@@ -22,6 +22,11 @@ class ImportPartiesLogDeleteModel extends Model
      */
     protected $table = 'dev_import_parties_log_delete';
 
+    protected $fillable = [
+        'import_index_party_id', 'comment',
+        'made_by',
+    ];
+
     public function parties()
     {
         return $this->belongsTo(ImportIndexPartiesModel::class, 'import_index_party_id');

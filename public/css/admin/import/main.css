@@ -169,3 +169,15 @@
 #go_back {
     margin-right: 25px;
 }
+
+.row_tr {
+    cursor: pointer;
+}
+
+.row_active {
+    background-color: #ce8483 !important;
+}
+
+.comment_row {
+    margin-top: 25px;
+}

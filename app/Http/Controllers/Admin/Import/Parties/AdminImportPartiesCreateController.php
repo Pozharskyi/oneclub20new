@@ -23,7 +23,6 @@ class AdminImportPartiesCreateController extends Controller implements AdminImpo
 {
     use AdminImportIndexSuppliersTrait;
     use AdminImportIndexCategoriesTrait;
-    use AdminImportRedirectTrait;
     use AdminImportDaysControlTrait;
 
     protected $fields = array(
@@ -55,7 +54,6 @@ class AdminImportPartiesCreateController extends Controller implements AdminImpo
     public function actionCreate(Request $request)
     {
         $fields = array();
-        $this->actionGetUserOrFail();
 
         try
         {

@@ -7,6 +7,7 @@
                     <td># ТП</td>
                     <td>Ответственный баер</td>
                     <td>Поставщик</td>
+                    <td>Название ТП</td>
                     <td>Дата старта</td>
                     <td>Дата окончания</td>
                     <td>Статус</td>
@@ -15,7 +16,7 @@
             <tbody>
 
                 @foreach( $parties as $party )
-                    <tr>
+                    <tr class="row_tr" id="row_{{ $party->id }}" onclick="makeActive({{ $party->id }});">
                         <td>
                             #{{ $party->id }}
                         </td>
@@ -24,6 +25,9 @@
                         </td>
                         <td>
                             {{ $party->supplier->name }}
+                        </td>
+                        <td>
+                            {{ $party->party_name }}
                         </td>
                         <td>
                             {{ $party->party_start_date }}

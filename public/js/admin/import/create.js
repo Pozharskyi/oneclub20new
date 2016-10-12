@@ -7,19 +7,21 @@ $( function() {
     $( "#party_end_date" ).datepicker({ dateFormat: 'yy-mm-dd' });
 });
 
+/*
 function forceGoBack()
 {
     resetCatalog();
     closePopup2();
     closePopup();
 }
+*/
 
 function validateForm()
 {
     var fields = [
         'party_name', 'import_supplier_id',
         'buyer_id', 'support_id',
-        'party_start_date', 'party_end_date',
+        'party_start_date', 'party_end_date'
     ];
 
     var i = 0;
@@ -71,6 +73,7 @@ function createParty()
     }
 }
 
+/*
 function resetCatalog()
 {
     var current = $("#current").val();
@@ -84,3 +87,4 @@ function resetCatalog()
         getSales();
     }
 }
+*/
