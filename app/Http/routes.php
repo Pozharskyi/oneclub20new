@@ -606,6 +606,12 @@ Route::group(['prefix' => 'admin/import'], function ()
         Route::delete('/delete',
             [ 'uses' => 'Admin\Import\Sales\AdminImportSalesDeleteController@actionDelete' ]
         );
+        Route::put('/association',
+            [ 'uses' => 'Admin\Import\Sales\AdminImportSalesAssociationController@actionGetViewForAssociation' ]
+        );
+        Route::put('/association/confirm',
+            [ 'uses' => 'Admin\Import\Sales\AdminImportSalesAssociationController@actionConfirmParty' ]
+        );
     });
 
 });

@@ -62,6 +62,22 @@
     margin-top: 13%;
 }
 
+.custom-combobox {
+    position: relative;
+    display: inline-block;
+}
+.custom-combobox-toggle {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin-left: -1px;
+    padding: 0;
+}
+.custom-combobox-input {
+    margin: 0;
+    padding: 5px 10px;
+}
+
 /* close button */
 #modal_form2 #modal_close2 {
     width: 21px;
@@ -223,4 +239,11 @@
     background-color: #ce8483 !important;
 }
 
-.comment_row
+.btn-man {
+    margin-left: 25px;
+    margin-right: 25px;
+}
+
+.manipulations_block {
+    margin-top: 35px;
+}

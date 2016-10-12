@@ -25,6 +25,11 @@ class ImportSalesAssociationModel extends Model
      */
     protected $table = 'dev_import_sales_association';
 
+    protected $fillable = [
+        'import_index_sale_id', 'import_index_party_id',
+        'made_by',
+    ];
+
     public function sales()
     {
         return $this->belongsTo(ImportIndexSalesModel::class, 'import_index_sale_id');

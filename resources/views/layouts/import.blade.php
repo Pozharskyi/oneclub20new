@@ -16,6 +16,7 @@
         <link rel="stylesheet" type="text/css" href="{{ url('/css/app.css') }}" />
         <link rel="stylesheet" type="text/css" href="{{ url('/css/admin/import/main.css') }}" />
         <link rel="stylesheet" type="text/css" href="{{ url('/css/jquery-ui.css') }}" />
+        <link rel="stylesheet" type="text/css" href="{{ url('/css/select2.min.css') }}" />
 
         <!-- Scripts -->
         <script type="text/javascript" src="{{ url('/js/token.js') }}"></script>
@@ -24,6 +25,7 @@
         <script type="text/javascript" src="{{ url('/js/bootstrap_min.js') }}"></script>
         <script type="text/javascript" src="{{ url('/js/admin/import/control.js') }}"></script>
         <script type="text/javascript" src="{{ url('/js/jquery-ui.js') }}"></script>
+        <script type="text/javascript" src="{{ url('/js/select2.js') }}"></script>
     </head>
     <body>
 

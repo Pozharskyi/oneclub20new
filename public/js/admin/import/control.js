@@ -86,6 +86,11 @@ $(document).ready(function() {
     {
         getSaleDeleteView();
     });
+
+    $("#linking").click(function()
+    {
+        getAssociationView();
+    });
 });
 
 function getParties(group)
@@ -274,6 +279,27 @@ function getSaleDeleteView()
     clearLoading();
 }
 
+function getAssociationView()
+{
+    getLoading();
+
+    $.ajax({
+        url: "/admin/import/sales/association",
+        data: "",
+        type: "PUT",
+        headers: {
+            'X-XSRF-TOKEN': getXsrfToken()
+        },
+        success: function ( result )
+        {
+            $("#popup_content").html( result );
+            getPopup();
+        }
+    });
+
+    clearLoading();
+}
+
 function getErrorMessage( category )
 {
     var cat = '';
@@ -305,7 +331,7 @@ function makePartyActive( party_id )
     {
         var party = $("#party_id");
         $('.row_tr').removeClass('row_active');
-        
+
         var prev_row = party.val();
         if( party_id == prev_row ) {
             row.removeClass('row_active');
