@@ -86,6 +86,9 @@
                         <li>
                             <a href="{{ url('/admin/manage/size_chart') }}">Размерные сетки</a>
                         </li>
+                        <li>
+                            <a href="{{ url('/admin/manage/roles') }}">Роли</a>
+                        </li>
                     </ul>
                 </li>
                 <li class="dropdown">

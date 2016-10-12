@@ -56,9 +56,11 @@ class AdminPanelController extends Controller
         $usersCategories = UsersCategoryModel::all();
 
         //get discounts from userCategories for current user
-        $user->load(['usersCategories.discounts' => function ($q) use (&$discounts) {
-            $discounts = $q->get()->unique();
-        }]);
+        $user->load([
+            'usersCategories.discounts' => function ($q) use (&$discounts) {
+                $discounts = $q->get()->unique();
+            }
+        ]);
 
         $user['categoriesDiscounts'] = $discounts;
 
@@ -66,12 +68,17 @@ class AdminPanelController extends Controller
 
         //get all ids of user's discount
         $userDiscountsIds = [];
-        foreach($user['discounts'] as $discount){
-            array_push($userDiscountsIds, $discount->id);
+        if (!empty($user['discounts'])) {
+            foreach ($user['discounts'] as $discount) {
+                array_push($userDiscountsIds, $discount->id);
+            }
         }
-        foreach($user['categoriesDiscounts'] as $discount){
-            array_push($userDiscountsIds, $discount->id);
+        if (!empty($user['categoriesDiscounts'])) {
+            foreach ($user['categoriesDiscounts'] as $discount) {
+                array_push($userDiscountsIds, $discount->id);
+            }
         }
+
 
         $allDiscounts = DiscountsModel::whereNotIn('id', $userDiscountsIds)->get();
 
@@ -90,9 +97,18 @@ class AdminPanelController extends Controller
         }
 
         //get user with the last record in dev_users_log
-        $user = User::with(['orders', 'usersCategories', 'userLogs' => function ($query) use ($oldUser) {
-            $query->where('created_at', '>=', $oldUser->updated_at)->with(['logAction', 'author', 'user', 'fromto'])->get();
-        }])->findOrFail($userId);
+        $user = User::with([
+            'orders',
+            'usersCategories',
+            'userLogs' => function ($query) use ($oldUser) {
+                $query->where('created_at', '>=', $oldUser->updated_at)->with([
+                    'logAction',
+                    'author',
+                    'user',
+                    'fromto'
+                ])->get();
+            }
+        ])->findOrFail($userId);
 
         $usersLogs = $user->userLogs;
         $this->changeLogsToRussian($usersLogs);

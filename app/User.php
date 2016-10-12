@@ -220,10 +220,18 @@ class User extends Authenticatable
 
     }
 
-    public function scopeFilterByRole(Builder $query, $role)
+    public function hasAnyRole()
     {
-        $query->whereHas('roles', function($q) use ($role){
-            $q->where('role_id', $role->id);
+        if($this->roles()->exists()){
+            return true;
+        }
+
+        return false;
+    }
+    public function scopeFilterByRoleId(Builder $query, $roleId)
+    {
+        $query->whereHas('roles', function($q) use ($roleId){
+            $q->where('role_id', $roleId);
         });
     }
     /**

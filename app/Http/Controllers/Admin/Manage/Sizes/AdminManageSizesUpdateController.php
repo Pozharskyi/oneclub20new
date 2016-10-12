@@ -46,11 +46,11 @@ class AdminManageSizesUpdateController extends AdminManageSizesValidationControl
         {
             try
             {
-                $brand = ProductSizeModel::findOrFail( $size_id );
-                $brand->name = $size_name;
-                $brand->made_by = $user_id;
+                $size = ProductSizeModel::findOrFail( $size_id );
+                $size->name = $size_name;
+                $size->made_by = $user_id;
 
-                $brand->save();
+                $size->save();
 
                 return redirect( '/admin/manage/sizes?alert=success' );
             } catch( \Exception $e )

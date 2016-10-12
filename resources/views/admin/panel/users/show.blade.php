@@ -187,29 +187,34 @@
         <div id="discountListSection">
             <h1>Дискаунты пользователя</h1>
             <ul id="discountList" class="list-group">
-                @foreach($user->discounts as $discount)
-                    <li>
-                        <div class="inline">
-                            <a href="{{route('AdminPanel.discounts.show',
-                                     ['discount' => $discount->id])}}">{{$discount->discount_id}}
-                            </a>
-                            <form method="POST"
+                @if(! empty($user->discounts))
+                    @foreach($user->discounts as $discount)
+                        <li>
+                            <form method="POST" class="inline-form" style="display: inline;"
                                   action="{{route('AdminPanel.user.removeDiscounts', ['user' => $user->id, 'discount' => $discount->id])}}">
                                 {{ method_field('PUT') }}
                                 {{ csrf_field() }}
-                                <button type="submit" class="btn btn-sm btn-primary">
-                                    <span class="glyphicon glyphicon-remove"></span> Убрать
-                                </button>
+                                <div class="form-group">
+                                    <a href="{{route('AdminPanel.discounts.show',
+                                     ['discount' => $discount->id])}}">{{$discount->discount_id}}
+                                    </a>
+                                    <button type="submit" class="btn btn-sm btn-primary">X</button>
+                                </div>
                             </form>
-                        </div>
-                    </li>
-                @endforeach
-                @foreach($user->categoriesDiscounts as $discount)
-                    <li>
-                        <a href="{{route('AdminPanel.discounts.show',
+
+                        </li>
+                    @endforeach
+                @endif
+                @if(! empty($user->categoriesDiscounts))
+
+                    @foreach($user->categoriesDiscounts as $discount)
+                        <li>
+                            <a href="{{route('AdminPanel.discounts.show',
                             ['discount' => $discount->id])}}">{{$discount->discount_id}}</a>
-                    </li>
-                @endforeach
+                        </li>
+
+                    @endforeach
+                @endif
             </ul>
         </div>
         @if(!($allDiscounts->isEmpty()))
