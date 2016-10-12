@@ -30,3 +30,26 @@ function confirmParty()
 
     clearLoading();
 }
+
+function cancelParty()
+{
+    var data = $("#associationForm").serialize();
+
+    getLoading();
+
+    $.ajax({
+        url: "/admin/import/sales/association/cancel",
+        data: data,
+        type: "PUT",
+        headers: {
+            'X-XSRF-TOKEN': getXsrfToken()
+        },
+        success: function ( result )
+        {
+            getPopup2();
+            $("#popup_content2").html( result );
+        }
+    });
+
+    clearLoading();
+}

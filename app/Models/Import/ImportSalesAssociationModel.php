@@ -11,6 +11,7 @@
 namespace App\Models\Import;
 
 use App\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -43,5 +44,13 @@ class ImportSalesAssociationModel extends Model
     public function madeBy()
     {
         return $this->belongsTo(User::class, 'made_by');
+    }
+
+    public function scopeExistence(Builder $query, $party_id, $sale_id)
+    {
+        $query->where('import_index_party_id', $party_id)
+            ->where('import_index_sale_id', $sale_id);
+
+        return $query;
     }
 }

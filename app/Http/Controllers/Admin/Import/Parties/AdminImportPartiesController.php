@@ -63,6 +63,14 @@ class AdminImportPartiesController extends Controller
         return $result;
     }
 
+    public function actionValidateSaleExistenceWithParty( $party_id, $sale_id )
+    {
+        $association = ImportSalesAssociationModel::existence($party_id, $sale_id)
+            ->count();
+
+        return $association;
+    }
+
     private function actionGetPartyAssociation( $party_id )
     {
         $association = ImportSalesAssociationModel::where('import_index_party_id', $party_id)

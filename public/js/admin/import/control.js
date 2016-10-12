@@ -26,6 +26,11 @@ function resetCatalog()
     }
 }
 
+function goBack()
+{
+    closePopup2();
+}
+
 function forceGoBack()
 {
     resetCatalog();

@@ -612,6 +612,9 @@ Route::group(['prefix' => 'admin/import'], function ()
         Route::put('/association/confirm',
             [ 'uses' => 'Admin\Import\Sales\AdminImportSalesAssociationController@actionConfirmParty' ]
         );
+        Route::put('/association/cancel',
+            [ 'uses' => 'Admin\Import\Sales\AdminImportSalesAssociationController@actionCancelParty' ]
+        );
     });
 
 });
