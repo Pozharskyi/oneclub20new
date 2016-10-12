@@ -76,6 +76,11 @@ $(document).ready(function() {
     {
         getSaleCreateView();
     });
+
+    $("#ta_edition").click(function()
+    {
+        getSaleEditView();
+    });
 });
 
 function getParties(group)
@@ -180,7 +185,7 @@ function getPartyDeleteView()
             }
         });
     } else {
-        getErrorMessage();
+        getErrorMessage('TP');
     }
 
     clearLoading();
@@ -206,17 +211,53 @@ function getPartyEditView()
             }
         });
     } else {
-        getErrorMessage();
+        getErrorMessage('TP');
     }
 
     clearLoading();
 }
 
-function getErrorMessage()
+function getSaleEditView()
 {
+    getLoading();
+    var sale_id = $("#sale_id").val();
+
+    if( sale_id != '' ) {
+        $.ajax({
+            url: "/admin/import/sales/edit",
+            data: "sale_id=" + sale_id,
+            type: "PUT",
+            headers: {
+                'X-XSRF-TOKEN': getXsrfToken()
+            },
+            success: function ( result )
+            {
+                getPopup();
+                $("#popup_content").html( result );
+            }
+        });
+    } else {
+        getErrorMessage('TA');
+    }
+
+    clearLoading();
+}
+
+function getErrorMessage( category )
+{
+    var cat = '';
+
+    if( category == 'TA' )
+    {
+        cat = 'товарную акцию'
+    } else
+    {
+        cat = 'товарную партию';
+    }
+
     var message = '<div id="alert_status">' +
                     '<div class="text-center">' +
-                        '<h2 class="alert_message">Выберите товарную партию для продолжения</h2>' +
+                        '<h2 class="alert_message">Выберите ' + cat + ' для продолжения</h2>' +
                         '<button onclick="closePopup3();" class="btn btn-success">Вернутся обратно</button>' +
                     '</div>' +
                '</div>';
@@ -225,7 +266,7 @@ function getErrorMessage()
     getPopup3();
 }
 
-function makeActive( party_id )
+function makePartyActive( party_id )
 {
     var row = $("#row_" + party_id);
     var party = $("#party_id");
@@ -238,6 +279,22 @@ function makeActive( party_id )
     } else {
         row.addClass('row_active');
         party.val(party_id);
+    }
+}
+
+function makeSaleActive( sale_id )
+{
+    var row = $("#row_" + sale_id);
+    var sale = $("#sale_id");
+    $('.row_tr').removeClass('row_active');
+
+    var prev_row = sale.val();
+    if( sale_id == prev_row ) {
+        row.removeClass('row_active');
+        sale.val('');
+    } else {
+        row.addClass('row_active');
+        sale.val(sale_id);
     }
 }
 

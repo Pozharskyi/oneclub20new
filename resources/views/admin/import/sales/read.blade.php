@@ -14,7 +14,7 @@
             <tbody>
 
             @foreach( $sales as $sale )
-                <tr>
+                <tr class="row_tr" id="row_{{ $sale->id }}" onclick="makeSaleActive({{ $sale->id }});">
                     <td>
                         #{{ $sale->id }}
                     </td>

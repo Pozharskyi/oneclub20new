@@ -569,17 +569,17 @@ Route::group(['prefix' => 'admin/import'], function ()
         Route::post('/create',
             [ 'uses' => 'Admin\Import\Parties\AdminImportPartiesCreateController@actionCreate' ]
         );
-        Route::put('/delete',
-            [ 'uses' => 'Admin\Import\Parties\AdminImportPartiesDeleteController@actionGetViewForDelete' ]
-        );
-        Route::delete('/delete',
-            [ 'uses' => 'Admin\Import\Parties\AdminImportPartiesDeleteController@actionDelete' ]
-        );
         Route::put('/edit',
             [ 'uses' => 'Admin\Import\Parties\AdminImportPartiesEditController@actionGetViewForEdit' ]
         );
         Route::post('/edit',
             [ 'uses' => 'Admin\Import\Parties\AdminImportPartiesEditController@actionEdit' ]
+        );
+        Route::put('/delete',
+            [ 'uses' => 'Admin\Import\Parties\AdminImportPartiesDeleteController@actionGetViewForDelete' ]
+        );
+        Route::delete('/delete',
+            [ 'uses' => 'Admin\Import\Parties\AdminImportPartiesDeleteController@actionDelete' ]
         );
     });
 
@@ -593,6 +593,12 @@ Route::group(['prefix' => 'admin/import'], function ()
         );
         Route::post('/create',
             [ 'uses' => 'Admin\Import\Sales\AdminImportSalesCreateController@actionCreate' ]
+        );
+        Route::put('/edit',
+            [ 'uses' => 'Admin\Import\Sales\AdminImportSalesEditController@actionGetViewForEdit' ]
+        );
+        Route::post('/edit',
+            [ 'uses' => 'Admin\Import\Sales\AdminImportSalesEditController@actionEdit' ]
         );
     });
 

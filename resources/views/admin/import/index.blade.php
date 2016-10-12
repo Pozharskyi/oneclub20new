@@ -56,7 +56,7 @@
             <li><a id="tp_deletion" href="{{ url('#tp_deletion') }}">Удаление товарной партии</a></li>
             <li><a href="{{ url('#uploading') }}">Загрузка списка</a></li>
             <li><a id="ta_creation" href="{{ url('#ta_creation') }}">Создание товарной акции</a></li>
-            <li><a href="{{ url('#ta_edition') }}">Редактирование товарной акции</a></li>
+            <li><a id="ta_edition" href="{{ url('#ta_edition') }}">Редактирование товарной акции</a></li>
             <li><a href="{{ url('#ta_deletion') }}">Удаление товарной акции</a></li>
             <li><a href="{{ url('#linking') }}">Привязка ТП к ТА</a></li>
             <li><a href="{{ url('#exporting') }}">Выгрузка файла в Excel</a></li>
@@ -74,5 +74,6 @@
     <input type="hidden" id="user_id" name="user_id" value="{{ Auth::user()->id }}" />
     <input type="hidden" id="current" name="current" value="self" />
     <input type="hidden" id="party_id" name="party_id" value="" />
+    <input type="hidden" id="sale_id" name="sale_id" value="" />
 
 @endsection

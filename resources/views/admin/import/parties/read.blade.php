@@ -16,7 +16,7 @@
             <tbody>
 
                 @foreach( $parties as $party )
-                    <tr class="row_tr" id="row_{{ $party->id }}" onclick="makeActive({{ $party->id }});">
+                    <tr class="row_tr" id="row_{{ $party->id }}" onclick="makePartyActive({{ $party->id }});">
                         <td>
                             #{{ $party->id }}
                         </td>

@@ -20,7 +20,13 @@ class ImportSalesLogEditModel extends Model
      *
      * @var string
      */
-    protected $table = 'dev_import_parties_log_edit';
+    protected $table = 'dev_import_sales_log_edit';
+
+    protected $fillable = [
+        'import_index_sale_id', 'field_changed',
+        'field_current_value', 'field_changed_value',
+        'made_by',
+    ];
 
     public function sales()
     {
