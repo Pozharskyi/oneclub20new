@@ -15,8 +15,8 @@ class CreateDevImportIndexSalesTable extends Migration
         Schema::create('dev_import_index_sales', function(Blueprint $table){
             $table->increments('id');
             $table->string('sale_name');
-            $table->timestamp('sale_start_date');
-            $table->timestamp('sale_end_date');
+            $table->date('sale_start_date');
+            $table->date('sale_end_date');
             $table->integer('sale_days_count');
             $table->integer('made_by')->unsigned();
             $table->integer('buyer_id')->unsigned();

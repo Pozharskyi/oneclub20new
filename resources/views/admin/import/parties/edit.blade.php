@@ -101,4 +101,4 @@
     <div class="col-md-2"></div>
 </div>
 
-<script type="text/javascript" src="{{ url('/js/admin/import/edit.js') }}"></script>
+<script type="text/javascript" src="{{ url('/js/admin/import/parties/edit.js') }}"></script>

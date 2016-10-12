@@ -24,8 +24,8 @@ class ImportIndexSalesTableSeeder extends Seeder
                 [
                     'id' => 1,
                     'sale_name' => 'Распродажа джинс Levis',
-                    'sale_start_date' => '2016-10-15 00:00:01',
-                    'sale_end_date' => '2016-10-21 00:00:01',
+                    'sale_start_date' => '2016-10-15',
+                    'sale_end_date' => '2016-10-21',
                     'sale_days_count' => '6',
                     'made_by' => '1',
                     'buyer_id' => '2',
@@ -35,8 +35,8 @@ class ImportIndexSalesTableSeeder extends Seeder
                 [
                     'id' => 2,
                     'sale_name' => 'Распродажа курток Dirk',
-                    'sale_start_date' => '2016-10-12 00:00:01',
-                    'sale_end_date' => '2016-10-17 00:00:01',
+                    'sale_start_date' => '2016-10-12',
+                    'sale_end_date' => '2016-10-17',
                     'sale_days_count' => '5',
                     'made_by' => '2',
                     'buyer_id' => '1',

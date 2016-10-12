@@ -9,7 +9,7 @@ $( function() {
 
 function createParty()
 {
-    var validation = validateForm();
+    var validation = validatePartiesForm();
 
     if( validation == 0 ) {
         var data = $("#partyCreateForm").serialize();

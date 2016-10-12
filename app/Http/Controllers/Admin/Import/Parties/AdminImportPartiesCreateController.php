@@ -16,7 +16,6 @@ use App\Http\Controllers\Traits\Import\AdminImportIndexSuppliersTrait;
 use App\Models\Import\ImportIndexPartiesModel;
 use Illuminate\Http\Request;
 use App\Interfaces\Controllers\Import\AdminImportCreateInterface;
-use Illuminate\Support\Facades\Auth;
 
 class AdminImportPartiesCreateController extends Controller implements AdminImportCreateInterface
 {
@@ -24,12 +23,12 @@ class AdminImportPartiesCreateController extends Controller implements AdminImpo
     use AdminImportIndexCategoriesTrait;
     use AdminImportDaysControlTrait;
 
-    protected $fields = array(
+    protected $fields = [
         'party_name', 'import_supplier_id',
         'buyer_id', 'support_id',
         'party_start_date', 'party_end_date',
         'import_index_categories_id',
-    );
+    ];
 
     private $message;
     private $partiesStatus;
@@ -62,7 +61,7 @@ class AdminImportPartiesCreateController extends Controller implements AdminImpo
                 $fields[$field] = $row;
             }
 
-            $fields['made_by'] = Auth::user()->id;
+            $fields['made_by'] = \Auth::user()->id;
             $fields['party_days_count'] = $this->actionCountDaysBetweenDate(
                 $fields['party_end_date'], $fields['party_start_date']
             );
@@ -76,7 +75,7 @@ class AdminImportPartiesCreateController extends Controller implements AdminImpo
             $this->message = 'Что-то пошло не так. Попробуйте чуть позже.';
         }
 
-        return view('admin.import.parties.createResult', [
+        return view('admin.import.alert', [
             'message' => $this->message,
         ]);
     }

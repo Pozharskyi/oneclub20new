@@ -24,4 +24,4 @@
 
 </div>
 
-<script type="text/javascript" src="{{ url('/js/admin/import/delete.js') }}"></script>
+<script type="text/javascript" src="{{ url('/js/admin/import/parties/delete.js') }}"></script>

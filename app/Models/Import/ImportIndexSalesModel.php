@@ -25,6 +25,12 @@ class ImportIndexSalesModel extends Model
      */
     protected $table = 'dev_import_index_sales';
 
+    protected $fillable = [
+        'sale_name', 'sale_start_date',
+        'sale_end_date', 'sale_days_count',
+        'made_by', 'buyer_id',
+    ];
+
     public function madeBy()
     {
         return $this->belongsTo(User::class, 'made_by');

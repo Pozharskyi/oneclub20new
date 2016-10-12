@@ -49,7 +49,7 @@ class AdminImportPartiesDeleteController extends Controller
             $this->message = 'Что-то пошло не так. Попробуйте чуть позже.';
         }
 
-        return view('admin.import.parties.deleteResult', [
+        return view('admin.import.alert', [
             'message' => $this->message,
         ]);
     }

@@ -89,7 +89,7 @@ class AdminImportPartiesEditController extends Controller
             $this->message = 'Что-то пошло не так. Попробуйте чуть позже.';
         }
 
-        return view('admin.import.parties.createResult', [
+        return view('admin.import.alert', [
             'message' => $this->message,
         ]);
     }

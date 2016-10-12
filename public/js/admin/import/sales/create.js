@@ -3,21 +3,21 @@
  */
 
 $( function() {
-    $( "#party_start_date" ).datepicker({ dateFormat: 'yy-mm-dd' });
-    $( "#party_end_date" ).datepicker({ dateFormat: 'yy-mm-dd' });
+    $( "#sale_start_date" ).datepicker({ dateFormat: 'yy-mm-dd' });
+    $( "#sale_end_date" ).datepicker({ dateFormat: 'yy-mm-dd' });
 });
 
-function editParty()
+function createSale()
 {
-    var validation = validateForm();
+    var validation = validateSalesForm();
 
     if( validation == 0 ) {
-        var data = $("#partyEditForm").serialize();
+        var data = $("#saleCreateForm").serialize();
 
         getLoading();
 
         $.ajax({
-            url: "/admin/import/parties/edit",
+            url: "/admin/import/sales/create",
             data: data,
             type: "POST",
             headers: {

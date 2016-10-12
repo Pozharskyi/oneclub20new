@@ -73,4 +73,4 @@
     <div class="col-md-2"></div>
 </div>
 
-<script type="text/javascript" src="{{ url('/js/admin/import/create.js') }}"></script>
+<script type="text/javascript" src="{{ url('/js/admin/import/parties/create.js') }}"></script>

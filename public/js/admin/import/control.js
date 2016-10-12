@@ -71,6 +71,11 @@ $(document).ready(function() {
     {
         getPartyEditView();
     });
+
+    $("#ta_creation").click(function()
+    {
+        getSaleCreateView();
+    });
 });
 
 function getParties(group)
@@ -134,6 +139,27 @@ function getPartyCreateView()
     clearLoading();
 }
 
+function getSaleCreateView()
+{
+    getLoading();
+
+    $.ajax({
+        url: "/admin/import/sales/create",
+        data: "",
+        type: "PUT",
+        headers: {
+            'X-XSRF-TOKEN': getXsrfToken()
+        },
+        success: function ( result )
+        {
+            getPopup();
+            $("#popup_content").html( result );
+        }
+    });
+
+    clearLoading();
+}
+
 function getPartyDeleteView()
 {
     getLoading();
@@ -150,6 +176,7 @@ function getPartyDeleteView()
             success: function ( result )
             {
                 $("#popup_content").html( result );
+                getPopup();
             }
         });
     } else {
@@ -214,12 +241,41 @@ function makeActive( party_id )
     }
 }
 
-function validateForm()
+function validatePartiesForm()
 {
     var fields = [
         'party_name', 'import_supplier_id',
         'buyer_id', 'support_id',
         'party_start_date', 'party_end_date'
+    ];
+
+    var i = 0;
+    var count = fields.length;
+
+    var error = 0;
+
+    while(i < count) {
+
+        var item = $("#" + fields[i]).val();
+
+        if( item == '' ) {
+            error = 1;
+            $("#invalid_" + fields[i]).html('Поле должно быть заполненым');
+        } else {
+            $("#invalid_" + fields[i]).html('');
+        }
+
+        i++;
+    }
+
+    return error;
+}
+
+function validateSalesForm()
+{
+    var fields = [
+        'sale_name', 'sale_start_date',
+        'sale_end_date', 'buyer_id'
     ];
 
     var i = 0;

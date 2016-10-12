@@ -588,6 +588,12 @@ Route::group(['prefix' => 'admin/import'], function ()
         Route::put('/search',
             [ 'uses' => 'Admin\Import\Sales\AdminImportSalesReadController@actionGetViewForRead' ]
         );
+        Route::put('/create',
+            [ 'uses' => 'Admin\Import\Sales\AdminImportSalesCreateController@actionGetViewForCreate' ]
+        );
+        Route::post('/create',
+            [ 'uses' => 'Admin\Import\Sales\AdminImportSalesCreateController@actionCreate' ]
+        );
     });
 
 });
