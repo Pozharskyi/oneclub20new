@@ -9,6 +9,7 @@
         <form action="#" method="post" id="partyCreateForm">
             <label class="form_label" for="party_name">Название товарной партии</label>
             <input type="text" name="party_name" id="party_name" class="form-control" />
+            <p class="alert_message" id="invalid_party_name"></p>
 
             <label class="form_label" for="import_supplier_id">Выберите поставщика</label>
             <select id="import_supplier_id" name="import_supplier_id" class="form-control">
@@ -17,6 +18,7 @@
                     <option value="{{ $supplier->id }}">{{ $supplier->name }}</option>
                 @endforeach
             </select>
+            <p class="alert_message" id="invalid_import_supplier_id"></p>
 
             <label class="form_label" for="buyer_id">Выберите ответственного баера</label>
 
@@ -25,6 +27,7 @@
                 <option value=""></option>
                 <option value="1">Александр Сердюк</option>
             </select>
+            <p class="alert_message" id="invalid_buyer_id"></p>
 
             <label class="form_label" for="support_id">Выберите ответственного контенщика</label>
 
@@ -33,15 +36,18 @@
                 <option value=""></option>
                 <option value="2">Дмитрий Волков</option>
             </select>
+            <p class="alert_message" id="invalid_support_id"></p>
 
             <div class="row">
                 <div class="col-md-6">
                     <label class="form_label" for="party_start_date">Дата старта</label>
                     <input type="text" name="party_start_date" id="party_start_date" class="form-control" />
+                    <p class="alert_message" id="invalid_party_start_date"></p>
                 </div>
                 <div class="col-md-6">
                     <label class="form_label" for="party_end_date">Дата окончания</label>
                     <input type="text" name="party_end_date" id="party_end_date" class="form-control" />
+                    <p class="alert_message" id="invalid_party_end_date"></p>
                 </div>
             </div>
 

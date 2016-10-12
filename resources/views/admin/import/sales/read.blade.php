@@ -6,6 +6,7 @@
                 <tr>
                     <td># ТА</td>
                     <td>Ответственный баер</td>
+                    <td>Название товарной акции</td>
                     <td>Дата старта</td>
                     <td>Дата окончания</td>
                 </tr>
@@ -19,6 +20,9 @@
                     </td>
                     <td>
                         {{ $sale->buyer->name }}
+                    </td>
+                    <td>
+                        {{ $sale->sale_name }}
                     </td>
                     <td>
                         {{ $sale->sale_start_date }}
