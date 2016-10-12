@@ -26,6 +26,7 @@
                     <th>Дата обновления</th>
                     <th></th>
                     <th></th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -39,6 +40,9 @@
                         <td>{{ $role->updated_at }}</td>
                         <td>
                             <a href="{{ url( '/admin/manage/roles/update/' . $role->id ) }}">Редактировать</a>
+                        </td>
+                        <td>
+                            <a href="{{ url( '/admin/manage/roles/' . $role->id . '/users') }}">Просмотр пользователей</a>
                         </td>
                         <td>
                             <a onclick="deleteColor({{ $role->id }});" href="javascript: void(0);">X</a>

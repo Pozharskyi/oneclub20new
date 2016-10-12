@@ -591,6 +591,8 @@ Route::group(['middleware' => ['auth','admin']], function () {
             Route::post('/update', ['uses' => 'Admin\Manage\Roles\AdminManageRolesUpdateController@actionUpdate']);
 
             Route::delete('/delete', ['uses' => 'Admin\Manage\Roles\AdminManageRolesDeleteController@actionDelete']);
+
+            Route::get('{role_id}/users', 'Admin\Manage\Roles\AdminManageRolesUsersController@getUsers');
         });
     });
 

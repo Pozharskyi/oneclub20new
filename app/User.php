@@ -195,10 +195,10 @@ class User extends Authenticatable
 
         return false;
     }
-    public function scopeFilterByRole(Builder $query, $role)
+    public function scopeFilterByRoleId(Builder $query, $roleId)
     {
-        $query->whereHas('roles', function($q) use ($role){
-            $q->where('role_id', $role->id);
+        $query->whereHas('roles', function($q) use ($roleId){
+            $q->where('role_id', $roleId);
         });
     }
     /**
