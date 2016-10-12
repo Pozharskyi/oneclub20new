@@ -15,6 +15,11 @@
     </div>
     <div id="overlay2"></div><!-- Overlay -->
 
+    <div id="modal_form3"><!-- Popup window -->
+        <div id="popup_content3"></div>
+    </div>
+    <div id="overlay3"></div><!-- Overlay -->
+
     <div id="loading">
         <img src="{{ url('/images/import/loading.gif') }}" />
     </div>
@@ -66,6 +71,6 @@
 
     <input type="hidden" id="user_id" name="user_id" value="{{ Auth::user()->id }}" />
     <input type="hidden" id="current" name="current" value="self" />
-    <input type="hidden" id="party_id" name="party_id" value="1" />
+    <input type="hidden" id="party_id" name="party_id" value="" />
 
 @endsection

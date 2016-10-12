@@ -59,13 +59,11 @@ $(document).ready(function() {
 
     $("#tp_creation").click(function()
     {
-        getPopup();
         getPartyCreateView();
     });
 
     $("#tp_deletion").click(function()
     {
-        getPopup();
         getPartyDeleteView();
     });
 });
@@ -123,6 +121,7 @@ function getPartyCreateView()
         },
         success: function ( result )
         {
+            getPopup();
             $("#popup_content").html( result );
         }
     });
@@ -135,26 +134,51 @@ function getPartyDeleteView()
     getLoading();
     var party_id = $("#party_id").val();
 
-    $.ajax({
-        url: "/admin/import/parties/delete",
-        data: "party_id=" + party_id,
-        type: "PUT",
-        headers: {
-            'X-XSRF-TOKEN': getXsrfToken()
-        },
-        success: function ( result )
-        {
-            $("#popup_content").html( result );
-        }
-    });
+    if( party_id != '' ) {
+        $.ajax({
+            url: "/admin/import/parties/delete",
+            data: "party_id=" + party_id,
+            type: "PUT",
+            headers: {
+                'X-XSRF-TOKEN': getXsrfToken()
+            },
+            success: function ( result )
+            {
+                $("#popup_content").html( result );
+            }
+        });
+    } else {
+        getErrorMessage();
+    }
 
     clearLoading();
 }
 
+function getErrorMessage()
+{
+    var message = '<div id="alert_status">' +
+                    '<div class="text-center">' +
+                        '<h2 class="alert_message">Выберите товарную партию для продолжения</h2>' +
+                        '<button onclick="closePopup3();" class="btn btn-success">Вернутся обратно</button>' +
+                    '</div>' +
+               '</div>';
+
+    $("#popup_content3").html(message);
+    getPopup3();
+}
+
 function makeActive( party_id )
 {
+    var row = $("#row_" + party_id);
+    var party = $("#party_id");
     $('.row_tr').removeClass('row_active');
-    $("#row_" + party_id).addClass('row_active');
 
-    $("#party_id").val(party_id);
+    var prev_row = party.val();
+    if( party_id == prev_row ) {
+        row.removeClass('row_active');
+        party.val('');
+    } else {
+        row.addClass('row_active');
+        party.val(party_id);
+    }
 }

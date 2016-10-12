@@ -46,14 +46,30 @@ function closePopup2()
         );
 }
 
-/* When the user clicks on the button,
- toggle between hiding and showing the dropdown content */
-function toggleMenu() {
-    //document.getElementById("importMenu").classList.toggle("show");
-    $(".dropdown-content").css({top:300,position:'absolute', display:'block'})
-        .animate({top:-360}, 800, function() {
-            //callback
-        });
+function getPopup3()
+{
+    $("#modal_form3").css({"background": "#fff", "overflow-y": "visible"});
+
+    $('#overlay3').fadeIn(400, // black layout firstly
+        function(){ // after animation
+            $('#modal_form3')
+                .css('display', 'block') // remove display as none
+                .css('background', 'none')
+                .css('overflow-y', 'hidden')
+                .animate({opacity: 1, top: '50%'}, 200); // make greater opacity
+        }
+    );
+}
+
+function closePopup3()
+{
+    $('#modal_form3')
+        .animate({opacity: 0, top: '45%'}, 200,  // opacity to zero and window move to top
+            function(){ // пoсле aнимaции
+                $(this).css('display', 'none'); // getting display as none
+                $('#overlay3').fadeOut(400); // hide layout
+            }
+        );
 }
 
 function filterFunction() {
