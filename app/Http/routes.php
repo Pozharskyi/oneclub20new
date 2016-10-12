@@ -312,374 +312,444 @@ Route::post('/list/auto_discount', 'Shop\Basic\DiscountsController@actionGetAuto
 Route::post('/list/order/save', 'Shop\Order\OrderController@actionSaveOrder');
 
 /** START ADMIN PANEL AREA */
+Route::group(['middleware' => ['auth','admin']], function () {
+    Route::group(['prefix' => '/admin'], function () {
+        Route::get('', 'Admin\Stats\AdminStatsIndexController@actionGetStatsView');
 
-Route::group(['prefix' => '/admin'], function ()
-{
-    Route::get('', 'Admin\Stats\AdminStatsIndexController@actionGetStatsView');
-
-    Route::group(['prefix' => '/stats'], function ()
-    {
-        Route::get('/payments', 'Admin\Stats\AdminStatsPaymentsController@actionGetStatsView');
-        Route::get('/delivery', 'Admin\Stats\AdminStatsDeliveryController@actionGetStatsView');
-        Route::get('/profit', 'Admin\Stats\AdminStatsProfitController@actionGetStatsView');
+        Route::group(['prefix' => '/stats'], function () {
+            Route::get('/payments', 'Admin\Stats\AdminStatsPaymentsController@actionGetStatsView');
+            Route::get('/delivery', 'Admin\Stats\AdminStatsDeliveryController@actionGetStatsView');
+            Route::get('/profit', 'Admin\Stats\AdminStatsProfitController@actionGetStatsView');
+        });
     });
-});
 
-Route::get('admin/search', 'Admin\Panel\AdminPanelController@searchUser')->name('adminTable.users.searchUser');
+    Route::get('admin/search', 'Admin\Panel\AdminPanelController@searchUser')->name('adminTable.users.searchUser');
 
-Route::group(['prefix' => '/admin/stats/info'], function ()
-{
-    Route::put('/orders', 'Admin\Stats\AdminStatsIndexController@actionGetDataForStatsChart');
-    Route::put('/payments', 'Admin\Stats\AdminStatsPaymentsController@actionGetDataForStatsChart');
-    Route::put('/delivery', 'Admin\Stats\AdminStatsDeliveryController@actionGetDataForStatsChart');
-    Route::put('/profit', 'Admin\Stats\AdminStatsProfitController@actionGetDataForStatsChart');
-});
+    Route::group(['prefix' => '/admin/stats/info'], function () {
+        Route::put('/orders', 'Admin\Stats\AdminStatsIndexController@actionGetDataForStatsChart');
+        Route::put('/payments', 'Admin\Stats\AdminStatsPaymentsController@actionGetDataForStatsChart');
+        Route::put('/delivery', 'Admin\Stats\AdminStatsDeliveryController@actionGetDataForStatsChart');
+        Route::put('/profit', 'Admin\Stats\AdminStatsProfitController@actionGetDataForStatsChart');
+    });
 
-/**Start ADMIN PANEL Product AREA */
-Route::group(['prefix' => 'admin/products'], function() {
-    Route::get('', 'Admin\Panel\AdminPanelProductController@getProducts')->name('AdminPanel.product.index');
-    Route::get('{product}/edit', 'Admin\Panel\AdminPanelProductController@editProducts');
-    Route::put('{product}/update', 'Admin\Panel\AdminPanelProductController@updateProducts');
+    /**Start ADMIN PANEL Product AREA */
+    Route::group(['prefix' => 'admin/products'], function () {
+        Route::get('', 'Admin\Panel\AdminPanelProductController@getProducts')->name('AdminPanel.product.index');
+        Route::get('{product}/edit', 'Admin\Panel\AdminPanelProductController@editProducts');
+        Route::put('{product}/update', 'Admin\Panel\AdminPanelProductController@updateProducts');
 //    Route::post('create', 'Admin\Panel\AdminPanelProductController@createProducts')->name('AdminPanel.product.create');
-    Route::delete('{product}/delete', 'Admin\Products\AdminProductsDeleteController@actionDeleteProduct')
-        ->name('AdminPanel.product.delete');
+        Route::delete('{product}/delete', 'Admin\Products\AdminProductsDeleteController@actionDeleteProduct')
+            ->name('AdminPanel.product.delete');
 
-    Route::get('{product}/subproducts/{subproduct}/edit', 'Admin\Panel\AdminPanelSubProductController@editSubProducts')->name('AdminPanel.subproduct.edit');
-    Route::get('{product}/subproducts/list', 'Admin\Panel\AdminPanelSubProductController@getSubProductsList')->name('AdminPanel.subproduct.list');
+        Route::get('{product}/subproducts/{subproduct}/edit',
+            'Admin\Panel\AdminPanelSubProductController@editSubProducts')->name('AdminPanel.subproduct.edit');
+        Route::get('{product}/subproducts/list',
+            'Admin\Panel\AdminPanelSubProductController@getSubProductsList')->name('AdminPanel.subproduct.list');
 
-    Route::put('{product}/subproducts/{subproduct}/update', 'Admin\Panel\AdminPanelSubProductController@updateSubProducts')->name('AdminPanel.subproduct.update');
-    Route::put('{product}/subproducts/{subproduct}/dissociate', 'Admin\Panel\AdminPanelSubProductController@dissociateSubProducts')->name('AdminPanel.subproduct.dissociate');
-});
-
-/**End ADMIN PANEL Product AREA */
-
-/**Start ADMIN PANEL SubProduct AREA */
-
-Route::group(['prefix' => 'admin/subproducts'], function() {
-    Route::get('create', 'Admin\Panel\AdminPanelSubProductController@createSubProduct')->name('AdminPanel.subproduct.create');
-    Route::post('store', 'Admin\Panel\AdminPanelSubProductController@storeSubProduct')->name('AdminPanel.subproduct.store');
-});
-
-/**End ADMIN PANEL SubProduct AREA */
-
-
-Route::group(['prefix' => 'admin/discounts'], function(){
-    Route::get('', 'Admin\Panel\AdminPanelDiscountController@getDiscounts')->name('AdminPanel.discounts.index');
-    Route::get('create', 'Admin\Panel\AdminPanelDiscountController@createDiscount')->name('AdminPanel.discounts.create');
-    Route::post('', 'Admin\Panel\AdminPanelDiscountController@storeDiscount')->name('AdminPanel.discounts.store');
-    Route::get('{discount}/edit', 'Admin\Panel\AdminPanelDiscountController@editDiscount')->name('AdminPanel.discounts.edit');
-    Route::put('{discount}', 'Admin\Panel\AdminPanelDiscountController@updateDiscount')->name('AdminPanel.discounts.update');
-    Route::delete('{discount}', 'Admin\Panel\AdminPanelDiscountController@deleteDiscount')->name('AdminPanel.discounts.delete');
-    Route::get('{discount}', 'Admin\Panel\AdminPanelDiscountController@showDiscount')->name('AdminPanel.discounts.show');
-
-    Route::post('{discount}/usercategories', 'Admin\Panel\AdminPanelDiscountUserController@addUserCategories')->name('AdminPanel.discounts.addUserCategories');
-    Route::get('{discount}/usercategories', 'Admin\Panel\AdminPanelDiscountUserController@showAddingUserCategories')->name('AdminPanel.discounts.showAddingUserCategories');
-
-
-});
-Route::group(['prefix' => 'admin/users'], function () {
-    Route::get('{user}', 'Admin\Panel\AdminPanelController@getUser')->name('adminTable.users.index');
-    Route::post('', 'Admin\Panel\AdminPanelController@showUsers')->name('adminTable.user.showUsers');
-    Route::put('update', 'Admin\Panel\AdminPanelController@updateUser')->name('adminTable.user.update');
-    Route::put('{user}/updateCategories', 'Admin\Panel\AdminPanelController@updateUsersCategories')
-        ->name('adminTable.user.updateCategories');
-
-    Route::put('{user}/updateBonuses', 'Admin\Panel\AdminPanelController@updateUsersBonuses')
-        ->name('adminTable.user.updateUsersBonuses');
-    Route::put('{user}/updateBalance', 'Admin\Panel\AdminPanelController@updateUsersBalance')
-        ->name('adminTable.user.updateUsersBalance');
-
-    Route::delete('delete', 'Admin\Panel\AdminPanelController@destroyUser')->name('adminTable.user.delete');
-    Route::get('{user}/orders/{order}', 'Admin\Panel\AdminPanelOrderController@getUsersOrder')->name('adminPanel.order.index');
-    Route::get('{user}/orders/{order}/subproducts/{subproduct}', 'Admin\Panel\AdminPanelSubProductController@getSubProduct')
-        ->name('adminPanel.subProduct.index');
-
-    Route::put('{user}/addDiscounts', 'Admin\Panel\AdminPanelDiscountUserController@addDiscounts')
-        ->name('AdminPanel.user.addDiscounts');
-    Route::put('{user}/removeDiscounts/{discount}', 'Admin\Panel\AdminPanelDiscountUserController@removeDiscounts')
-        ->name('AdminPanel.user.removeDiscounts');
-
-    //Role SECTION
-    Route::get('{user}/manage_role', 'Admin\Panel\AdminPanelUserRoleController@getAssignRoleView');
-    Route::post('{user}/manage_role', 'Admin\Panel\AdminPanelUserRoleController@assignRole');
-
-    /**Start ADMIN PANEL ORDER AREA */
-    Route::group(['prefix' => '{user}/orders/{order}'], function () {
-        Route::put('status/update', 'Admin\Panel\AdminPanelOrderController@updateOrderStatus')
-            ->name('adminPanel.orderStatus.update');
-        Route::put('update', 'Admin\Panel\AdminPanelOrderController@updateOrderIndex')
-            ->name('adminPanel.orderIndex.update');
-        Route::put('delivery/update', 'Admin\Panel\AdminPanelOrderController@updateOrderDelivery')
-            ->name('adminPanel.orderDelivery.update');
-        Route::put('contactDetails/update', 'Admin\Panel\AdminPanelOrderController@updateOrderContactDetails')
-            ->name('adminPanel.orderContactDetails.update');
-        Route::put('orderPayment/update', 'Admin\Panel\AdminPanelOrderController@updateOrderPayment')
-            ->name('adminPanel.orderPayment.update');
-        Route::put('orderDiscount/update', 'Admin\Panel\AdminPanelOrderController@updateOrderDiscount')
-            ->name('adminPanel.orderDiscount.update');
-        Route::put('orderBonuses/update', 'Admin\Panel\AdminPanelOrderController@updateOrderBonuses')
-            ->name('adminPanel.orderBonuses.update');
-
-        Route::put('orderBalance/update', 'Admin\Panel\AdminPanelOrderController@updateOrderBalance')
-            ->name('adminPanel.orderBalance.update');
+        Route::put('{product}/subproducts/{subproduct}/update',
+            'Admin\Panel\AdminPanelSubProductController@updateSubProducts')->name('AdminPanel.subproduct.update');
+        Route::put('{product}/subproducts/{subproduct}/dissociate',
+            'Admin\Panel\AdminPanelSubProductController@dissociateSubProducts')->name('AdminPanel.subproduct.dissociate');
     });
 
-    /**END ADMIN PANEL ORDER AREA */
-});
+    /**End ADMIN PANEL Product AREA */
+
+    /**Start ADMIN PANEL SubProduct AREA */
+
+    Route::group(['prefix' => 'admin/subproducts'], function () {
+        Route::get('create',
+            'Admin\Panel\AdminPanelSubProductController@createSubProduct')->name('AdminPanel.subproduct.create');
+        Route::post('store',
+            'Admin\Panel\AdminPanelSubProductController@storeSubProduct')->name('AdminPanel.subproduct.store');
+    });
+
+    /**End ADMIN PANEL SubProduct AREA */
 
 
-/** END ADMIN PANEL AREA */
+    Route::group(['prefix' => 'admin/discounts'], function () {
+        Route::get('', 'Admin\Panel\AdminPanelDiscountController@getDiscounts')->name('AdminPanel.discounts.index');
+        Route::get('create',
+            'Admin\Panel\AdminPanelDiscountController@createDiscount')->name('AdminPanel.discounts.create');
+        Route::post('', 'Admin\Panel\AdminPanelDiscountController@storeDiscount')->name('AdminPanel.discounts.store');
+        Route::get('{discount}/edit',
+            'Admin\Panel\AdminPanelDiscountController@editDiscount')->name('AdminPanel.discounts.edit');
+        Route::put('{discount}',
+            'Admin\Panel\AdminPanelDiscountController@updateDiscount')->name('AdminPanel.discounts.update');
+        Route::delete('{discount}',
+            'Admin\Panel\AdminPanelDiscountController@deleteDiscount')->name('AdminPanel.discounts.delete');
+        Route::get('{discount}',
+            'Admin\Panel\AdminPanelDiscountController@showDiscount')->name('AdminPanel.discounts.show');
+
+        Route::post('{discount}/usercategories',
+            'Admin\Panel\AdminPanelDiscountUserController@addUserCategories')->name('AdminPanel.discounts.addUserCategories');
+        Route::get('{discount}/usercategories',
+            'Admin\Panel\AdminPanelDiscountUserController@showAddingUserCategories')->name('AdminPanel.discounts.showAddingUserCategories');
 
 
-/*
- *  Route to receive messages from the payment systems
- * @incoming get[pay_system] - name payment system
- */
-Route::match(['get', 'post'],'/payments_check/{pay_system}',['uses'=>'Payments\Receive\PaymentsReceiveController@actionIndex']);
-/*
- *  end report payments ares
- */
-Route::get('test_form_liqpay', 'Payments\Receive\TestFormPaymentsReceiveLiqpay@actionIndex');
+    });
+    Route::group(['prefix' => 'admin/users'], function () {
+        Route::get('{user}', 'Admin\Panel\AdminPanelController@getUser')->name('adminTable.users.index');
+        Route::post('', 'Admin\Panel\AdminPanelController@showUsers')->name('adminTable.user.showUsers');
+        Route::put('update', 'Admin\Panel\AdminPanelController@updateUser')->name('adminTable.user.update');
+        Route::put('{user}/updateCategories', 'Admin\Panel\AdminPanelController@updateUsersCategories')
+            ->name('adminTable.user.updateCategories');
 
-/** ADMIN AREA */
+        Route::put('{user}/updateBonuses', 'Admin\Panel\AdminPanelController@updateUsersBonuses')
+            ->name('adminTable.user.updateUsersBonuses');
+        Route::put('{user}/updateBalance', 'Admin\Panel\AdminPanelController@updateUsersBalance')
+            ->name('adminTable.user.updateUsersBalance');
 
-Route::group(['prefix' => 'admin/products'], function () {
-    Route::get('/', [ 'uses' => 'Admin\Products\AdminProductsReadController@actionReadProduct' ]);
+        Route::delete('delete', 'Admin\Panel\AdminPanelController@destroyUser')->name('adminTable.user.delete');
+        Route::get('{user}/orders/{order}',
+            'Admin\Panel\AdminPanelOrderController@getUsersOrder')->name('adminPanel.order.index');
+        Route::get('{user}/orders/{order}/subproducts/{subproduct}',
+            'Admin\Panel\AdminPanelSubProductController@getSubProduct')
+            ->name('adminPanel.subProduct.index');
 
-    Route::get('/create', [ 'uses' => 'Admin\Products\AdminProductsCreateController@actionGetCreateProductForm' ]);
-    Route::post('/create', [ 'uses' => 'Admin\Products\AdminProductsCreateController@actionCreateProduct' ]);
+        Route::put('{user}/addDiscounts', 'Admin\Panel\AdminPanelDiscountUserController@addDiscounts')
+            ->name('AdminPanel.user.addDiscounts');
+        Route::put('{user}/removeDiscounts/{discount}', 'Admin\Panel\AdminPanelDiscountUserController@removeDiscounts')
+            ->name('AdminPanel.user.removeDiscounts');
+
+        //Role SECTION
+        Route::get('{user}/manage_role', 'Admin\Panel\AdminPanelUserRoleController@getAssignRoleView');
+        Route::post('{user}/manage_role', 'Admin\Panel\AdminPanelUserRoleController@assignRole');
+
+        /**Start ADMIN PANEL ORDER AREA */
+        Route::group(['prefix' => '{user}/orders/{order}'], function () {
+            Route::put('status/update', 'Admin\Panel\AdminPanelOrderController@updateOrderStatus')
+                ->name('adminPanel.orderStatus.update');
+            Route::put('update', 'Admin\Panel\AdminPanelOrderController@updateOrderIndex')
+                ->name('adminPanel.orderIndex.update');
+            Route::put('delivery/update', 'Admin\Panel\AdminPanelOrderController@updateOrderDelivery')
+                ->name('adminPanel.orderDelivery.update');
+            Route::put('contactDetails/update', 'Admin\Panel\AdminPanelOrderController@updateOrderContactDetails')
+                ->name('adminPanel.orderContactDetails.update');
+            Route::put('orderPayment/update', 'Admin\Panel\AdminPanelOrderController@updateOrderPayment')
+                ->name('adminPanel.orderPayment.update');
+            Route::put('orderDiscount/update', 'Admin\Panel\AdminPanelOrderController@updateOrderDiscount')
+                ->name('adminPanel.orderDiscount.update');
+            Route::put('orderBonuses/update', 'Admin\Panel\AdminPanelOrderController@updateOrderBonuses')
+                ->name('adminPanel.orderBonuses.update');
+
+            Route::put('orderBalance/update', 'Admin\Panel\AdminPanelOrderController@updateOrderBalance')
+                ->name('adminPanel.orderBalance.update');
+        });
+
+        /**END ADMIN PANEL ORDER AREA */
+    });
+
+
+    /** END ADMIN PANEL AREA */
+
+
+    /*
+     *  Route to receive messages from the payment systems
+     * @incoming get[pay_system] - name payment system
+     */
+    Route::match(['get', 'post'], '/payments_check/{pay_system}',
+        ['uses' => 'Payments\Receive\PaymentsReceiveController@actionIndex']);
+    /*
+     *  end report payments ares
+     */
+    Route::get('test_form_liqpay', 'Payments\Receive\TestFormPaymentsReceiveLiqpay@actionIndex');
+
+    /** ADMIN AREA */
+
+    Route::group(['prefix' => 'admin/products'], function () {
+        Route::get('/', ['uses' => 'Admin\Products\AdminProductsReadController@actionReadProduct']);
+
+        Route::get('/create', ['uses' => 'Admin\Products\AdminProductsCreateController@actionGetCreateProductForm']);
+        Route::post('/create', ['uses' => 'Admin\Products\AdminProductsCreateController@actionCreateProduct']);
 //    Route::get('/sub_product/{id}', [ 'uses' => 'Admin\Products\AdminProductsCreateController@actionGetSubProductView' ]);
 
-    Route::get('/update/{product_id}', [ 'uses' => 'Admin\Products\AdminProductsUpdateController@actionGetUpdateProductForm' ])
-        ->name('AdminPanel.product.edit');
-    Route::put('/update/{product_id}', [ 'uses' => 'Admin\Products\AdminProductsUpdateController@actionUpdateProduct' ])
-        ->where([ 'product_id' => '[1-9]+' ])->name('AdminPanel.product.update');
+        Route::get('/update/{product_id}',
+            ['uses' => 'Admin\Products\AdminProductsUpdateController@actionGetUpdateProductForm'])
+            ->name('AdminPanel.product.edit');
+        Route::put('/update/{product_id}',
+            ['uses' => 'Admin\Products\AdminProductsUpdateController@actionUpdateProduct'])
+            ->where(['product_id' => '[1-9]+'])->name('AdminPanel.product.update');
 
 //    Route::delete('delete/{product_id}', [ 'uses' => 'Admin\Products\AdminProductsDeleteController@actionDeleteProduct' ])
 //       ->name('AdminPanel.product.delete');
-});
-
-Route::group(['prefix' => '/admin'], function ()
-{
-    // DEPARTMENTS AREA
-    Route::group(['prefix' => '/departments'], function ()
-    {
-        Route::get('/content', [ 'uses' => 'Admin\Departments\Content\AdminDepartmentsContentController@actionGetView']);
-        Route::put('/content/edit', [ 'uses' => 'Admin\Departments\Content\AdminDepartmentsContentEditController@actionGetEditView']);
-        Route::post('/content/edit', [ 'uses' => 'Admin\Departments\Content\AdminDepartmentsContentEditController@actionEdit']);
-
-        Route::get('/photography', [ 'uses' => 'Admin\Departments\Photography\AdminDepartmentPhotographyController@actionGetView']);
-        Route::put('/photography/edit', [ 'uses' => 'Admin\Departments\Photography\AdminDepartmentPhotographyEditController@actionGetEditView']);
-        Route::post('/photography/edit', [ 'uses' => 'Admin\Departments\Photography\AdminDepartmentPhotographyEditController@actionEdit']);
-
-        Route::get('/approve', [ 'uses' => 'Admin\Departments\AdminDepartmentsApproveController@actionApproveProduct']);
-    });
-    // END DEPARTMENTS AREA
-});
-
-/** END ADMIN AREA */
-
-Route::group(['prefix' => 'admin/manage'], function ()
-{
-    Route::group(['prefix' => '/brands'], function ()
-    {
-        Route::get('/', [ 'uses' => 'Admin\Manage\Brands\AdminManageBrandsReadController@actionRead' ]);
-
-        Route::get('/create', [ 'uses' => 'Admin\Manage\Brands\AdminManageBrandsCreateController@actionGetCreateView' ]);
-        Route::post('/create', [ 'uses' => 'Admin\Manage\Brands\AdminManageBrandsCreateController@actionCreate' ]);
-
-        Route::get('/update/{brand_id}', [ 'uses' => 'Admin\Manage\Brands\AdminManageBrandsUpdateController@actionGetUpdateView' ])
-            ->where([ 'brand_id' => '[1-9]+' ]);
-        Route::post('/update', [ 'uses' => 'Admin\Manage\Brands\AdminManageBrandsUpdateController@actionUpdate' ]);
-
-        Route::delete('/delete', [ 'uses' => 'Admin\Manage\Brands\AdminManageBrandsDeleteController@actionDelete' ]);
     });
 
-    Route::group(['prefix' => '/colors'], function ()
-    {
-        Route::get('/', [ 'uses' => 'Admin\Manage\Colors\AdminManageColorsReadController@actionRead' ]);
+    Route::group(['prefix' => '/admin'], function () {
+        // DEPARTMENTS AREA
+        Route::group(['prefix' => '/departments'], function () {
+            Route::get('/content',
+                ['uses' => 'Admin\Departments\Content\AdminDepartmentsContentController@actionGetView']);
+            Route::put('/content/edit',
+                ['uses' => 'Admin\Departments\Content\AdminDepartmentsContentEditController@actionGetEditView']);
+            Route::post('/content/edit',
+                ['uses' => 'Admin\Departments\Content\AdminDepartmentsContentEditController@actionEdit']);
 
-        Route::get('/create', [ 'uses' => 'Admin\Manage\Colors\AdminManageColorsCreateController@actionGetCreateView' ]);
-        Route::post('/create', [ 'uses' => 'Admin\Manage\Colors\AdminManageColorsCreateController@actionCreate' ]);
+            Route::get('/photography',
+                ['uses' => 'Admin\Departments\Photography\AdminDepartmentPhotographyController@actionGetView']);
+            Route::put('/photography/edit',
+                ['uses' => 'Admin\Departments\Photography\AdminDepartmentPhotographyEditController@actionGetEditView']);
+            Route::post('/photography/edit',
+                ['uses' => 'Admin\Departments\Photography\AdminDepartmentPhotographyEditController@actionEdit']);
 
-        Route::get('/update/{color_id}', [ 'uses' => 'Admin\Manage\Colors\AdminManageColorsUpdateController@actionGetUpdateView' ])
-            ->where([ 'color_id' => '[1-9]+' ]);
-        Route::post('/update', [ 'uses' => 'Admin\Manage\Colors\AdminManageColorsUpdateController@actionUpdate' ]);
-
-        Route::delete('/delete', [ 'uses' => 'Admin\Manage\Colors\AdminManageColorsDeleteController@actionDelete' ]);
+            Route::get('/approve',
+                ['uses' => 'Admin\Departments\AdminDepartmentsApproveController@actionApproveProduct']);
+        });
+        // END DEPARTMENTS AREA
     });
 
-    Route::group(['prefix' => '/sizes'], function ()
-    {
-        Route::get('/', [ 'uses' => 'Admin\Manage\Sizes\AdminManageSizesReadController@actionRead' ]);
 
-        Route::get('/create', [ 'uses' => 'Admin\Manage\Sizes\AdminManageSizesCreateController@actionGetCreateView' ]);
-        Route::post('/create', [ 'uses' => 'Admin\Manage\Sizes\AdminManageSizesCreateController@actionCreate' ]);
+    Route::group(['prefix' => 'admin/manage'], function () {
+        Route::group(['prefix' => '/brands'], function () {
+            Route::get('/', ['uses' => 'Admin\Manage\Brands\AdminManageBrandsReadController@actionRead']);
 
-        Route::get('/update/{size_id}', [ 'uses' => 'Admin\Manage\Sizes\AdminManageSizesUpdateController@actionGetUpdateView' ])
-            ->where([ 'size_id' => '[1-9]+' ]);
-        Route::post('/update', [ 'uses' => 'Admin\Manage\Sizes\AdminManageSizesUpdateController@actionUpdate' ]);
+            Route::get('/create',
+                ['uses' => 'Admin\Manage\Brands\AdminManageBrandsCreateController@actionGetCreateView']);
+            Route::post('/create', ['uses' => 'Admin\Manage\Brands\AdminManageBrandsCreateController@actionCreate']);
 
-        Route::delete('/delete', [ 'uses' => 'Admin\Manage\Sizes\AdminManageSizesDeleteController@actionDelete' ]);
-    });
+            Route::get('/update/{brand_id}',
+                ['uses' => 'Admin\Manage\Brands\AdminManageBrandsUpdateController@actionGetUpdateView'])
+                ->where(['brand_id' => '[1-9]+']);
+            Route::post('/update', ['uses' => 'Admin\Manage\Brands\AdminManageBrandsUpdateController@actionUpdate']);
 
-    Route::group(['prefix' => 'categories'], function()
-    {
-        Route::get('', 'Admin\Manage\Categories\AdminManageCategoriesReadController@actionRead');
-
-        Route::get('/create', 'Admin\Manage\Categories\AdminManageCategoriesCreateController@actionGetCreateView');
-        Route::post('/create', 'Admin\Manage\Categories\AdminManageCategoriesCreateController@actionStore');
-
-        Route::get('/update/{category_id}', [ 'uses' => 'Admin\Manage\Categories\AdminManageCategoriesUpdateController@actionGetUpdateView' ])
-            ->where([ 'category_id' => '[1-9]+' ]);
-        Route::post('/update', [ 'uses' => 'Admin\Manage\Categories\AdminManageCategoriesUpdateController@actionUpdate' ]);
-
-        Route::delete('/delete', [ 'uses' => 'Admin\Manage\Categories\AdminManageCategoriesDeleteController@actionDelete' ]);
-    });
-
-    Route::group(['prefix' => 'size_chart'], function()
-    {
-        Route::get('', 'Admin\Manage\SizeChart\AdminManageSizeChartReadController@actionRead');
-
-        Route::get('create', [ 'uses' => 'Admin\Manage\SizeChart\AdminManageSizeChartCreateController@actionGetCreateView' ]);
-        Route::post('create', [ 'uses' => 'Admin\Manage\SizeChart\AdminManageSizeChartCreateController@actionCreate' ]);
-
-        Route::get('update/{size_id}', [ 'uses' => 'Admin\Manage\SizeChart\AdminManageSizeChartUpdateController@actionGetUpdateView' ])
-            ->where([ 'size_id' => '[1-9]+' ]);
-        Route::post('update', [ 'uses' => 'Admin\Manage\SizeChart\AdminManageSizeChartUpdateController@actionUpdate' ]);
-
-        Route::delete('delete', [ 'uses' => 'Admin\Manage\SizeChart\AdminManageSizeChartDeleteController@actionDelete' ]);
-    });
-});
-
-/** IMPORT */
-
-Route::group(['prefix' => 'admin/import'], function ()
-{
-    Route::get('/', [ 'uses' => 'Admin\Import\AdminImportIndexController@actionIndex' ]);
-
-    // SUPPLIERS AREA
-    Route::group(['prefix' => '/suppliers'], function ()
-    {
-        Route::get('/', [ 'uses' => 'Admin\Import\Suppliers\AdminImportSuppliersReadController@actionRead' ]);
-        Route::put('/find', [ 'uses' => 'Admin\Import\Suppliers\AdminImportSuppliersSearchController@actionSearch' ]);
-
-        Route::get('/create', [ 'uses' => 'Admin\Import\Suppliers\AdminImportSuppliersCreateController@actionGetCreateView' ]);
-        Route::post('/create', [ 'uses' => 'Admin\Import\Suppliers\AdminImportSuppliersCreateController@actionCreate' ]);
-
-        Route::get('/desc/{supplier_id}', [ 'uses' => 'Admin\Import\Suppliers\AdminImportSuppliersDescriptionController@actionGetDescription' ])
-            ->where(['supplier_id' => '[1-9]+']);
-
-        Route::get('/update/{supplier_id}', [ 'uses' => 'Admin\Import\Suppliers\AdminImportSuppliersUpdateController@actionGetView' ])
-            ->where(['supplier_id' => '[1-9]+']);
-
-        Route::post('/update', [ 'uses' => 'Admin\Import\Suppliers\AdminImportSuppliersUpdateController@actionUpdate' ])
-            ->where(['supplier_id' => '[1-9]+']);
-
-        Route::delete('/delete', [ 'uses' => 'Admin\Import\Suppliers\AdminImportSuppliersDeleteController@actionDelete' ]);
-    });
-    // END SUPPLIERS AREA
-
-    // PARTIES AREA
-    Route::group(['prefix' => '/parties'], function ()
-    {
-        Route::get('/', [ 'uses' => 'Admin\Import\Parties\AdminImportPartiesReadController@actionRead' ]);
-
-        Route::get('/create', [ 'uses' => 'Admin\Import\Parties\AdminImportPartiesCreateController@actionGetCreateView' ]);
-        Route::post('/create', [ 'uses' => 'Admin\Import\Parties\AdminImportPartiesCreateController@actionCreate' ]);
-        Route::delete('/delete', [ 'uses' => 'Admin\Import\Parties\AdminImportPartiesDeleteController@actionDelete' ]);
-
-        Route::get('/desc/{party_id}', [ 'uses' => 'Admin\Import\Parties\AdminImportPartiesDescriptionController@actionGetPartyDescription' ])
-            ->where(['party_id' => '[1-9]+']);
-
-        Route::get('/fat/{party_id}', [ 'uses' => 'Admin\Import\Parties\AdminImportPartiesFatStatusController@actionGetFatStatusView' ])
-            ->where(['party_id' => '[1-9]+']);
-        Route::put('/fat/search/{party_id}/{search}', [ 'uses' => 'Admin\Import\Parties\AdminImportPartiesFatStatusController@actionSearchFatStatus' ])
-            ->where(['party_id' => '[1-9]+'])
-            ->where(['fat_status_id' => '[0-9]+']);
-        Route::post('/confirm/party', [ 'uses' => 'Admin\Import\Parties\AdminImportPartiesEditController@actionConfirmParty' ])
-            ->where(['party_id' => '[1-9]+']);
-        Route::put('/fat/file/parsing', [ 'uses' => 'Admin\Import\Parties\AdminImportPartiesFatDescriptionController@actionIndex']);
-        Route::put('/fat/handler', [ 'uses' => 'Admin\Import\Parties\Handler\AdminImportPartiesHandlerController@actionIndex' ]);
-        Route::put('/fat/work', [ 'uses' => 'Admin\Import\Parties\Handler\AdminImportPartiesWorkController@actionGetWorkView' ]);
-        Route::put('/fat/edit', [ 'uses' => 'Admin\Import\Parties\Handler\AdminImportPartiesFixController@actionGetFixView' ]);
-
-        Route::get('/search', [ 'uses' => 'Admin\Import\Parties\AdminImportPartiesSearchController@actionGetSearchView' ]);
-        Route::put('/search', [ 'uses' => 'Admin\Import\Parties\AdminImportPartiesSearchController@actionSearch' ]);
-
-        Route::put('/search/barcode', [ 'uses' => 'Admin\Import\Parties\AdminImportPartiesDescriptionSearchController@actionSearchByBarcode' ]);
-        Route::put('/search/sku', [ 'uses' => 'Admin\Import\Parties\AdminImportPartiesDescriptionSearchController@actionSearchBySku' ]);
-        Route::delete('/search/product', [ 'uses' => 'Admin\Import\Parties\AdminImportPartiesSubProductsDeleteController@actionDelete' ]);
-
-        Route::get('/edit/{party_id}', [ 'uses' => 'Admin\Import\Parties\AdminImportPartiesEditController@actionGetEditView' ]);
-        Route::post('/edit/{party_id}', [ 'uses' => 'Admin\Import\Parties\AdminImportPartiesEditController@actionEditParty' ]);
-
-        Route::group(['prefix' => '/stats'], function ()
-        {
-            Route::get('', [ 'uses' => 'Admin\Import\Parties\AdminImportPartiesStatsController@actionRead']);
-            Route::put('/parties', [ 'uses' => 'Admin\Import\Parties\AdminImportPartiesStatsController@actionGetPartiesView']);
-            Route::put('/info/{party_id}', [ 'uses' => 'Admin\Import\Parties\AdminImportPartiesStatsController@actionGetPartyDescription'])
-                ->where(['party_id' => '[1-9]+']);
+            Route::delete('/delete', ['uses' => 'Admin\Manage\Brands\AdminManageBrandsDeleteController@actionDelete']);
         });
 
-        Route::get('/export/{party_id}', [ 'uses' => 'Admin\Import\Parties\Export\AdminImportPartiesExportController@actionExportPartyForSupplier'])
-            ->where(['party_id' => '[1-9]+']);
-        //Route::get('/parse', [ 'uses' => 'Admin\Import\Parties\AdminImportPartiesParserController@actionMakeImport' ]);
+        Route::group(['prefix' => '/colors'], function () {
+            Route::get('/', ['uses' => 'Admin\Manage\Colors\AdminManageColorsReadController@actionRead']);
+
+            Route::get('/create',
+                ['uses' => 'Admin\Manage\Colors\AdminManageColorsCreateController@actionGetCreateView']);
+            Route::post('/create', ['uses' => 'Admin\Manage\Colors\AdminManageColorsCreateController@actionCreate']);
+
+            Route::get('/update/{color_id}',
+                ['uses' => 'Admin\Manage\Colors\AdminManageColorsUpdateController@actionGetUpdateView'])
+                ->where(['color_id' => '[1-9]+']);
+            Route::post('/update', ['uses' => 'Admin\Manage\Colors\AdminManageColorsUpdateController@actionUpdate']);
+
+            Route::delete('/delete', ['uses' => 'Admin\Manage\Colors\AdminManageColorsDeleteController@actionDelete']);
+        });
+
+        Route::group(['prefix' => '/sizes'], function () {
+            Route::get('/', ['uses' => 'Admin\Manage\Sizes\AdminManageSizesReadController@actionRead']);
+
+            Route::get('/create',
+                ['uses' => 'Admin\Manage\Sizes\AdminManageSizesCreateController@actionGetCreateView']);
+            Route::post('/create', ['uses' => 'Admin\Manage\Sizes\AdminManageSizesCreateController@actionCreate']);
+
+            Route::get('/update/{size_id}',
+                ['uses' => 'Admin\Manage\Sizes\AdminManageSizesUpdateController@actionGetUpdateView'])
+                ->where(['size_id' => '[1-9]+']);
+            Route::post('/update', ['uses' => 'Admin\Manage\Sizes\AdminManageSizesUpdateController@actionUpdate']);
+
+            Route::delete('/delete', ['uses' => 'Admin\Manage\Sizes\AdminManageSizesDeleteController@actionDelete']);
+        });
+
+        Route::group(['prefix' => 'categories'], function () {
+            Route::get('', 'Admin\Manage\Categories\AdminManageCategoriesReadController@actionRead');
+
+            Route::get('/create', 'Admin\Manage\Categories\AdminManageCategoriesCreateController@actionGetCreateView');
+            Route::post('/create', 'Admin\Manage\Categories\AdminManageCategoriesCreateController@actionStore');
+
+            Route::get('/update/{category_id}',
+                ['uses' => 'Admin\Manage\Categories\AdminManageCategoriesUpdateController@actionGetUpdateView'])
+                ->where(['category_id' => '[1-9]+']);
+            Route::post('/update',
+                ['uses' => 'Admin\Manage\Categories\AdminManageCategoriesUpdateController@actionUpdate']);
+
+            Route::delete('/delete',
+                ['uses' => 'Admin\Manage\Categories\AdminManageCategoriesDeleteController@actionDelete']);
+        });
+
+        Route::group(['prefix' => 'size_chart'], function () {
+            Route::get('', 'Admin\Manage\SizeChart\AdminManageSizeChartReadController@actionRead');
+
+            Route::get('create',
+                ['uses' => 'Admin\Manage\SizeChart\AdminManageSizeChartCreateController@actionGetCreateView']);
+            Route::post('create',
+                ['uses' => 'Admin\Manage\SizeChart\AdminManageSizeChartCreateController@actionCreate']);
+
+            Route::get('update/{size_id}',
+                ['uses' => 'Admin\Manage\SizeChart\AdminManageSizeChartUpdateController@actionGetUpdateView'])
+                ->where(['size_id' => '[1-9]+']);
+            Route::post('update',
+                ['uses' => 'Admin\Manage\SizeChart\AdminManageSizeChartUpdateController@actionUpdate']);
+
+            Route::delete('delete',
+                ['uses' => 'Admin\Manage\SizeChart\AdminManageSizeChartDeleteController@actionDelete']);
+        });
+
+        Route::group(['prefix' => '/roles'], function () {
+            Route::get('/', ['uses' => 'Admin\Manage\Roles\AdminManageRolesReadController@actionRead']);
+
+            Route::get('/create',
+                ['uses' => 'Admin\Manage\Roles\AdminManageRolesCreateController@actionGetCreateView']);
+            Route::post('/create', ['uses' => 'Admin\Manage\Roles\AdminManageRolesCreateController@actionCreate']);
+
+            Route::get('/update/{role_id}',
+                ['uses' => 'Admin\Manage\Roles\AdminManageRolesUpdateController@actionGetUpdateView'])
+                ->where(['role_id' => '[1-9]+']);
+            Route::post('/update', ['uses' => 'Admin\Manage\Roles\AdminManageRolesUpdateController@actionUpdate']);
+
+            Route::delete('/delete', ['uses' => 'Admin\Manage\Roles\AdminManageRolesDeleteController@actionDelete']);
+        });
     });
-    // END PARTIES AREA
 
-    // PARTIES SHARE
-    Route::group(['prefix' => '/share'], function ()
-    {
-        Route::get('/', [ 'uses' => 'Admin\Import\Share\AdminImportShareReadController@actionRead' ]);
+    /** IMPORT */
 
-        Route::get('/create', [ 'uses' => 'Admin\Import\Share\AdminImportShareCreateController@actionGetCreateView' ]);
-        Route::post('/create', [ 'uses' => 'Admin\Import\Share\AdminImportShareCreateController@actionCreate' ]);
-        Route::delete('/delete', [ 'uses' => 'Admin\Import\Share\AdminImportShareDeleteController@actionDelete' ]);
+    Route::group(['prefix' => 'admin/import'], function () {
+        Route::get('/', ['uses' => 'Admin\Import\AdminImportIndexController@actionIndex']);
 
-        Route::get('/desc/{share_id}', [ 'uses' => 'Admin\Import\Share\AdminImportShareDescriptionController@actionGetShareDescription' ])
-            ->where([ 'share_id' => '[1-9]+' ]);
+        // SUPPLIERS AREA
+        Route::group(['prefix' => '/suppliers'], function () {
+            Route::get('/', ['uses' => 'Admin\Import\Suppliers\AdminImportSuppliersReadController@actionRead']);
+            Route::put('/find', ['uses' => 'Admin\Import\Suppliers\AdminImportSuppliersSearchController@actionSearch']);
 
-        Route::get('/stats/{shareId}', [ 'uses' => 'Admin\Import\Share\AdminImportShareStatsController@actionGetStatsView' ])
-            ->where([ 'shareId' => '[1-9]+' ]);
+            Route::get('/create',
+                ['uses' => 'Admin\Import\Suppliers\AdminImportSuppliersCreateController@actionGetCreateView']);
+            Route::post('/create',
+                ['uses' => 'Admin\Import\Suppliers\AdminImportSuppliersCreateController@actionCreate']);
 
-        Route::post('/update', [ 'uses' => 'Admin\Import\Share\AdminImportShareUpdateController@actionUpdate' ]);
+            Route::get('/desc/{supplier_id}',
+                ['uses' => 'Admin\Import\Suppliers\AdminImportSuppliersDescriptionController@actionGetDescription'])
+                ->where(['supplier_id' => '[1-9]+']);
 
-        Route::put('/search', [ 'uses' => 'Admin\Import\Share\AdminImportShareSearchController@actionSearch' ]);
+            Route::get('/update/{supplier_id}',
+                ['uses' => 'Admin\Import\Suppliers\AdminImportSuppliersUpdateController@actionGetView'])
+                ->where(['supplier_id' => '[1-9]+']);
+
+            Route::post('/update',
+                ['uses' => 'Admin\Import\Suppliers\AdminImportSuppliersUpdateController@actionUpdate'])
+                ->where(['supplier_id' => '[1-9]+']);
+
+            Route::delete('/delete',
+                ['uses' => 'Admin\Import\Suppliers\AdminImportSuppliersDeleteController@actionDelete']);
+        });
+        // END SUPPLIERS AREA
+
+        // PARTIES AREA
+        Route::group(['prefix' => '/parties'], function () {
+            Route::get('/', ['uses' => 'Admin\Import\Parties\AdminImportPartiesReadController@actionRead']);
+
+            Route::get('/create',
+                ['uses' => 'Admin\Import\Parties\AdminImportPartiesCreateController@actionGetCreateView']);
+            Route::post('/create', ['uses' => 'Admin\Import\Parties\AdminImportPartiesCreateController@actionCreate']);
+            Route::delete('/delete',
+                ['uses' => 'Admin\Import\Parties\AdminImportPartiesDeleteController@actionDelete']);
+
+            Route::get('/desc/{party_id}',
+                ['uses' => 'Admin\Import\Parties\AdminImportPartiesDescriptionController@actionGetPartyDescription'])
+                ->where(['party_id' => '[1-9]+']);
+
+            Route::get('/fat/{party_id}',
+                ['uses' => 'Admin\Import\Parties\AdminImportPartiesFatStatusController@actionGetFatStatusView'])
+                ->where(['party_id' => '[1-9]+']);
+            Route::put('/fat/search/{party_id}/{search}',
+                ['uses' => 'Admin\Import\Parties\AdminImportPartiesFatStatusController@actionSearchFatStatus'])
+                ->where(['party_id' => '[1-9]+'])
+                ->where(['fat_status_id' => '[0-9]+']);
+            Route::post('/confirm/party',
+                ['uses' => 'Admin\Import\Parties\AdminImportPartiesEditController@actionConfirmParty'])
+                ->where(['party_id' => '[1-9]+']);
+            Route::put('/fat/file/parsing',
+                ['uses' => 'Admin\Import\Parties\AdminImportPartiesFatDescriptionController@actionIndex']);
+            Route::put('/fat/handler',
+                ['uses' => 'Admin\Import\Parties\Handler\AdminImportPartiesHandlerController@actionIndex']);
+            Route::put('/fat/work',
+                ['uses' => 'Admin\Import\Parties\Handler\AdminImportPartiesWorkController@actionGetWorkView']);
+            Route::put('/fat/edit',
+                ['uses' => 'Admin\Import\Parties\Handler\AdminImportPartiesFixController@actionGetFixView']);
+
+            Route::get('/search',
+                ['uses' => 'Admin\Import\Parties\AdminImportPartiesSearchController@actionGetSearchView']);
+            Route::put('/search', ['uses' => 'Admin\Import\Parties\AdminImportPartiesSearchController@actionSearch']);
+
+            Route::put('/search/barcode',
+                ['uses' => 'Admin\Import\Parties\AdminImportPartiesDescriptionSearchController@actionSearchByBarcode']);
+            Route::put('/search/sku',
+                ['uses' => 'Admin\Import\Parties\AdminImportPartiesDescriptionSearchController@actionSearchBySku']);
+            Route::delete('/search/product',
+                ['uses' => 'Admin\Import\Parties\AdminImportPartiesSubProductsDeleteController@actionDelete']);
+
+            Route::get('/edit/{party_id}',
+                ['uses' => 'Admin\Import\Parties\AdminImportPartiesEditController@actionGetEditView']);
+            Route::post('/edit/{party_id}',
+                ['uses' => 'Admin\Import\Parties\AdminImportPartiesEditController@actionEditParty']);
+
+            Route::group(['prefix' => '/stats'], function () {
+                Route::get('', ['uses' => 'Admin\Import\Parties\AdminImportPartiesStatsController@actionRead']);
+                Route::put('/parties',
+                    ['uses' => 'Admin\Import\Parties\AdminImportPartiesStatsController@actionGetPartiesView']);
+                Route::put('/info/{party_id}',
+                    ['uses' => 'Admin\Import\Parties\AdminImportPartiesStatsController@actionGetPartyDescription'])
+                    ->where(['party_id' => '[1-9]+']);
+            });
+
+            Route::get('/export/{party_id}',
+                ['uses' => 'Admin\Import\Parties\Export\AdminImportPartiesExportController@actionExportPartyForSupplier'])
+                ->where(['party_id' => '[1-9]+']);
+            //Route::get('/parse', [ 'uses' => 'Admin\Import\Parties\AdminImportPartiesParserController@actionMakeImport' ]);
+        });
+        // END PARTIES AREA
+
+        // PARTIES SHARE
+        Route::group(['prefix' => '/share'], function () {
+            Route::get('/', ['uses' => 'Admin\Import\Share\AdminImportShareReadController@actionRead']);
+
+            Route::get('/create',
+                ['uses' => 'Admin\Import\Share\AdminImportShareCreateController@actionGetCreateView']);
+            Route::post('/create', ['uses' => 'Admin\Import\Share\AdminImportShareCreateController@actionCreate']);
+            Route::delete('/delete', ['uses' => 'Admin\Import\Share\AdminImportShareDeleteController@actionDelete']);
+
+            Route::get('/desc/{share_id}',
+                ['uses' => 'Admin\Import\Share\AdminImportShareDescriptionController@actionGetShareDescription'])
+                ->where(['share_id' => '[1-9]+']);
+
+            Route::get('/stats/{shareId}',
+                ['uses' => 'Admin\Import\Share\AdminImportShareStatsController@actionGetStatsView'])
+                ->where(['shareId' => '[1-9]+']);
+
+            Route::post('/update', ['uses' => 'Admin\Import\Share\AdminImportShareUpdateController@actionUpdate']);
+
+            Route::put('/search', ['uses' => 'Admin\Import\Share\AdminImportShareSearchController@actionSearch']);
+        });
+        // END PARTIES AREA
+
+        // UPDATE AREA
+
+        Route::group(['prefix' => '/update'], function () {
+            Route::get('/', ['uses' => 'Admin\Import\Update\AdminImportUpdateReadController@actionRead']);
+
+            Route::get('/create',
+                ['uses' => 'Admin\Import\Update\AdminImportUpdateCreateController@actionGetCreateView']);
+            Route::post('/create', ['uses' => 'Admin\Import\Update\AdminImportUpdateCreateController@actionCreate']);
+            Route::delete('/delete', ['uses' => 'Admin\Import\Update\AdminImportUpdateDeleteController@actionDelete']);
+
+            Route::get('/desc/{update_id}',
+                ['uses' => 'Admin\Import\Update\AdminImportUpdateDescriptionController@actionGetFatStatusView'])
+                ->where(['update_id' => '[1-9]+']);
+
+            Route::put('/desc/search/{update_id}/{fat_status_id}',
+                ['uses' => 'Admin\Import\Update\AdminImportUpdateDescriptionController@actionSearchFatStatus'])
+                ->where(['update_id' => '[1-9]+'])
+                ->where(['fat_status_id' => '[0-9]+']);
+
+            Route::get('/search',
+                ['uses' => 'Admin\Import\Update\AdminImportUpdateSearchController@actionGetSearchView']);
+            Route::put('/search', ['uses' => 'Admin\Import\Update\AdminImportUpdateSearchController@actionSearch']);
+            //Route::put('/search', [ 'uses' => 'Admin\Import\Update\AdminImportUpdateSearchController@actionSearchSaleShare' ]);
+
+            Route::put('/fat/file/parsing',
+                ['uses' => 'Admin\Import\Update\AdminImportUpdateFatDescriptionController@actionIndex']);
+
+            //Route::get('/parse', [ 'uses' => 'Admin\Import\Update\AdminImportUpdateParserController@actionMakeImport' ]);
+        });
+
+        // END UPDATE AREA
+
     });
-    // END PARTIES AREA
 
-    // UPDATE AREA
-
-    Route::group(['prefix' => '/update'], function ()
-    {
-        Route::get('/', [ 'uses' => 'Admin\Import\Update\AdminImportUpdateReadController@actionRead' ]);
-
-        Route::get('/create', [ 'uses' => 'Admin\Import\Update\AdminImportUpdateCreateController@actionGetCreateView' ]);
-        Route::post('/create', [ 'uses' => 'Admin\Import\Update\AdminImportUpdateCreateController@actionCreate' ]);
-        Route::delete('/delete', [ 'uses' => 'Admin\Import\Update\AdminImportUpdateDeleteController@actionDelete' ]);
-
-        Route::get('/desc/{update_id}', [ 'uses' => 'Admin\Import\Update\AdminImportUpdateDescriptionController@actionGetFatStatusView' ])
-            ->where([ 'update_id' => '[1-9]+' ]);
-
-        Route::put('/desc/search/{update_id}/{fat_status_id}', [ 'uses' => 'Admin\Import\Update\AdminImportUpdateDescriptionController@actionSearchFatStatus' ])
-            ->where([ 'update_id' => '[1-9]+' ])
-            ->where([ 'fat_status_id' => '[0-9]+']);
-
-        Route::get('/search', [ 'uses' => 'Admin\Import\Update\AdminImportUpdateSearchController@actionGetSearchView' ]);
-        Route::put('/search', [ 'uses' => 'Admin\Import\Update\AdminImportUpdateSearchController@actionSearch' ]);
-        //Route::put('/search', [ 'uses' => 'Admin\Import\Update\AdminImportUpdateSearchController@actionSearchSaleShare' ]);
-
-        Route::put('/fat/file/parsing', [ 'uses' => 'Admin\Import\Update\AdminImportUpdateFatDescriptionController@actionIndex']);
-
-        //Route::get('/parse', [ 'uses' => 'Admin\Import\Update\AdminImportUpdateParserController@actionMakeImport' ]);
-    });
-
-    // END UPDATE AREA
+    Route::get('/test/test', 'Shop\Catalog\ShopCatalogCategoriesController@actionIndex');
+    // END IMPORT AREA
 
 });
-
-Route::get( '/test/test', 'Shop\Catalog\ShopCatalogCategoriesController@actionIndex' );
-
-// END IMPORT AREA
-
+/** END ADMIN AREA */
