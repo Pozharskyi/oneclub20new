@@ -563,6 +563,12 @@ Route::group(['prefix' => 'admin/import'], function ()
         Route::put('/search/{buyer_id?}',
             [ 'uses' => 'Admin\Import\Parties\AdminImportPartiesReadController@actionGetViewForRead' ]
         );
+        Route::put('/create',
+            [ 'uses' => 'Admin\Import\Parties\AdminImportPartiesCreateController@actionGetViewForCreate' ]
+        );
+        Route::post('/create',
+            [ 'uses' => 'Admin\Import\Parties\AdminImportPartiesCreateController@actionCreate' ]
+        );
     });
 
     Route::group(['prefix' => '/sales'], function()

@@ -16,9 +16,9 @@ trait AdminImportIndexSuppliersTrait
 {
     public function actionGetAllSuppliers()
     {
-        $suppliers = ImportIndexSuppliersModel::get(
-            'id', 'name'
-        );
+        $suppliers = ImportIndexSuppliersModel::get([
+            'id', 'name',
+        ]);
 
         return $suppliers;
     }

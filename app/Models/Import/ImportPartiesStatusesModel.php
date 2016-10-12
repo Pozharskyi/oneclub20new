@@ -9,6 +9,7 @@
 
 namespace App\Models\Import;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class ImportPartiesStatusesModel extends Model
@@ -25,6 +26,14 @@ class ImportPartiesStatusesModel extends Model
     public function parties()
     {
         return $this->hasMany(ImportIndexPartiesModel::class, 'id', 'import_parties_status_id');
+    }
+
+    public function scopeFindStatus(Builder $query, $status)
+    {
+        $query->where('parties_status', 'LIKE', '%' . $status . '%')
+            ->orWhere('short_phrase', $status);
+
+        return $query;
     }
 
 }

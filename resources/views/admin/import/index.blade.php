@@ -4,6 +4,17 @@
 
 @section('content')
 
+    <div id="modal_form"><!-- Popup window -->
+        <span id="modal_close" onclick="closePopup();">X</span> <!-- Close button -->
+        <div id="popup_content"></div>
+    </div>
+    <div id="overlay"></div><!-- Overlay -->
+
+    <div id="modal_form2"><!-- Popup window -->
+        <div id="popup_content2"></div>
+    </div>
+    <div id="overlay2"></div><!-- Overlay -->
+
     <div id="loading">
         <img src="{{ url('/images/import/loading.gif') }}" />
     </div>
@@ -35,7 +46,7 @@
             <span class="caret"></span>
         </button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenu2" id="importMenu">
-            <li><a href="{{ url('#tp_creation') }}">Создание товарной партии</a></li>
+            <li><a id="tp_creation" href="{{ url('#tp_creation') }}">Создание товарной партии</a></li>
             <li><a href="{{ url('#tp_edition') }}">Редактирование товарной партии</a></li>
             <li><a href="{{ url('#tp_deletion') }}">Удаление товарной партии</a></li>
             <li><a href="{{ url('#uploading') }}">Загрузка списка</a></li>
@@ -54,5 +65,6 @@
     </div>
 
     <input type="hidden" id="user_id" name="user_id" value="{{ Auth::user()->id }}" />
+    <input type="hidden" id="current" name="current" value="self" />
 
 @endsection

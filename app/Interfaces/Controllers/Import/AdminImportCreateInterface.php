@@ -9,7 +9,7 @@
 
 namespace App\Interfaces\Controllers\Import;
 
-use App\Http\Requests\Request;
+use Illuminate\Http\Request;
 
 /**
  * Getting creation interface

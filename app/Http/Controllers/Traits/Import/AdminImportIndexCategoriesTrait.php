@@ -17,7 +17,7 @@ trait AdminImportIndexCategoriesTrait
     public function actionGetImportCategories()
     {
         $categories = ImportIndexCategoriesModel::get([
-            'id', 'name'
+            'id', 'name',
         ]);
 
         return $categories;

@@ -2,19 +2,47 @@
  * Created by Home on 12.10.2016.
  */
 
-$(document).ready(function()
+function getLoading()
 {
+    $("#loading").css("display", "block");
+}
+
+function clearLoading()
+{
+    $("#loading").css("display", "none");
+}
+
+$(document).ready(function() {
     var user_id = $("#user_id").val();
+    var current = $("#current");
 
-    function getLoading()
-    {
-        $("#loading").css("display", "block");
-    }
+    getParties(user_id);
 
-    function clearLoading()
+    $("#myParties").click(function()
     {
-        $("#loading").css("display", "none");
-    }
+        $("#current").val('self');
+        getParties(user_id);
+    });
+
+    $("#allParties").click(function()
+    {
+        $("#current").val('parties');
+        getParties('');
+    });
+
+    $("#allSales").click(function()
+    {
+        $("#current").val('sales');
+        getSales();
+    });
+
+    $("#tp_creation").click(function()
+    {
+        getPopup();
+        getPartyCreateView();
+    });
+});
+//{
 
     function getParties(group)
     {
@@ -56,20 +84,23 @@ $(document).ready(function()
         clearLoading();
     }
 
-    $("#myParties").click(function()
+    function getPartyCreateView()
     {
-        getParties(user_id);
-    });
+        getLoading();
 
-    $("#allParties").click(function()
-    {
-        getParties('');
-    });
+        $.ajax({
+            url: "/admin/import/parties/create",
+            data: "",
+            type: "PUT",
+            headers: {
+                'X-XSRF-TOKEN': getXsrfToken()
+            },
+            success: function ( result )
+            {
+                $("#popup_content").html( result );
+            }
+        });
 
-    $("#allSales").click(function()
-    {
-        getSales();
-    });
-
-    getParties(user_id);
-});
+        clearLoading();
+    }
+//});

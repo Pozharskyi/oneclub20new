@@ -26,9 +26,15 @@ class ImportIndexPartiesModel extends Model
      */
     protected $table = 'dev_import_index_parties';
 
+    protected $fillable = [
+        'import_supplier_id', 'party_name', 'party_start_date',
+        'party_end_date', 'party_days_count', 'made_by', 'buyer_id',
+        'support_id', 'import_index_categories_id', 'import_parties_status_id',
+    ];
+
     public function supplier()
     {
-        return $this->belongsTo(ImportIndexSuppliersModel::class, 'id');
+        return $this->belongsTo(ImportIndexSuppliersModel::class, 'import_supplier_id');
     }
 
     public function madeBy()

@@ -11,6 +11,8 @@
     opacity: 0; /* opacity to zero for animation */
     z-index: 1001; /* greater z-index */
     padding: 20px 10px;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 /* close button */
@@ -27,6 +29,53 @@
 /* overlay */
 #overlay {
     z-index: 1000; /* greater than others */
+    position:fixed; /* overlay the window */
+    background-color:#000; /* black */
+    opacity:0.8; /* partly opacity */
+    -moz-opacity:0.8; /* fix for old browsers */
+    filter:alpha(opacity=80);
+    width:100%;
+    height:100%; /* full screen */
+    top:0; /* top as zero */
+    left:0;
+    cursor:pointer;
+    display:none; /* basically none */
+}
+
+#modal_form2 {
+    width: 90%;
+    height: 90%; /* fixed dimensions */
+    border-radius: 5px;
+    /*background: #fff;*/
+    position: fixed; /* displays everywhere */
+    top: 5% !important; /* move from 5% */
+    left: 5%; /* left 5% */
+    right: 0;
+    display: none; /* basically none */
+    opacity: 0; /* opacity to zero for animation */
+    z-index: 2005; /* greater z-index */
+    padding: 20px 10px;
+}
+
+#alert_status {
+    z-index: 5001;
+    margin-top: 13%;
+}
+
+/* close button */
+#modal_form2 #modal_close2 {
+    width: 21px;
+    height: 21px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    display: block;
+}
+
+/* overlay */
+#overlay2 {
+    z-index: 2000; /* greater than others */
     position:fixed; /* overlay the window */
     background-color:#000; /* black */
     opacity:0.8; /* partly opacity */
@@ -98,6 +147,7 @@
     top: 35%;
     left: 50%;
     display: none;
+    z-index: 100001;
 }
 
 #user, #user:hover {
@@ -106,4 +156,16 @@
 
 .alert_message {
     color: rgb(240, 0, 140);
+}
+
+.form_label {
+    margin-top: 15px;
+}
+
+.btn_confirm {
+    margin: 25px 0 25px 0;
+}
+
+#go_back {
+    margin-right: 25px;
 }

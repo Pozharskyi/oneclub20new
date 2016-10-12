@@ -24,6 +24,28 @@ function closePopup()
         );
 }
 
+function getPopup2()
+{
+    $('#overlay2').fadeIn(400, // black layout firstly
+        function(){ // after animation
+            $('#modal_form2')
+                .css('display', 'block') // remove display as none
+                .animate({opacity: 1, top: '50%'}, 200); // make greater opacity
+        }
+    );
+}
+
+function closePopup2()
+{
+    $('#modal_form2')
+        .animate({opacity: 0, top: '45%'}, 200,  // opacity to zero and window move to top
+            function(){ // пoсле aнимaции
+                $(this).css('display', 'none'); // getting display as none
+                $('#overlay2').fadeOut(400); // hide layout
+            }
+        );
+}
+
 /* When the user clicks on the button,
  toggle between hiding and showing the dropdown content */
 function toggleMenu() {

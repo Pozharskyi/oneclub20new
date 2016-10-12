@@ -16,8 +16,8 @@ class CreateDevImportIndexPartiesTable extends Migration
             $table->increments('id');
             $table->integer('import_supplier_id')->unsigned();
             $table->string('party_name');
-            $table->timestamp('party_start_date');
-            $table->timestamp('party_end_date');
+            $table->date('party_start_date');
+            $table->date('party_end_date');
             $table->integer('party_days_count');
             $table->integer('made_by')->unsigned();
             $table->integer('buyer_id')->unsigned();
