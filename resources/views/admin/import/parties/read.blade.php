@@ -10,13 +10,20 @@
                     <td>Название ТП</td>
                     <td>Дата старта</td>
                     <td>Дата окончания</td>
+                    <td>Категория</td>
                     <td>Статус</td>
                 </tr>
             </thead>
             <tbody>
 
                 @foreach( $parties as $party )
-                    <tr class="row_tr" id="row_{{ $party->id }}" onclick="makePartyActive({{ $party->id }});">
+                    <tr class="row_tr
+
+                    @if($party->import_parties_status_id == $deleted)
+                        deleted
+                    @endif
+
+                    " id="row_{{ $party->id }}" onclick="makePartyActive({{ $party->id }});">
                         <td>
                             #{{ $party->id }}
                         </td>
@@ -34,6 +41,9 @@
                         </td>
                         <td>
                             {{ $party->party_end_date }}
+                        </td>
+                        <td>
+                            {{ $party->importCategory->name }}
                         </td>
                         <td>
                             {{ $party->partiesStatus->parties_status }}

@@ -16,14 +16,26 @@ use App\Models\Import\ImportIndexPartiesModel;
 
 class AdminImportPartiesReadController extends Controller implements AdminImportReadInterface
 {
+    private $partiesStatus;
+
+    public function __construct()
+    {
+        $this->partiesStatus = new AdminImportPartiesStatusController;
+    }
+
     public function actionGetViewForRead( $buyer_id = null )
     {
         $parties = ImportIndexPartiesModel::sortByBuyer( $buyer_id )
-            ->with(['partiesStatus', 'buyer', 'supplier'])
-            ->get();
+            ->with([
+                'partiesStatus', 'buyer',
+                'supplier', 'importCategory',
+            ])->get();
+
+        $deleted = $this->partiesStatus->actionGetStatusIdByPhrase('DELETED');
 
         return view( 'admin.import.parties.read', [
             'parties' => $parties,
+            'deleted' => $deleted,
             'count' => count( $parties ),
         ]);
     }

@@ -300,16 +300,20 @@ function getErrorMessage( category )
 function makePartyActive( party_id )
 {
     var row = $("#row_" + party_id);
-    var party = $("#party_id");
-    $('.row_tr').removeClass('row_active');
 
-    var prev_row = party.val();
-    if( party_id == prev_row ) {
-        row.removeClass('row_active');
-        party.val('');
-    } else {
-        row.addClass('row_active');
-        party.val(party_id);
+    if(!row.hasClass('deleted'))
+    {
+        var party = $("#party_id");
+        $('.row_tr').removeClass('row_active');
+        
+        var prev_row = party.val();
+        if( party_id == prev_row ) {
+            row.removeClass('row_active');
+            party.val('');
+        } else {
+            row.addClass('row_active');
+            party.val(party_id);
+        }
     }
 }
 

@@ -17,6 +17,12 @@ use Illuminate\Http\Request;
 class AdminImportPartiesDeleteController extends Controller
 {
     private $message;
+    private $partiesStatus;
+
+    public function __construct()
+    {
+        $this->partiesStatus = new AdminImportPartiesStatusController;
+    }
 
     public function actionGetViewForDelete(Request $request)
     {
@@ -41,6 +47,10 @@ class AdminImportPartiesDeleteController extends Controller
                 'comment' => $comment,
                 'made_by' => \Auth::user()->id,
             ]);
+
+            $party = ImportIndexPartiesModel::findOrFail($party_id);
+            $party->import_parties_status_id = $this->partiesStatus->actionGetStatusIdByPhrase('ASKED_FOR_DELETION');
+            $party->save();
 
             $this->message = 'Заявка на удаление была подана.';
 

@@ -30,7 +30,7 @@ class ImportIndexCategoriesTableSeeder extends Seeder
                 ],
                 [
                     'id' => 2,
-                    'name' => '% Скидки',
+                    'name' => 'Акции',
                     'short_association' => 'SALE',
                     'created_at' => date('Y-m-d H:i:s'),
                     'updated_at' => date('Y-m-d H:i:s'),

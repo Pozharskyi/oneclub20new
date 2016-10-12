@@ -199,6 +199,10 @@
     color: rgb(240, 0, 140);
 }
 
+.deleted {
+    background-color: darkred;
+}
+
 .form_label {
     margin-top: 15px;
 }
