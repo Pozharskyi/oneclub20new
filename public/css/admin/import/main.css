@@ -42,12 +42,39 @@
 
 .dropup {
     position: fixed;
-    bottom: 0;
+    bottom: 35px;
     left: 80px;
+}
+
+.content_block {
+    padding-top: 40px;
 }
 
 .none_found {
     display: none;
+}
+
+#nav {
+    margin: 0 auto;
+    display: table;
+    float: none;
+}
+
+#nav > li {
+    margin-left: 6vw;
+    margin-right: 6vw;
+}
+
+#nav > li > a:hover {
+    text-decoration: none;
+}
+
+.nav {
+    margin-top: 15px;
+}
+
+#nav > li {
+    display: inline-block;
 }
 
 #search {
@@ -66,3 +93,17 @@
     margin: 7px 0 0 0;
 }
 
+#loading {
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    display: none;
+}
+
+#user, #user:hover {
+    color: black;
+}
+
+.alert_message {
+    color: rgb(240, 0, 140);
+}

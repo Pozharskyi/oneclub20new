@@ -40,7 +40,7 @@ class ImportIndexSuppliersModel extends Model
 
     public function parties()
     {
-        return $this->belongsTo(ImportIndexPartiesModel::class, 'id');
+        return $this->hasMany(ImportIndexPartiesModel::class, 'id', 'import_supplier_id');
     }
 
     public function subProduct()

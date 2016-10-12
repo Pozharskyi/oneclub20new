@@ -4,6 +4,31 @@
 
 @section('content')
 
+    <div id="loading">
+        <img src="{{ url('/images/import/loading.gif') }}" />
+    </div>
+
+    <div class="nav">
+        <ul id="nav">
+            <li>
+                <a id="myParties" href="{{ url('#') }}">Мои Товарные партии</a>
+            </li>
+            <li>
+                <a id="allParties" href="{{ url('#') }}">Товарные партии</a>
+            </li>
+            <li>
+                <a id="allSales" href="{{ url('#') }}">Товарные акции</a>
+            </li>
+            <li>
+                <a id="user" href="{{ url('#') }}">Здравствуйте, {{ Auth::user()->name }}</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="container content_block">
+        <div id="result"></div>
+    </div>
+
     <div class="dropup">
         <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Управление импортом
@@ -23,9 +48,11 @@
             </li>
             <li role="separator" class="divider"></li>
             <li>
-                <input type="text" placeholder="Search.." id="search" onkeyup="filterFunction()">
+                <input type="text" placeholder="Поиск.." id="search" onkeyup="filterFunction()">
             </li>
         </ul>
     </div>
+
+    <input type="hidden" id="user_id" name="user_id" value="{{ Auth::user()->id }}" />
 
 @endsection

@@ -17,9 +17,11 @@
         <link rel="stylesheet" type="text/css" href="{{ url('/css/admin/import/main.css') }}" />
 
         <!-- Scripts -->
+        <script type="text/javascript" src="{{ url('/js/token.js') }}"></script>
         <script type="text/javascript" src="{{ url('/js/jquery-3.1.0.min.js') }}"></script>
         <script type="text/javascript" src="{{ url('/js/admin/import/main.js') }}"></script>
         <script type="text/javascript" src="{{ url('/js/bootstrap_min.js') }}"></script>
+        <script type="text/javascript" src="{{ url('/js/admin/import/control.js') }}"></script>
     </head>
     <body>
 

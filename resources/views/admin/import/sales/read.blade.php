@@ -1,0 +1,40 @@
+@if( $count != 0 )
+
+    <div class="row">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <td># ТА</td>
+                    <td>Ответственный баер</td>
+                    <td>Дата старта</td>
+                    <td>Дата окончания</td>
+                </tr>
+            </thead>
+            <tbody>
+
+            @foreach( $sales as $sale )
+                <tr>
+                    <td>
+                        #{{ $sale->id }}
+                    </td>
+                    <td>
+                        {{ $sale->buyer->name }}
+                    </td>
+                    <td>
+                        {{ $sale->sale_start_date }}
+                    </td>
+                    <td>
+                        {{ $sale->sale_end_date }}
+                    </td>
+                </tr>
+            @endforeach
+
+            </tbody>
+        </table>
+    </div>
+
+@else
+
+    <h3 class="alert_message">Результатов не найдено.</h3>
+
+@endif

@@ -11,6 +11,7 @@
 namespace App\Models\Import;
 
 use App\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -27,7 +28,7 @@ class ImportIndexPartiesModel extends Model
 
     public function supplier()
     {
-        return $this->hasMany(ImportIndexSuppliersModel::class, 'id', 'import_supplier_id');
+        return $this->belongsTo(ImportIndexSuppliersModel::class, 'id');
     }
 
     public function madeBy()
@@ -73,6 +74,14 @@ class ImportIndexPartiesModel extends Model
     public function partiesStatus()
     {
         return $this->belongsTo(ImportPartiesStatusesModel::class, 'import_parties_status_id');
+    }
+
+    public function scopeSortByBuyer( Builder $query, $buyer_id )
+    {
+        if( !is_null( $buyer_id ) )
+        {
+            $query->where( 'buyer_id', $buyer_id );
+        }
     }
 
 }

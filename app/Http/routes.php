@@ -557,6 +557,21 @@ Route::group(['prefix' => 'admin/manage'], function ()
 Route::group(['prefix' => 'admin/import'], function ()
 {
     Route::get('/', [ 'uses' => 'Admin\Import\AdminImportIndexController@actionIndex' ]);
+
+    Route::group(['prefix' => '/parties'], function()
+    {
+        Route::put('/search/{buyer_id?}',
+            [ 'uses' => 'Admin\Import\Parties\AdminImportPartiesReadController@actionGetViewForRead' ]
+        );
+    });
+
+    Route::group(['prefix' => '/sales'], function()
+    {
+        Route::put('/search',
+            [ 'uses' => 'Admin\Import\Sales\AdminImportSalesReadController@actionGetViewForRead' ]
+        );
+    });
+
 });
 
 Route::get( '/test/test', 'Shop\Catalog\ShopCatalogCategoriesController@actionIndex' );
