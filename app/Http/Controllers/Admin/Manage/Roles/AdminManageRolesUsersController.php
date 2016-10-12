@@ -16,6 +16,7 @@ class AdminManageRolesUsersController extends Controller
         $users = User::filterByRoleId($roleId)->get();
 
         $role = RoleModel::findOrFail($roleId);
+        $this->authorize('getUsers', $role);
 
         return view('admin.manage.roles.users')
             ->with('users', $users)

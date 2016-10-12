@@ -15,6 +15,8 @@ class AdminManageRolesUpdateController extends Controller implements AdminImport
     {
         $role = RoleModel::findOrFail($role_id);
 
+        $this->authorize('actionGetUpdateView', \Auth::user(),$role);
+
         return view('admin.manage.roles.update', [
             'role' => $role,
         ]);
@@ -27,6 +29,8 @@ class AdminManageRolesUpdateController extends Controller implements AdminImport
      */
     public function actionUpdate(Request $request)
     {
+        $this->authorize('actionUpdate', RoleModel::first());
+
         $role_name = $request->input('role_name');
         $role_id = $request->input('role_id');
         $role_description = $request->input('role_description');

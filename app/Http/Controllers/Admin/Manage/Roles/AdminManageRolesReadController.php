@@ -19,6 +19,10 @@ class AdminManageRolesReadController extends Controller implements AdminImportRe
      */
     public function actionRead(Request $request)
     {
+        $role = RoleModel::find(1);
+
+        $this->authorize('actionRead', $role);
+
         $alert = $request->input( 'alert' );
 
         if( !isset( $alert ) )

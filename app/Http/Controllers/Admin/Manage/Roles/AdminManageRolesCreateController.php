@@ -19,6 +19,9 @@ class AdminManageRolesCreateController extends Controller implements AdminImport
      */
     public function actionGetCreateView(Request $request)
     {
+        $role = RoleModel::first();
+        $this->authorize('actionGetCreateView', $role);
+
         return view('admin.manage.roles.create');
     }
 
@@ -30,6 +33,8 @@ class AdminManageRolesCreateController extends Controller implements AdminImport
      */
     public function actionCreate(Request $request)
     {
+        $this->authorize('actionCreate', RoleModel::first());
+
         $role = new RoleModel($request->all());
         $role->save();
 

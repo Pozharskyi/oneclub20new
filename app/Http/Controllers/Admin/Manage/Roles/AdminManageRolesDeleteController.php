@@ -26,6 +26,8 @@ class AdminManageRolesDeleteController extends Controller implements AdminImport
         try {
             $role = RoleModel::findOrFail($role_id);
 
+            $this->authorize('actionDelete', $role);
+
             $role->delete();
         } catch (\Exception $e) {
             $result = 'false';
