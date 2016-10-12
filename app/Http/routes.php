@@ -600,6 +600,12 @@ Route::group(['prefix' => 'admin/import'], function ()
         Route::post('/edit',
             [ 'uses' => 'Admin\Import\Sales\AdminImportSalesEditController@actionEdit' ]
         );
+        Route::put('/delete',
+            [ 'uses' => 'Admin\Import\Sales\AdminImportSalesDeleteController@actionGetViewForDelete' ]
+        );
+        Route::delete('/delete',
+            [ 'uses' => 'Admin\Import\Sales\AdminImportSalesDeleteController@actionDelete' ]
+        );
     });
 
 });

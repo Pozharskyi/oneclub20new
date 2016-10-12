@@ -20,7 +20,12 @@ class ImportSalesLogDeleteModel extends Model
      *
      * @var string
      */
-    protected $table = 'dev_import_parties_log_delete';
+    protected $table = 'dev_import_sales_log_delete';
+
+    protected $fillable = [
+        'import_index_sale_id', 'comment',
+        'made_by',
+    ];
 
     public function sales()
     {

@@ -81,6 +81,11 @@ $(document).ready(function() {
     {
         getSaleEditView();
     });
+
+    $("#ta_deletion").click(function()
+    {
+        getSaleDeleteView();
+    });
 });
 
 function getParties(group)
@@ -234,6 +239,32 @@ function getSaleEditView()
             {
                 getPopup();
                 $("#popup_content").html( result );
+            }
+        });
+    } else {
+        getErrorMessage('TA');
+    }
+
+    clearLoading();
+}
+
+function getSaleDeleteView()
+{
+    getLoading();
+    var sale_id = $("#sale_id").val();
+
+    if( sale_id != '' ) {
+        $.ajax({
+            url: "/admin/import/sales/delete",
+            data: "sale_id=" + sale_id,
+            type: "PUT",
+            headers: {
+                'X-XSRF-TOKEN': getXsrfToken()
+            },
+            success: function ( result )
+            {
+                $("#popup_content").html( result );
+                getPopup();
             }
         });
     } else {

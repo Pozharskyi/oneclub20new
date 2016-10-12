@@ -57,7 +57,7 @@
             <li><a href="{{ url('#uploading') }}">Загрузка списка</a></li>
             <li><a id="ta_creation" href="{{ url('#ta_creation') }}">Создание товарной акции</a></li>
             <li><a id="ta_edition" href="{{ url('#ta_edition') }}">Редактирование товарной акции</a></li>
-            <li><a href="{{ url('#ta_deletion') }}">Удаление товарной акции</a></li>
+            <li><a id="ta_deletion" href="{{ url('#ta_deletion') }}">Удаление товарной акции</a></li>
             <li><a href="{{ url('#linking') }}">Привязка ТП к ТА</a></li>
             <li><a href="{{ url('#exporting') }}">Выгрузка файла в Excel</a></li>
             <li><a href="{{ url('#updating') }}">Обновление цен и остатков</a></li>
