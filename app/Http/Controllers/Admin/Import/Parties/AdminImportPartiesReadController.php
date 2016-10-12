@@ -11,9 +11,10 @@
 namespace App\Http\Controllers\Admin\Import\Parties;
 
 use App\Http\Controllers\Controller;
+use App\Interfaces\Controllers\Import\AdminImportReadInterface;
 use App\Models\Import\ImportIndexPartiesModel;
 
-class AdminImportPartiesReadController extends Controller
+class AdminImportPartiesReadController extends Controller implements AdminImportReadInterface
 {
     public function actionGetViewForRead( $buyer_id = null )
     {

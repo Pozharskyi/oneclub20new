@@ -11,11 +11,12 @@
 namespace App\Http\Controllers\Admin\Import\Sales;
 
 use App\Http\Controllers\Controller;
+use App\Interfaces\Controllers\Import\AdminImportReadInterface;
 use App\Models\Import\ImportIndexSalesModel;
 
-class AdminImportSalesReadController extends Controller
+class AdminImportSalesReadController extends Controller implements AdminImportReadInterface
 {
-    public function actionGetViewForRead()
+    public function actionGetViewForRead( $buyer_id = null )
     {
         $sales = ImportIndexSalesModel::with(['buyer'])
             ->get();
