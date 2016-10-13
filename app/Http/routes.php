@@ -42,7 +42,7 @@ Route::get('/social/{provider}', [ 'uses' => 'Auth\Social\SocialStepsContinueCon
  * with NovaPoshta Api
  */
 Route::get('/delivery/nova_poshta/tracking/{order_id}', [ 'uses' => 'Delivery\Novaposhta\NPTrackingController@actionGetTrackingData' ])
-    ->where(['order_id' => '[A-Za-z1-9]+']);
+    ->where(['order_id' => '[A-Za-z0-9]+']);
 
 /**
  * Getting TTN
@@ -79,7 +79,7 @@ Route::group(['prefix' => 'admin/notifications'], function()
      * @param $event_id
      */
     Route::get('/list/{event_id}', [ 'uses' => 'Admin\Notifications\NotificationsOptionsController@actionIndex' ])
-        ->where(['event_id' => '[1-9]+']);
+        ->where(['event_id' => '[0-9]+']);
 
     /**
      * Getting all sequences
@@ -87,8 +87,8 @@ Route::group(['prefix' => 'admin/notifications'], function()
      * $param $sequence_id
      */
     Route::get('/options/{sequence_type}/{sequence_id}', [ 'uses' => 'Admin\Notifications\NotificationsSequencesController@actionIndex' ])
-        ->where(['sequence_type' => '[1-9]+'])
-        ->where(['sequence_id' => '[1-9]+']);
+        ->where(['sequence_type' => '[0-9]+'])
+        ->where(['sequence_id' => '[0-9]+']);
 
     /**
      * Getting data for user
@@ -98,7 +98,7 @@ Route::group(['prefix' => 'admin/notifications'], function()
      */
     Route::get('/info/{method}/{user_id}', [ 'uses' => 'Admin\Notifications\NotificationsMethodController@actionIndex' ])
         ->where(['method' => '[a-zA-Z]+'])
-        ->where(['user_id' => '[1-9]+']);
+        ->where(['user_id' => '[0-9]+']);
 
     /**
      * Saving an notification
@@ -137,8 +137,8 @@ Route::group(['prefix' => '/notifications'], function()
      * @variable content_id | id of email or phone message in eSputnik
      */
     Route::get('/{user_id}/{trigger_id}', [ 'uses' => 'Notifications\ESputnik\NotificationsIndexController@actionSendMessage' ])
-        ->where(['user_id' => '[1-9]+'])
-        ->where(['trigger_id' => '[1-9]+']);
+        ->where(['user_id' => '[0-9]+'])
+        ->where(['trigger_id' => '[0-9]+']);
 
 });
 
@@ -218,28 +218,28 @@ Route::group(['prefix' => '/list'], function()
 
     Route::put('/find/sizes/{product_id}/{color_id}', 'Shop\Catalog\ShopCatalogSearchController@actionGetSizesForProductByColor')
         ->where([
-            'product_id' => '[1-9]+',
-            'color_id' => '[1-9]+',
+            'product_id' => '[0-9]+',
+            'color_id' => '[0-9]+',
         ]);
 
     Route::put('/find/quantity/{product_id}/{color_id}/{size_id}', 'Shop\Catalog\ShopCatalogSearchController@actionGetQuantityForProduct')
         ->where([
-            'product_id' => '[1-9]+',
-            'color_id' => '[1-9]+',
-            'size_id' => '[1-9]+',
+            'product_id' => '[0-9]+',
+            'color_id' => '[0-9]+',
+            'size_id' => '[0-9]+',
         ]);
 
     Route::put('/validate/{basket_id}/{product_quantity}', 'Shop\Basket\BasketAddingDataController@actionValidateIfProductInBasketCanIncrease')
         ->where([
-            'sub_product' => '[1-9]+',
-            'product_quantity' => '[1-9]+',
+            'sub_product' => '[0-9]+',
+            'product_quantity' => '[0-9]+',
         ]);
 
     Route::post('/reserve/item/{basket_id}', 'Shop\Basket\BasketReserveBackController@actionReserveBack');
 
     Route::put('/reserve/validation/{user_id}', 'Shop\Checkout\CheckoutProductValidationController@actionCheckProductsForCheckout')
         ->where([
-            'user_id' => '[1-9]+',
+            'user_id' => '[0-9]+',
         ]);
 
     /** END INDEX CATALOG AREA */
@@ -250,19 +250,19 @@ Route::group(['prefix' => '/list'], function()
      * Saving into basket
      */
     Route::post('/save/{id}', 'Shop\Basket\BasketAddingDataController@actionSaveIntoBasket')
-        ->where(['id' => '[1-9]+']);
+        ->where(['id' => '[0-9]+']);
 
     /**
      * Deleting from basket
      */
     Route::delete('/save/{id}', 'Shop\Basket\BasketDeleteDataController@actionDeleteFromBasket')
-        ->where(['id' => '[1-9]+']);
+        ->where(['id' => '[0-9]+']);
 
     /**
      * Changing quantity of items
      */
     Route::post('/change/{basket_id}', 'Shop\Basket\BasketChangeQuantityController@actionChangeQuantity')
-        ->where([ 'basket_id' => '[1-9]+' ]);
+        ->where([ 'basket_id' => '[0-9]+' ]);
 });
 
 Route::get('/sale/{category?}', 'Shop\Catalog\ShopCatalogIndexController@actionIndex');
@@ -274,7 +274,7 @@ Route::post('/sort/{shortcut}/{order_by}/{order_sort}', 'Shop\Catalog\ShopCatalo
 Route::get('/basket', 'Shop\Basket\BasketIndexController@actionIndex');
 
 Route::post('/checkout/conflict/{user_id}', 'Shop\Checkout\CheckoutConflictResolveController@actionResolveConflict')
-    ->where(['user_id' => '[1-9]+']);
+    ->where(['user_id' => '[0-9]+']);
 
 /** END INDEX CATALOG AREA */
 
@@ -468,7 +468,7 @@ Route::group(['middleware' => ['auth','admin']], function () {
             ->name('AdminPanel.product.edit');
         Route::put('/update/{product_id}',
             ['uses' => 'Admin\Products\AdminProductsUpdateController@actionUpdateProduct'])
-            ->where(['product_id' => '[1-9]+'])->name('AdminPanel.product.update');
+            ->where(['product_id' => '[0-9]+'])->name('AdminPanel.product.update');
 
 //    Route::delete('delete/{product_id}', [ 'uses' => 'Admin\Products\AdminProductsDeleteController@actionDeleteProduct' ])
 //       ->name('AdminPanel.product.delete');
@@ -508,7 +508,7 @@ Route::group(['middleware' => ['auth','admin']], function () {
 
             Route::get('/update/{brand_id}',
                 ['uses' => 'Admin\Manage\Brands\AdminManageBrandsUpdateController@actionGetUpdateView'])
-                ->where(['brand_id' => '[1-9]+']);
+                ->where(['brand_id' => '[0-9]+']);
             Route::post('/update', ['uses' => 'Admin\Manage\Brands\AdminManageBrandsUpdateController@actionUpdate']);
 
             Route::delete('/delete', ['uses' => 'Admin\Manage\Brands\AdminManageBrandsDeleteController@actionDelete']);
@@ -523,7 +523,7 @@ Route::group(['middleware' => ['auth','admin']], function () {
 
             Route::get('/update/{color_id}',
                 ['uses' => 'Admin\Manage\Colors\AdminManageColorsUpdateController@actionGetUpdateView'])
-                ->where(['color_id' => '[1-9]+']);
+                ->where(['color_id' => '[0-9]+']);
             Route::post('/update', ['uses' => 'Admin\Manage\Colors\AdminManageColorsUpdateController@actionUpdate']);
 
             Route::delete('/delete', ['uses' => 'Admin\Manage\Colors\AdminManageColorsDeleteController@actionDelete']);
@@ -538,7 +538,7 @@ Route::group(['middleware' => ['auth','admin']], function () {
 
             Route::get('/update/{size_id}',
                 ['uses' => 'Admin\Manage\Sizes\AdminManageSizesUpdateController@actionGetUpdateView'])
-                ->where(['size_id' => '[1-9]+']);
+                ->where(['size_id' => '[0-9]+']);
             Route::post('/update', ['uses' => 'Admin\Manage\Sizes\AdminManageSizesUpdateController@actionUpdate']);
 
             Route::delete('/delete', ['uses' => 'Admin\Manage\Sizes\AdminManageSizesDeleteController@actionDelete']);
@@ -552,7 +552,7 @@ Route::group(['middleware' => ['auth','admin']], function () {
 
             Route::get('/update/{category_id}',
                 ['uses' => 'Admin\Manage\Categories\AdminManageCategoriesUpdateController@actionGetUpdateView'])
-                ->where(['category_id' => '[1-9]+']);
+                ->where(['category_id' => '[0-9]+']);
             Route::post('/update',
                 ['uses' => 'Admin\Manage\Categories\AdminManageCategoriesUpdateController@actionUpdate']);
 
@@ -570,7 +570,7 @@ Route::group(['middleware' => ['auth','admin']], function () {
 
             Route::get('update/{size_id}',
                 ['uses' => 'Admin\Manage\SizeChart\AdminManageSizeChartUpdateController@actionGetUpdateView'])
-                ->where(['size_id' => '[1-9]+']);
+                ->where(['size_id' => '[0-9]+']);
             Route::post('update',
                 ['uses' => 'Admin\Manage\SizeChart\AdminManageSizeChartUpdateController@actionUpdate']);
 
@@ -587,7 +587,7 @@ Route::group(['middleware' => ['auth','admin']], function () {
 
             Route::get('/update/{role_id}',
                 ['uses' => 'Admin\Manage\Roles\AdminManageRolesUpdateController@actionGetUpdateView'])
-                ->where(['role_id' => '[1-9]+']);
+                ->where(['role_id' => '[0-9]+']);
             Route::post('/update', ['uses' => 'Admin\Manage\Roles\AdminManageRolesUpdateController@actionUpdate']);
 
             Route::delete('/delete', ['uses' => 'Admin\Manage\Roles\AdminManageRolesDeleteController@actionDelete']);
@@ -613,15 +613,15 @@ Route::group(['middleware' => ['auth','admin']], function () {
 
             Route::get('/desc/{supplier_id}',
                 ['uses' => 'Admin\Import\Suppliers\AdminImportSuppliersDescriptionController@actionGetDescription'])
-                ->where(['supplier_id' => '[1-9]+']);
+                ->where(['supplier_id' => '[0-9]+']);
 
             Route::get('/update/{supplier_id}',
                 ['uses' => 'Admin\Import\Suppliers\AdminImportSuppliersUpdateController@actionGetView'])
-                ->where(['supplier_id' => '[1-9]+']);
+                ->where(['supplier_id' => '[0-9]+']);
 
             Route::post('/update',
                 ['uses' => 'Admin\Import\Suppliers\AdminImportSuppliersUpdateController@actionUpdate'])
-                ->where(['supplier_id' => '[1-9]+']);
+                ->where(['supplier_id' => '[0-9]+']);
 
             Route::delete('/delete',
                 ['uses' => 'Admin\Import\Suppliers\AdminImportSuppliersDeleteController@actionDelete']);
@@ -640,18 +640,18 @@ Route::group(['middleware' => ['auth','admin']], function () {
 
             Route::get('/desc/{party_id}',
                 ['uses' => 'Admin\Import\Parties\AdminImportPartiesDescriptionController@actionGetPartyDescription'])
-                ->where(['party_id' => '[1-9]+']);
+                ->where(['party_id' => '[0-9]+']);
 
             Route::get('/fat/{party_id}',
                 ['uses' => 'Admin\Import\Parties\AdminImportPartiesFatStatusController@actionGetFatStatusView'])
-                ->where(['party_id' => '[1-9]+']);
+                ->where(['party_id' => '[0-9]+']);
             Route::put('/fat/search/{party_id}/{search}',
                 ['uses' => 'Admin\Import\Parties\AdminImportPartiesFatStatusController@actionSearchFatStatus'])
-                ->where(['party_id' => '[1-9]+'])
+                ->where(['party_id' => '[0-9]+'])
                 ->where(['fat_status_id' => '[0-9]+']);
             Route::post('/confirm/party',
                 ['uses' => 'Admin\Import\Parties\AdminImportPartiesEditController@actionConfirmParty'])
-                ->where(['party_id' => '[1-9]+']);
+                ->where(['party_id' => '[0-9]+']);
             Route::put('/fat/file/parsing',
                 ['uses' => 'Admin\Import\Parties\AdminImportPartiesFatDescriptionController@actionIndex']);
             Route::put('/fat/handler',
@@ -683,12 +683,12 @@ Route::group(['middleware' => ['auth','admin']], function () {
                     ['uses' => 'Admin\Import\Parties\AdminImportPartiesStatsController@actionGetPartiesView']);
                 Route::put('/info/{party_id}',
                     ['uses' => 'Admin\Import\Parties\AdminImportPartiesStatsController@actionGetPartyDescription'])
-                    ->where(['party_id' => '[1-9]+']);
+                    ->where(['party_id' => '[0-9]+']);
             });
 
             Route::get('/export/{party_id}',
                 ['uses' => 'Admin\Import\Parties\Export\AdminImportPartiesExportController@actionExportPartyForSupplier'])
-                ->where(['party_id' => '[1-9]+']);
+                ->where(['party_id' => '[0-9]+']);
             //Route::get('/parse', [ 'uses' => 'Admin\Import\Parties\AdminImportPartiesParserController@actionMakeImport' ]);
         });
         // END PARTIES AREA
@@ -704,11 +704,11 @@ Route::group(['middleware' => ['auth','admin']], function () {
 
             Route::get('/desc/{share_id}',
                 ['uses' => 'Admin\Import\Share\AdminImportShareDescriptionController@actionGetShareDescription'])
-                ->where(['share_id' => '[1-9]+']);
+                ->where(['share_id' => '[0-9]+']);
 
             Route::get('/stats/{shareId}',
                 ['uses' => 'Admin\Import\Share\AdminImportShareStatsController@actionGetStatsView'])
-                ->where(['shareId' => '[1-9]+']);
+                ->where(['shareId' => '[0-9]+']);
 
             Route::post('/update', ['uses' => 'Admin\Import\Share\AdminImportShareUpdateController@actionUpdate']);
 
@@ -728,11 +728,11 @@ Route::group(['middleware' => ['auth','admin']], function () {
 
             Route::get('/desc/{update_id}',
                 ['uses' => 'Admin\Import\Update\AdminImportUpdateDescriptionController@actionGetFatStatusView'])
-                ->where(['update_id' => '[1-9]+']);
+                ->where(['update_id' => '[0-9]+']);
 
             Route::put('/desc/search/{update_id}/{fat_status_id}',
                 ['uses' => 'Admin\Import\Update\AdminImportUpdateDescriptionController@actionSearchFatStatus'])
-                ->where(['update_id' => '[1-9]+'])
+                ->where(['update_id' => '[0-9]+'])
                 ->where(['fat_status_id' => '[0-9]+']);
 
             Route::get('/search',
