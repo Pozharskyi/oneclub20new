@@ -18,6 +18,8 @@ class AdminManageColorsUpdateController extends AdminManageColorsValidationContr
 {
     public function actionGetUpdateView( $color_id )
     {
+        $this->authorize('actionGetUpdateView', ProductColorModel::first());
+
         $color = ProductColorModel::with(['user'])
             ->find( $color_id );
 

@@ -187,20 +187,41 @@ class User extends Authenticatable
 
     }
 
+
+    /**
+     * check if user has any of role with name in $roleNames
+     * @param  $roleNames
+     * @return bool
+     *
+     */
+    public function hasRoles($roleNames)
+    {
+        if (is_array($roleNames)) {
+            foreach ($roleNames as $roleName) {
+                if ($this->hasRole($roleName)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public function hasAnyRole()
     {
-        if($this->roles()->exists()){
+        if ($this->roles()->exists()) {
             return true;
         }
 
         return false;
     }
+
     public function scopeFilterByRoleId(Builder $query, $roleId)
     {
-        $query->whereHas('roles', function($q) use ($roleId){
+        $query->whereHas('roles', function ($q) use ($roleId) {
             $q->where('role_id', $roleId);
         });
     }
+
     /**
      * Scope a query to only include users which contain a searching text in the user's name or
      *  in the user's email

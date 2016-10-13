@@ -19,6 +19,8 @@ class AdminManageColorsReadController extends Controller implements AdminImportR
 {
     public function actionRead( Request $request )
     {
+        $this->authorize('actionRead', ProductColorModel::first());
+
         $alert = $request->input( 'alert' );
 
         if( !isset( $alert ) )

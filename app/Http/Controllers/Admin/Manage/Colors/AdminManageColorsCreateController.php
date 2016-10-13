@@ -18,11 +18,15 @@ class AdminManageColorsCreateController extends AdminManageColorsValidationContr
 {
     public function actionGetCreateView( Request $request )
     {
+        $this->authorize('actionGetCreateView', ProductColorModel::first());
+
         return view( 'admin.manage.colors.create' );
     }
 
     public function actionCreate( Request $request )
     {
+        $this->authorize('actionCreate', ProductColorModel::first());
+
         $color_name = $request->input( 'color_name' );
 
         if( Auth::guest() )

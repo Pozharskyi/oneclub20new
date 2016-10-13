@@ -16,7 +16,9 @@
         </div>
 
         <div class="row">
-
+            @if (session()->has('message'))
+                <div class="alert alert-info" >{{session('message')}}</div>
+            @endif
             <table class="table table-striped">
                 <thead>
                 <tr>

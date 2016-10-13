@@ -18,6 +18,8 @@ class AdminManageColorsDeleteController extends Controller implements AdminImpor
 {
     public function actionDelete( Request $request )
     {
+        $this->authorize('actionDelete', ProductColorModel::first());
+
         $color_id = $request->input( 'color_id' );
         $result = 'true';
 

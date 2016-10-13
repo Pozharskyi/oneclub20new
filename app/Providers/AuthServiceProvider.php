@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\Product\ProductColorModel;
 use App\Models\User\RoleModel;
+use App\Policies\ColorPolicy;
 use App\Policies\RolePolicy;
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -15,8 +17,8 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        'App\Model' => 'App\Policies\ModelPolicy',
         RoleModel::class => RolePolicy::class,
+        ProductColorModel::class => ColorPolicy::class,
     ];
 
     /**

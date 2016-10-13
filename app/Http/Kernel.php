@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\AdminOrder;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -50,5 +51,13 @@ class Kernel extends HttpKernel
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'admin' => \App\Http\Middleware\Admin::class,
+        'admin_order' => \App\Http\Middleware\AdminOrder::class,
+        'admin_discount' => \App\Http\Middleware\AdminDiscount::class,
+        'admin_user_info' => \App\Http\Middleware\AdminUserInfo::class,
+        'admin_color' => \App\Http\Middleware\AdminColor::class,
+        'admin_brand' => \App\Http\Middleware\AdminBrand::class,
+        'admin_size_chart' => \App\Http\Middleware\AdminSizeChart::class,
+        'admin_categories' => \App\Http\Middleware\AdminCategories::class,
+        'admin_size' => \App\Http\Middleware\AdminSize::class,
     ];
 }

@@ -366,7 +366,7 @@ Route::group(['middleware' => ['auth','admin']], function () {
     /**End ADMIN PANEL SubProduct AREA */
 
 
-    Route::group(['prefix' => 'admin/discounts'], function () {
+    Route::group(['prefix' => 'admin/discounts', 'middleware' => 'admin_discount'], function () {
         Route::get('', 'Admin\Panel\AdminPanelDiscountController@getDiscounts')->name('AdminPanel.discounts.index');
         Route::get('create',
             'Admin\Panel\AdminPanelDiscountController@createDiscount')->name('AdminPanel.discounts.create');
@@ -387,9 +387,10 @@ Route::group(['middleware' => ['auth','admin']], function () {
 
 
     });
-    Route::group(['prefix' => 'admin/users'], function () {
+    Route::post('admin/users', 'Admin\Panel\AdminPanelController@showUsers')->name('adminTable.user.showUsers');
+    Route::group(['prefix' => 'admin/users', 'middleware' => 'admin_user_info'], function () {
         Route::get('{user}', 'Admin\Panel\AdminPanelController@getUser')->name('adminTable.users.index');
-        Route::post('', 'Admin\Panel\AdminPanelController@showUsers')->name('adminTable.user.showUsers');
+//        Route::post('', 'Admin\Panel\AdminPanelController@showUsers')->name('adminTable.user.showUsers');
         Route::put('update', 'Admin\Panel\AdminPanelController@updateUser')->name('adminTable.user.update');
         Route::put('{user}/updateCategories', 'Admin\Panel\AdminPanelController@updateUsersCategories')
             ->name('adminTable.user.updateCategories');
@@ -401,9 +402,9 @@ Route::group(['middleware' => ['auth','admin']], function () {
 
         Route::delete('delete', 'Admin\Panel\AdminPanelController@destroyUser')->name('adminTable.user.delete');
         Route::get('{user}/orders/{order}',
-            'Admin\Panel\AdminPanelOrderController@getUsersOrder')->name('adminPanel.order.index');
+            'Admin\Panel\AdminPanelOrderController@getUsersOrder')->middleware('admin_order')->name('adminPanel.order.index');
         Route::get('{user}/orders/{order}/subproducts/{subproduct}',
-            'Admin\Panel\AdminPanelSubProductController@getSubProduct')
+            'Admin\Panel\AdminPanelSubProductController@getSubProduct')->middleware('admin_order')
             ->name('adminPanel.subProduct.index');
 
         Route::put('{user}/addDiscounts', 'Admin\Panel\AdminPanelDiscountUserController@addDiscounts')
@@ -416,7 +417,7 @@ Route::group(['middleware' => ['auth','admin']], function () {
         Route::post('{user}/manage_role', 'Admin\Panel\AdminPanelUserRoleController@assignRole');
 
         /**Start ADMIN PANEL ORDER AREA */
-        Route::group(['prefix' => '{user}/orders/{order}'], function () {
+        Route::group(['prefix' => '{user}/orders/{order}', 'middleware' => 'admin_order'], function () {
             Route::put('status/update', 'Admin\Panel\AdminPanelOrderController@updateOrderStatus')
                 ->name('adminPanel.orderStatus.update');
             Route::put('update', 'Admin\Panel\AdminPanelOrderController@updateOrderIndex')
@@ -468,7 +469,7 @@ Route::group(['middleware' => ['auth','admin']], function () {
             ->name('AdminPanel.product.edit');
         Route::put('/update/{product_id}',
             ['uses' => 'Admin\Products\AdminProductsUpdateController@actionUpdateProduct'])
-            ->where(['product_id' => '[0-9]+'])->name('AdminPanel.product.update');
+            ->where(['product_id' => '[-9]+'])->name('AdminPanel.product.update');
 
 //    Route::delete('delete/{product_id}', [ 'uses' => 'Admin\Products\AdminProductsDeleteController@actionDeleteProduct' ])
 //       ->name('AdminPanel.product.delete');
@@ -499,7 +500,7 @@ Route::group(['middleware' => ['auth','admin']], function () {
 
 
     Route::group(['prefix' => 'admin/manage'], function () {
-        Route::group(['prefix' => '/brands'], function () {
+        Route::group(['prefix' => '/brands', 'middleware' => 'admin_brand'], function () {
             Route::get('/', ['uses' => 'Admin\Manage\Brands\AdminManageBrandsReadController@actionRead']);
 
             Route::get('/create',
@@ -514,7 +515,7 @@ Route::group(['middleware' => ['auth','admin']], function () {
             Route::delete('/delete', ['uses' => 'Admin\Manage\Brands\AdminManageBrandsDeleteController@actionDelete']);
         });
 
-        Route::group(['prefix' => '/colors'], function () {
+        Route::group(['prefix' => '/colors', 'middleware' => 'admin_color'], function () {
             Route::get('/', ['uses' => 'Admin\Manage\Colors\AdminManageColorsReadController@actionRead']);
 
             Route::get('/create',
@@ -529,7 +530,7 @@ Route::group(['middleware' => ['auth','admin']], function () {
             Route::delete('/delete', ['uses' => 'Admin\Manage\Colors\AdminManageColorsDeleteController@actionDelete']);
         });
 
-        Route::group(['prefix' => '/sizes'], function () {
+        Route::group(['prefix' => '/sizes', 'middleware' => 'admin_size'], function () {
             Route::get('/', ['uses' => 'Admin\Manage\Sizes\AdminManageSizesReadController@actionRead']);
 
             Route::get('/create',
@@ -544,7 +545,7 @@ Route::group(['middleware' => ['auth','admin']], function () {
             Route::delete('/delete', ['uses' => 'Admin\Manage\Sizes\AdminManageSizesDeleteController@actionDelete']);
         });
 
-        Route::group(['prefix' => 'categories'], function () {
+        Route::group(['prefix' => 'categories', 'middleware' => 'admin_categories'], function () {
             Route::get('', 'Admin\Manage\Categories\AdminManageCategoriesReadController@actionRead');
 
             Route::get('/create', 'Admin\Manage\Categories\AdminManageCategoriesCreateController@actionGetCreateView');
@@ -560,7 +561,7 @@ Route::group(['middleware' => ['auth','admin']], function () {
                 ['uses' => 'Admin\Manage\Categories\AdminManageCategoriesDeleteController@actionDelete']);
         });
 
-        Route::group(['prefix' => 'size_chart'], function () {
+        Route::group(['prefix' => 'size_chart', 'middleware' => 'admin_size_chart'], function () {
             Route::get('', 'Admin\Manage\SizeChart\AdminManageSizeChartReadController@actionRead');
 
             Route::get('create',
