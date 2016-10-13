@@ -8,8 +8,10 @@ function uploadFile()
     var form = document.getElementById("formContent");
     var formData = new FormData(form);
 
+    var party_id = $("#party_id").val();
+
     $.ajax({
-        url: "/admin/import/uploading/upload",
+        url: "/admin/import/uploading/create",
         type: "POST",
         data: formData,
         mimeTypes:"multipart/form-data",
@@ -24,7 +26,7 @@ function uploadFile()
             if( result == 'true' )
             {
                 getWaitingView();
-                getPrepareProcess();
+                getPrepareProcess( party_id );
             } else
             {
                 $("#popup_content2").html( result );
@@ -35,9 +37,20 @@ function uploadFile()
     });
 }
 
-function getPrepareProcess()
+function getPrepareProcess( party_id )
 {
-
+    $.ajax({
+        url: "/admin/import/uploading/prepare",
+        data: "party_id=" + party_id,
+        type: "POST",
+        headers: {
+            'X-XSRF-TOKEN': getXsrfToken()
+        },
+        success: function ( result )
+        {
+            $("#popup_content2").html( result );
+        }
+    });
 }
 
 function getConfirmView()
@@ -75,7 +88,7 @@ function getWaitingView()
         '<div id="alert_status">' +
             '<div class="text-center">' +
                 '<h2 class="alert_message">Ожидайте, скоро все будет готово...</h2>' +
-                '<img src="/images/import/loading.gif" />' +
+                '<img style="margin-top: 15px;" src="/images/import/loading.gif" />' +
             '</div>' +
         '</div>';
 

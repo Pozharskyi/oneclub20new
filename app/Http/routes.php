@@ -670,8 +670,11 @@ Route::post('/list/order/save', 'Shop\Order\OrderController@actionSaveOrder');
             Route::put('/create',
                 ['uses' => 'Admin\Import\Uploading\AdminImportUploadingCreateController@actionGetViewForCreate']
             );
-            Route::post('/upload',
-                ['uses' => 'Admin\Import\Uploading\AdminImportUploadingController@actionPrepareUpload']
+            Route::post('/create',
+                ['uses' => 'Admin\Import\Uploading\AdminImportUploadingCreateController@actionCreate']
+            );
+            Route::post('/prepare',
+                ['uses' => 'Admin\Import\Uploading\AdminImportUploadingPrepareController@actionParse']
             );
         });
     });

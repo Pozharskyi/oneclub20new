@@ -11,8 +11,10 @@
 namespace App\Models\Import;
 
 use App\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Scope;
 
 class ImportPartiesFileAllocationModel extends Model
 {
@@ -56,5 +58,12 @@ class ImportPartiesFileAllocationModel extends Model
     public function partiesWorkLog()
     {
         return $this->hasMany(ImportPartiesWorkLogModel::class, 'id', 'file_allocation_id');
+    }
+
+    public function scopeFilterParties(Builder $query, $party_id)
+    {
+        $query->where( 'import_index_party_id', $party_id );
+
+        return $query;
     }
 }

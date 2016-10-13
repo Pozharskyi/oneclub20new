@@ -43,4 +43,11 @@ class AdminImportUploadingCsvParserController extends Controller
         return $data;
     }
 
+    public static function actionCountCsv($import_file_path)
+    {
+        // getting parsed CSV to Array
+        $data = self::actionParseCsvToArray($import_file_path);
+
+        return count($data) + 1; // due to headers
+    }
 }
