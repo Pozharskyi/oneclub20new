@@ -27,6 +27,12 @@ class ImportPartiesFileAllocationModel extends Model
 
     protected $guarded = ['id'];
 
+    protected $fillable = [
+        'import_index_party_id', 'import_file_path',
+        'file_lines_processed', 'file_lines_total',
+        'made_by',
+    ];
+
     public function parties()
     {
         return $this->belongsTo(ImportIndexPartiesModel::class, 'import_index_party_id');

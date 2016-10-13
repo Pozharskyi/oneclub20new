@@ -10,7 +10,8 @@
     <div class="col-md-3"></div>
     <div class="col-md-6">
         <form action="#" id="formContent" method="post" enctype="multipart/form-data" >
-            <input type="file" name="file"  required id="upload">
+            <input type="file" name="file"  id="upload" required>
+            <input type="hidden" name="party_id" id="party_id" value="{{ $party->id }}" />
             <button class="submitI" >Upload Image</button>
         </form>
     </div>
