@@ -664,5 +664,15 @@ Route::post('/list/order/save', 'Shop\Order\OrderController@actionSaveOrder');
                 [ 'uses' => 'Admin\Import\Sales\AdminImportSalesAssociationController@actionCancelParty' ]
             );
         });
+
+        Route::group(['prefix' => '/uploading'], function()
+        {
+            Route::put('/create',
+                ['uses' => 'Admin\Import\Uploading\AdminImportUploadingCreateController@actionGetViewForCreate']
+            );
+            Route::post('/upload',
+                ['uses' => 'Admin\Import\Uploading\AdminImportUploadingController@actionPrepareUpload']
+            );
+        });
     });
 //});

@@ -96,6 +96,11 @@ $(document).ready(function() {
     {
         getAssociationView();
     });
+
+    $("#uploading").click(function()
+    {
+        getUploadingView();
+    });
 });
 
 function getParties(group)
@@ -155,6 +160,32 @@ function getPartyCreateView()
             $("#popup_content").html( result );
         }
     });
+
+    clearLoading();
+}
+
+function getUploadingView()
+{
+    getLoading();
+    var party_id = $("#party_id").val();
+
+    if( party_id != '' ) {
+        $.ajax({
+            url: "/admin/import/uploading/create",
+            data: "party_id=" + party_id,
+            type: "PUT",
+            headers: {
+                'X-XSRF-TOKEN': getXsrfToken()
+            },
+            success: function ( result )
+            {
+                $("#popup_content").html( result );
+                getPopup();
+            }
+        });
+    } else {
+        getErrorMessage('TP');
+    }
 
     clearLoading();
 }
@@ -318,11 +349,11 @@ function getErrorMessage( category )
     }
 
     var message = '<div id="alert_status">' +
-                    '<div class="text-center">' +
-                        '<h2 class="alert_message">Выберите ' + cat + ' для продолжения</h2>' +
-                        '<button onclick="closePopup3();" class="btn btn-success">Вернутся обратно</button>' +
-                    '</div>' +
-               '</div>';
+                        '<div class="text-center">' +
+                            '<h2 class="alert_message">Выберите ' + cat + ' для продолжения</h2>' +
+                            '<button onclick="closePopup3();" class="btn btn-success">Вернутся обратно</button>' +
+                        '</div>' +
+                   '</div>';
 
     $("#popup_content3").html(message);
     getPopup3();

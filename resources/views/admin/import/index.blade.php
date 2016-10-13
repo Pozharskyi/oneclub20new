@@ -54,7 +54,7 @@
             <li><a id="tp_creation" href="{{ url('#tp_creation') }}">Создание товарной партии</a></li>
             <li><a id="tp_edit" href="{{ url('#tp_edition') }}">Редактирование товарной партии</a></li>
             <li><a id="tp_deletion" href="{{ url('#tp_deletion') }}">Удаление товарной партии</a></li>
-            <li><a href="{{ url('#uploading') }}">Загрузка списка</a></li>
+            <li><a id="uploading" href="{{ url('#uploading') }}">Загрузка списка</a></li>
             <li><a id="ta_creation" href="{{ url('#ta_creation') }}">Создание товарной акции</a></li>
             <li><a id="ta_edition" href="{{ url('#ta_edition') }}">Редактирование товарной акции</a></li>
             <li><a id="ta_deletion" href="{{ url('#ta_deletion') }}">Удаление товарной акции</a></li>
