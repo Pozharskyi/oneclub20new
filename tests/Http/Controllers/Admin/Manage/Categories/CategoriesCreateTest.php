@@ -17,6 +17,8 @@ class CategoriesCreateTest extends TestCase
     {
         //for authentification
         $user = factory(\App\User::class)->create();
+        $role = \App\Models\User\RoleModel::first();    //get СуперАдмин роль
+        $user->roles()->attach($role);
         $this->be($user);
 
         //get only two levels from the top
@@ -50,6 +52,8 @@ class CategoriesCreateTest extends TestCase
     {
         //for authentification
         $user = factory(\App\User::class)->create();
+        $role = \App\Models\User\RoleModel::first();    //get СуперАдмин роль
+        $user->roles()->attach($role);
         $this->be($user);
 
         //get only two levels from the top
@@ -89,6 +93,8 @@ class CategoriesCreateTest extends TestCase
     {
         //for authentification
         $user = factory(\App\User::class)->create();
+        $role = \App\Models\User\RoleModel::first();    //get СуперАдмин роль
+        $user->roles()->attach($role);
         $this->be($user);
 
         $categories3level = AdminManageSizeChartGetCategoriesHelper::get3levelCategoriesWithParents();

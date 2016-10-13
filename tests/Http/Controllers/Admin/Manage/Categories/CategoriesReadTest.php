@@ -15,6 +15,8 @@ class CategoriesReadTest extends TestCase
     {
         //for authentification
         $user = factory(\App\User::class)->create();
+        $role = \App\Models\User\RoleModel::first();    //get СуперАдмин роль
+        $user->roles()->attach($role);
         $this->be($user);
 
         $categories = CategoryModel::with([
