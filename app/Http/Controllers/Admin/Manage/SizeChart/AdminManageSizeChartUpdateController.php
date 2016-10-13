@@ -22,7 +22,7 @@ class AdminManageSizeChartUpdateController extends Controller implements AdminIm
     public function actionGetUpdateView($size_chart_id)
     {
         $sizeChart = SizeChartModel::with(['brand', 'category', 'size', 'measurements.name'])
-            ->find($size_chart_id);
+            ->findOrFail($size_chart_id);
 
         //get 3 level categories prepared for view - with all parent level
         $categories3level = AdminManageSizeChartGetCategoriesHelper::get3levelCategoriesWithParents();

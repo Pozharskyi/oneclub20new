@@ -16,17 +16,21 @@ class SizeChartDeleteTest extends TestCase
     {
         //for authentification
         $user = factory(\App\User::class)->create();
+        $role = \App\Models\User\RoleModel::first();    //get СуперАдмин роль
+        $user->roles()->attach($role);
         $this->be($user);
 
         //get not empty sizeChart
-        $sizeChart = SizeChartModel::with(['measurements'])->firstOrFail();
+        $sizeChart = SizeChartModel::firstOrFail();
         $params = [
             'size_chart_id' => $sizeChart->id,
         ];
 
         $this->call('delete', '/admin/manage/size_chart/delete', $params);
+//        $this->assertResponseOk();
 
-        $this->notSeeInDatabase('dev_size_chart', ['id' => $sizeChart->id]);
+        $this->seeInDatabase('dev_size_chart' , ['id' => $sizeChart->id]);
+            $this->notSeeInDatabase('dev_size_chart', ['id' => $sizeChart->id, 'deleted_at' => Null]);
 
         //should delete all measurements for this chart size
         foreach($sizeChart->measurements as $measurement){
@@ -43,6 +47,8 @@ class SizeChartDeleteTest extends TestCase
     {
         //for authentification
         $user = factory(\App\User::class)->create();
+        $role = \App\Models\User\RoleModel::first();    //get СуперАдмин роль
+        $user->roles()->attach($role);
         $this->be($user);
 
         //get not empty sizeChart

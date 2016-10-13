@@ -17,6 +17,8 @@ class AdminPanelControllerTest extends TestCase
     public function testUserShouldNotBeUpdated()
     {
         $user = factory(\App\User::class)->create();
+        $role = \App\Models\User\RoleModel::first();    //get СуперАдмин роль
+        $user->roles()->attach($role);
         $this->be($user);
 
         $oldUpdatedAt = \App\User::findOrFail($user->id)->pluck('updated_at');
@@ -72,6 +74,8 @@ class AdminPanelControllerTest extends TestCase
     public function testSearchUserByEmail()
     {
         $user = factory(\App\User::class)->create();
+        $role = \App\Models\User\RoleModel::first();    //get СуперАдмин роль
+        $user->roles()->attach($role);
 
         // prepare Ajax POST request
         $this->be($user);
@@ -91,6 +95,8 @@ class AdminPanelControllerTest extends TestCase
     public function testSearchUserByName()
     {
         $user = factory(\App\User::class)->create();
+        $role = \App\Models\User\RoleModel::first();    //get СуперАдмин роль
+        $user->roles()->attach($role);
 
         // prepare Ajax POST request
         $this->be($user);
@@ -195,9 +201,12 @@ class AdminPanelControllerTest extends TestCase
     public function testDeleteUser()
     {
         $user = factory(\App\User::class)->create();
+        $role = \App\Models\User\RoleModel::first();    //get СуперАдмин роль
+        $user->roles()->attach($role);
 
         Session::start();
-
+        $role = \App\Models\User\RoleModel::first();    //get СуперАдмин роль
+        $user->roles()->attach($role);
         $this->be($user);
 
         $params = [
@@ -215,6 +224,8 @@ class AdminPanelControllerTest extends TestCase
     public function testShouldLogWhenDeleteUser()
     {
         $user = factory(\App\User::class)->create();
+        $role = \App\Models\User\RoleModel::first();    //get СуперАдмин роль
+        $user->roles()->attach($role);
 
         Session::start();
 
@@ -234,6 +245,8 @@ class AdminPanelControllerTest extends TestCase
     {
 
         $user = factory(\App\User::class)->create();
+        $role = \App\Models\User\RoleModel::first();    //get СуперАдмин роль
+        $user->roles()->attach($role);
 
         $this->seeInDatabase('dev_user_log', ['user_id' => $user->id, 'action_id' => 1]);
     }

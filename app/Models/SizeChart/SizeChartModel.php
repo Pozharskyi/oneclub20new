@@ -6,9 +6,12 @@ use App\Models\Basic\BasicBrandsModel;
 use App\Models\Category\CategoryModel;
 use App\Models\Product\ProductSizeModel;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class SizeChartModel extends Model
 {
+    use SoftDeletes;
+
     protected $table = 'dev_size_chart';
     protected $fillable = ['brand_id', 'category_id', 'size_id', 'brand_size'];
 

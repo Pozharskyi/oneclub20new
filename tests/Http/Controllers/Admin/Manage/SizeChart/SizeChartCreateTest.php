@@ -22,6 +22,8 @@ class SizeChartCreateTest extends TestCase
     {
         //for authentification
         $user = factory(\App\User::class)->create();
+        $role = \App\Models\User\RoleModel::first();    //get СуперАдмин роль
+        $user->roles()->attach($role);
         $this->be($user);
 
         //get 3-d level categories
@@ -58,7 +60,6 @@ class SizeChartCreateTest extends TestCase
                 'brand_id' => $parameters['brand_id'],
                 'size_id' => $parameters['size_id'],
                 'category_id' => $parameters['category_id'],
-                'created_at' => Carbon::now(),
             ]);
 
         $newSizeChartId = SizeChartModel::where('created_at', Carbon::now())->first(['id']);
