@@ -247,3 +247,19 @@
 .manipulations_block {
     margin-top: 35px;
 }
+
+#upload_label {
+    margin-top: 45px;
+}
+
+#list {
+    margin-top: 25px;
+}
+
+#left_btn {
+    margin-right: 15px;
+}
+
+#right_btn {
+    margin-left: 15px;
+}
