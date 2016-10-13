@@ -59,7 +59,7 @@ class OrderDeliveryModel extends Model
     //*//
     public function order()
     {
-        return $this->belongsTo(OrderModel::class, 'id');
+        return $this->belongsTo(OrderModel::class, 'order_id');
     }
     //*//
     public function deliveryType()

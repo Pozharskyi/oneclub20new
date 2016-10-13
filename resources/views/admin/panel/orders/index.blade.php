@@ -18,9 +18,11 @@
             <form id="updateOrderStatusForm" class="form-inline" action="#">
                 <div class="form-group">
                     Статус заказа:
-                    <input class="hidden" id="orderStatusId" value={{$order->statusOrderSubProduct[0]->id}}>
-                    <input id="order_status" type="text" class="form-control" name="order_status"
-                           value="{{$order->statusOrderSubProduct[0]->user_status}}">
+                    @if(!($order->statusOrderSubProduct))
+                        <input class="hidden" id="orderStatusId" value={{$order->statusOrderSubProduct[0]->id}}>
+                        <input id="order_status" type="text" class="form-control" name="order_status"
+                               value="{{$order->statusOrderSubProduct[0]->user_status}}">
+                    @endif
                 </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary">
@@ -233,57 +235,57 @@
 
         <div class="col-md-3">
             @if(!empty($order->discount))
-            <div id="updateOrderDiscount">
-                <h2>Обновить Discount</h2>
-                <dl class="dl-horizontal">
-                    <dt>Величина скидки</dt>
-                    <dd id="discount_amount">{{$order->discount->discount_amount}}
-                        @if($order->discount->type == 'money') грн @else % @endif</dd>
+                <div id="updateOrderDiscount">
+                    <h2>Обновить Discount</h2>
+                    <dl class="dl-horizontal">
+                        <dt>Величина скидки</dt>
+                        <dd id="discount_amount">{{$order->discount->discount_amount}}
+                            @if($order->discount->type == 'money') грн @else % @endif</dd>
 
-                    <dt>Активна от</dt>
-                    <dd id="active_from">{{$order->discount->active_from->format('d/m/Y')}}</dd>
+                        <dt>Активна от</dt>
+                        <dd id="active_from">{{$order->discount->active_from->format('d/m/Y')}}</dd>
 
-                    <dt>Активна до</dt>
-                    <dd id="active_to">{{$order->discount->active_to->format('d/m/Y')}}</dd>
+                        <dt>Активна до</dt>
+                        <dd id="active_to">{{$order->discount->active_to->format('d/m/Y')}}</dd>
 
-                    <dt>Комеентарий к скидке</dt>
-                    <dd id="discount_amount">{{$order->discount->comment}}</dd>
-                    <dt>Правило скидки</dt>
-                    <dd id="discount_amount">{{$order->discount->rule}}</dd>
+                        <dt>Комеентарий к скидке</dt>
+                        <dd id="discount_amount">{{$order->discount->comment}}</dd>
+                        <dt>Правило скидки</dt>
+                        <dd id="discount_amount">{{$order->discount->rule}}</dd>
 
-                    @if(! empty($order->discount->min_basket_sum))
-                        <dt>Минимальная сумма корзины</dt>
-                        <dd id="discount_amount">{{$order->discount->min_basket_sum}}</dd>
-                    @endif
+                        @if(! empty($order->discount->min_basket_sum))
+                            <dt>Минимальная сумма корзины</dt>
+                            <dd id="discount_amount">{{$order->discount->min_basket_sum}}</dd>
+                        @endif
 
-                    @if(! empty($order->discount->max_basket_sum))
-                        <dt>Максимальная сумма корзины</dt>
-                        <dd id="discount_amount">{{$order->discount->max_basket_sum}}</dd>
-                    @endif
+                        @if(! empty($order->discount->max_basket_sum))
+                            <dt>Максимальная сумма корзины</dt>
+                            <dd id="discount_amount">{{$order->discount->max_basket_sum}}</dd>
+                        @endif
 
-                    @if(! empty($order->discount->subproduct_amount_from))
-                        <dt>Действие начиная с количества товаров</dt>
-                        <dd id="discount_amount">{{$order->discount->subproduct_amount_from}}</dd>
-                    @endif
+                        @if(! empty($order->discount->subproduct_amount_from))
+                            <dt>Действие начиная с количества товаров</dt>
+                            <dd id="discount_amount">{{$order->discount->subproduct_amount_from}}</dd>
+                        @endif
 
-                </dl>
-                <form id="updateOrderDiscountForm" action="#">
-                    <input class="hidden" id="orderDiscountId"
-                           value="{{$order->discount->id}}">
+                    </dl>
+                    <form id="updateOrderDiscountForm" action="#">
+                        <input class="hidden" id="orderDiscountId"
+                               value="{{$order->discount->id}}">
 
-                    <div class="form-group">
-                        status:
-                        <input id="status" type="text" class="form-control" name="status"
-                               value="{{$order->discount->status}}">
-                    </div>
+                        <div class="form-group">
+                            status:
+                            <input id="status" type="text" class="form-control" name="status"
+                                   value="{{$order->discount->status}}">
+                        </div>
 
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-primary">
-                            Обновить Discount
-                        </button>
-                    </div>
-                </form>
-            </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">
+                                Обновить Discount
+                            </button>
+                        </div>
+                    </form>
+                </div>
             @endif
             <div id="updateOrderBonuses">
                 <form id="updateOrderBonusesForm" action="#">
@@ -314,8 +316,9 @@
                            value="@if(!isset($order)) {{$order->balance->id}} @endif">
                     <div class="form-group">
                         Сумма снятая с персонального счета:
-                        <input id="balance_count" type="number" step="1" min="0" class="form-control" name="balance_count"
-                        value="{{$order->balance->balance_count or 0}}">
+                        <input id="balance_count" type="number" step="1" min="0" class="form-control"
+                               name="balance_count"
+                               value="{{$order->balance->balance_count or 0}}">
                     </div>
                     <span class="help-block" id="balanceError">
 

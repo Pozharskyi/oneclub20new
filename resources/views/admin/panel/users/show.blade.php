@@ -133,7 +133,7 @@
                 <div class="form-group{{ $errors->has('bonus_comment') ? ' has-error' : ''}}">
                     Комментарий к изменению бонусов:
                     <input id="bonus_comment" type="text" class="form-control" name="bonus_comment"
-                           value='{{$user->bonuses->bonuses_comment}}'>
+                           @if(isset($user->bonuses)) value='{{$user->bonuses->bonuses_comment}} @endif'>
                     @if ($errors->has('bonus_comment'))
                         <span class="help-block">
                             <strong>{{ $errors->first('bonus_comment') }}</strong>
@@ -157,7 +157,7 @@
                 <div class="form-group{{ $errors->has('balance_comment') ? ' has-error' : ''}}">
                     Комментарий к изменению персонального счета:
                     <input id="balance_comment" type="text" class="form-control" name="balance_comment"
-                           value='{{$user->balances->balance_comment}}'>
+                           @if(isset($user->balances))value='{{$user->balances->balance_comment}}' @endif>
                     @if ($errors->has('balance_comment'))
                         <span class="help-block">
                             <strong>{{ $errors->first('balance_comment') }}</strong>
