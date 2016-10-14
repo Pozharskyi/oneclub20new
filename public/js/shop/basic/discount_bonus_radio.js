@@ -1,4 +1,5 @@
 function discountClicked() {
+    $("#discount_status").empty();  //clear discount_status section
     $("#discountsButton").attr("disabled", false);
     $("#bonusSection").hide();
     resetPointsToOrder();
@@ -30,6 +31,7 @@ function discountClicked() {
 }
 
 function bonusClicked() {
+    $("#discount_status").empty();  //clear discount_status section
     resetPointsToOrder();
     $("#bonusSection").show();
 
@@ -60,6 +62,8 @@ function bonusClicked() {
 }
 
 function autoDiscountClicked() {
+    $("#discount_status").empty();  //clear discount_status section
+
     $("#bonusSection").hide();
     resetPointsToOrder();
     $("#discountsButton").attr("disabled", true);

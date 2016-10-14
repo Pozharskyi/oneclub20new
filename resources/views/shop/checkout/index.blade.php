@@ -247,13 +247,13 @@
                         <div id="balance">{{$balance}} </div>
                         <br/>
                         <input type="radio" name="discount_bonus" value="discount" onclick="discountClicked()"
-                               required/>Использовать скидку
+                               />Использовать скидку
                         <br/>
                         <input type="radio" name="discount_bonus" value="bonus" onclick="bonusClicked()"
-                               required/>Использовать бонусы
+                               />Использовать бонусы
                         <br/>
                         <input type="radio" name="discount_bonus" value="auto_discount" onclick="autoDiscountClicked()"
-                               required/>Использовать автоматическую скидку
+                               />Использовать автоматическую скидку
                         <br/>
                         <div class="hidden" id="balance_origin">{{$balance}}</div>
 

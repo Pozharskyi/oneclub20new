@@ -14,11 +14,16 @@
                     <tr>
                         <td>{{$orderLog->date}}</td>
 
-                        <td>{{$orderLog->logAction->name}} поле {{$orderLog->field_changed}}
+                        <td>{{$orderLog->logAction->name}}
+                             @if(isset($orderLog->field_changed)) поле {{$orderLog->field_changed}}
                             {{ $orderLog->loggable_type}}
                             заказа № {{$order->public_order_id}} c
                             {{$orderLog->fromto->from}} на {{$orderLog->fromto->to}}. Автор
                             - {{$orderLog->author->name}}
+                            @else
+                                заказ № {{$order->public_order_id}}. Автор
+                                - {{$orderLog->author->name}}
+                            @endif
                         </td>
                     </tr>
 
