@@ -7,7 +7,7 @@
  * Time: 17:49
  */
 
-namespace app\Http\Controllers\Shop\Catalog;
+namespace App\Http\Controllers\Shop\Catalog;
 
 use App\Http\Controllers\Controller;
 

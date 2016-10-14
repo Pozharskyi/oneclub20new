@@ -14,6 +14,9 @@
 @section('content')
 
     <div class="row">
+        @if (session()->has('message'))
+            <div class="alert alert-info" >{{session('message')}}</div>
+        @endif
         <div class="col-md-12">
             <form id="updateOrderStatusForm" class="form-inline" action="#">
                 <div class="form-group">
@@ -147,6 +150,7 @@
                             </a>
                         </li>
                     @endforeach
+                    @include('admin.panel.orders.search_subproduct')
                 </ul>
             </div>
         </div>

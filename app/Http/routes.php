@@ -416,6 +416,7 @@ Route::group(['middleware' => ['auth','admin']], function () {
         Route::get('{user}/manage_role', 'Admin\Panel\AdminPanelUserRoleController@getAssignRoleView');
         Route::post('{user}/manage_role', 'Admin\Panel\AdminPanelUserRoleController@assignRole');
 
+
         /**Start ADMIN PANEL ORDER AREA */
         Route::group(['prefix' => '{user}/orders/{order}', 'middleware' => 'admin_order'], function () {
             Route::put('status/update', 'Admin\Panel\AdminPanelOrderController@updateOrderStatus')
@@ -435,6 +436,14 @@ Route::group(['middleware' => ['auth','admin']], function () {
 
             Route::put('orderBalance/update', 'Admin\Panel\AdminPanelOrderController@updateOrderBalance')
                 ->name('adminPanel.orderBalance.update');
+
+
+            //Add Product to user's order
+            Route::post('add_product', 'Admin\Panel\AdminPanelOrderSubProductController@getViewSubProduct')
+                ->name('adminPanel.subproduct.add.show');
+
+            Route::post('add_product/add', 'Admin\Panel\Order\AdminAddSubProductController@addSubProduct')
+                ->name('adminPanel.subproduct.add');
         });
 
         /**END ADMIN PANEL ORDER AREA */
