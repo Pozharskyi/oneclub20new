@@ -24,6 +24,8 @@ class AdminImportPartiesDescriptionController extends Controller
 
         return view('admin.import.parties.description', [
             'rows' => $rows,
+            'count' => count( $rows ),
+
             'party_id' => $party_id,
         ]);
     }
