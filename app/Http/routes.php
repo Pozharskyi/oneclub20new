@@ -629,6 +629,9 @@ Route::post('/list/order/save', 'Shop\Order\OrderController@actionSaveOrder');
             Route::delete('/delete',
                 [ 'uses' => 'Admin\Import\Parties\AdminImportPartiesDeleteController@actionDelete' ]
             );
+            Route::put('/description',
+                [ 'uses' => 'Admin\Import\Parties\AdminImportPartiesDescriptionController@actionGetDescription' ]
+            );
         });
 
         Route::group(['prefix' => '/sales'], function()

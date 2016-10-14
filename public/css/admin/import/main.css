@@ -171,6 +171,10 @@
     border-right: 1px solid #000;
 }
 
+#description {
+    margin-bottom: 25px;
+}
+
 .close {
     width: 16px;
     height: 16px;
@@ -179,7 +183,11 @@
 }
 
 .super_link, .super_link:hover {
-    color: #990000 !important;
+    color: #954120 !important;
+}
+
+.active_link, .active_link:hover {
+    color: rgb(240, 0, 140) !important;
 }
 
 #nav > li:last-child {
