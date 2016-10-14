@@ -212,9 +212,16 @@ $(document).ready(function() {
     });
 });
 
+function removeActive()
+{
+    $("#party_id").val('');
+    $("#sale_id").val('');
+}
+
 function getParties(group)
 {
     removeActiveLink();
+    removeActive();
 
     getLoading();
 
@@ -237,6 +244,7 @@ function getParties(group)
 function getSales()
 {
     removeActiveLink();
+    removeActive();
 
     getLoading();
 
