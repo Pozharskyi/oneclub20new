@@ -12,6 +12,46 @@ function clearLoading()
     $("#loading").css("display", "none");
 }
 
+function getPartyDescription( party_id )
+{
+    if($("#nav").find("#tp_" + party_id).length == 0)
+    {
+        var html = '<li class="sub_nav" id="tp_' + party_id + '">'
+                     + '<a class="super_link" href="#">ТП #' + party_id + '</a>'
+                     + '<a href="#" onclick="closePartyLink(' + party_id + ');">' +
+                          '<img src="/images/import/close.png" class="close" />' +
+                       '</a>' +
+                   '</li>';
+
+        $("#nav").append(html);
+    }
+}
+
+function getSaleDescription( sale_id )
+{
+    if($("#nav").find("#ta_" + sale_id).length == 0)
+    {
+        var html = '<li class="sub_nav" id="ta_' + sale_id + '">'
+                     + '<a class="super_link" href="#">ТA #' + sale_id + '</a>'
+                     + '<a href="#" onclick="closeSaleLink(' + sale_id + ');">' +
+                           '<img src="/images/import/close.png" class="close" />' +
+                       '</a>' +
+                   '</li>';
+
+        $("#nav").append(html);
+    }
+}
+
+function closePartyLink( party_id )
+{
+    $("#tp_" + party_id).remove();
+}
+
+function closeSaleLink( sale_id )
+{
+    $("#ta_" + sale_id).remove();
+}
+
 function resetCatalog()
 {
     var current = $("#current").val();

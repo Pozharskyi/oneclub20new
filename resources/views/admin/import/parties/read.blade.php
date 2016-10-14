@@ -17,7 +17,7 @@
             <tbody>
 
                 @foreach( $parties as $party )
-                    <tr class="row_tr
+                    <tr ondblclick="getPartyDescription({{ $party->id }});" class="row_tr
 
                     @if($party->import_parties_status_id == $deleted)
                         deleted
