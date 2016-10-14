@@ -10,6 +10,7 @@
 
 namespace App\Models\Import;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -29,6 +30,13 @@ class ImportPartiesPrepareStatusesModel extends Model
     public function partiesPrepareLog()
     {
         return $this->hasMany(ImportPartiesPrepareLogModel::class, 'id', 'prepare_status_id');
+    }
+
+    public function scopeFindStatus(Builder $query, $prepareStatus)
+    {
+        $query->where('short_phrase', $prepareStatus);
+
+        return $query;
     }
 
 }

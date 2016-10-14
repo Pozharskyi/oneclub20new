@@ -676,6 +676,9 @@ Route::post('/list/order/save', 'Shop\Order\OrderController@actionSaveOrder');
             Route::post('/prepare',
                 ['uses' => 'Admin\Import\Uploading\AdminImportUploadingPrepareController@actionParse']
             );
+            Route::post('/prepare/errors',
+                ['uses' => 'Admin\Import\Uploading\AdminImportUploadingPrepareErrorsController@actionGetErrorsFile']
+            );
         });
     });
 //});

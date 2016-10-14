@@ -10,6 +10,7 @@
 
 namespace App\Models\Import;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -24,6 +25,11 @@ class ImportPartiesPrepareLogModel extends Model
      */
     protected $table = 'dev_import_parties_prepare_log';
 
+    protected $fillable = [
+        'file_allocation_id', 'file_line',
+        'prepare_status_id',
+    ];
+
     public function partiesFileAllocation()
     {
         return $this->belongsTo(ImportPartiesFileAllocationModel::class, 'file_allocation_id');
@@ -32,5 +38,20 @@ class ImportPartiesPrepareLogModel extends Model
     public function prepareStatus()
     {
         return $this->belongsTo(ImportPartiesPrepareStatusesModel::class, 'prepare_status_id');
+    }
+
+    public function scopeFilterByAllocationErrors(Builder $query, $fileAllocation, $okStatus)
+    {
+        $query->where('file_allocation_id', $fileAllocation)
+            ->where('prepare_status_id', '<>', $okStatus);
+
+        return $query;
+    }
+
+    public function scopeFilterByAllocation(Builder $query, $fileAllocation)
+    {
+        $query->where('file_allocation_id', $fileAllocation);
+
+        return $query;
     }
 }

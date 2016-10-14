@@ -15,14 +15,34 @@ use App\Http\Controllers\Admin\Import\Uploading\AdminImportUploadingCsvParserCon
 
 class AdminImportUploadingAllocationController extends Controller
 {
-    public static function actionGetFile( $party_id )
+    public static function actionGetAllocation( $party_id )
     {
         $allocation = ImportPartiesFileAllocationModel::filterParties($party_id)
             ->orderBy('id' ,'DESC')
-            ->first(['import_file_path']);
+            ->first(['id', 'import_file_path']);
 
         $file = CsvParser::actionParseCsvToArray( $allocation->import_file_path );
+        $allocationId = $allocation->id;
 
-        return $file;
+        $result = new \stdClass();
+        $result->file = $file;
+        $result->allocationId = $allocationId;
+
+        return $result;
+    }
+
+    public static function actionUpdateAllocation( $allocationId, $fileLinesProcessed )
+    {
+        $allocation = ImportPartiesFileAllocationModel::find($allocationId);
+        $allocation->file_lines_processed = $fileLinesProcessed;
+
+        $allocation->save();
+    }
+
+    public static function actionGetFileByAllocation( $allocationId )
+    {
+        $allocation = ImportPartiesFileAllocationModel::find($allocationId);
+
+        return $allocation->import_file_path;
     }
 }

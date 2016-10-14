@@ -9,11 +9,20 @@
 
 namespace App\Http\Controllers\Admin\Import\Uploading;
 
+use App\Http\Controllers\Admin\Import\Statuses\AdminImportStatusesPrepareController;
+use App\Http\Controllers\Admin\Import\Uploading\AdminImportUploadingAllocationController as Allocation;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Traits\Basic\BasicBrandsTrait;
+use App\Http\Controllers\Traits\Basic\BasicColorsTrait;
+use App\Http\Controllers\Traits\Basic\BasicSizesTrait;
 use Illuminate\Http\Request;
 
 abstract class AdminImportUploadingPrepareValidationController extends Controller
 {
+    use BasicBrandsTrait;
+    use BasicColorsTrait;
+    use BasicSizesTrait;
+
     const VALIDATION_LINE = 0;
 
     protected $import_fields = [
@@ -23,7 +32,6 @@ abstract class AdminImportUploadingPrepareValidationController extends Controlle
         'final_price', 'special_price', 'discount',
         'brand', 'gender', 'color', 'material', 'description',
         'comment_admin', 'comment_frontend', 'country_manufacturer',
-        'test',
     ];
 
     protected $required_fields = [
@@ -96,6 +104,64 @@ abstract class AdminImportUploadingPrepareValidationController extends Controlle
             $validation['message'] = $error_message;
             return $validation;
         }
+    }
+
+    protected function actionValidateFileRules( AdminImportStatusesPrepareController $status, $import, $allocationId )
+    {
+        $i = 0;
+        $count = count( $import );
+
+        $brands = $this->actionGetBrands();
+        $colors = $this->actionGetColors();
+        $sizes = $this->actionGetSizes();
+
+        $brand_error = $status->actionFindStatusIdByPhrase('BRAND_NOT_FOUND');
+        $color_error = $status->actionFindStatusIdByPhrase('COLOR_NOT_FOUND');
+        $size_error = $status->actionFindStatusIdByPhrase('SIZE_NOT_FOUND');
+        $okStatus = $status->actionFindStatusIdByPhrase('OK');
+
+        while( $i < $count )
+        {
+            $workLine = $import[$i];
+            $validation = true;
+            $errorStatuses = [];
+
+            if ( !in_array( $workLine['brand'], $brands ) )
+            {
+                $validation = false;
+                array_push($errorStatuses, $brand_error);
+            }
+
+            if ( !in_array( $workLine['color'], $colors ) )
+            {
+                $validation = false;
+                array_push($errorStatuses, $color_error);
+            }
+
+            if ( !in_array( $workLine['size'], $sizes ) )
+            {
+                $validation = false;
+                array_push($errorStatuses, $size_error);
+            }
+
+            if ($validation)
+            {
+                $status->actionLogPrepareStatus($allocationId, $i, $okStatus);
+            } else
+            {
+                foreach( $errorStatuses as $errorStatus )
+                {
+                    $status->actionLogPrepareStatus($allocationId, $i, $errorStatus);
+                }
+            }
+
+            $i++;
+        }
+
+        Allocation::actionUpdateAllocation($allocationId, $count);
+        $errors = $status->actionValidateErrorsForAllocation( $allocationId );
+
+        return $errors;
     }
 
     abstract public function actionParse(Request $request);

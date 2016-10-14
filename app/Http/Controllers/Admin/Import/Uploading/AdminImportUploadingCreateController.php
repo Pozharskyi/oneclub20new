@@ -48,7 +48,7 @@ class AdminImportUploadingCreateController extends Controller implements AdminIm
             try
             {
                 // RENAME THE UPLOAD WITH RANDOM NUMBER
-                $fileName = date('Y-m-d') . 'V' . date('His') . '.' . $extension;
+                $fileName = 'import_' . date('His') . '.' . $extension;
 
                 // MOVE THE UPLOADED FILES TO THE DESTINATION DIRECTORY
                 $input->move($destinationPath, $fileName);
