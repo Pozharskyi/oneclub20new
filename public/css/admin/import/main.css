@@ -184,10 +184,12 @@
 
 .super_link, .super_link:hover {
     color: #954120 !important;
+    text-decoration: none !important;
 }
 
 .active_link, .active_link:hover {
     color: rgb(240, 0, 140) !important;
+    text-decoration: none !important;
 }
 
 #nav > li:last-child {
@@ -293,4 +295,21 @@
 
 .logs {
     margin-top: 35px;
+}
+
+#batchProcessor, #exportExcel, #sendToProd {
+    position: fixed;
+    bottom: 0;
+}
+
+#batchProcessor {
+    right: 40%;
+}
+
+#exportExcel {
+    right: 27%;
+}
+
+#sendToProd {
+    right: 10%;
 }

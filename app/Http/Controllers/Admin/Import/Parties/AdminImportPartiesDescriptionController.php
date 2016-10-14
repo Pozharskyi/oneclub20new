@@ -21,12 +21,14 @@ class AdminImportPartiesDescriptionController extends Controller
 
         $allocation = Allocation::actionGetAllocation($party_id);
         $rows = $allocation->file;
+        $allocationId = $allocation->allocationId;
 
         return view('admin.import.parties.description', [
             'rows' => $rows,
             'count' => count( $rows ),
 
             'party_id' => $party_id,
+            'allocationId' => $allocationId,
         ]);
     }
 
