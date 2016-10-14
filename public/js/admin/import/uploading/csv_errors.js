@@ -11,3 +11,11 @@ function getValidatedFile()
     getUploadingView();
     closePopup2();
 }
+
+function getPartyInfo()
+{
+    var party_id = $("#success_party_id").val();
+    getPartyDescription(party_id);
+
+    immediatelyGoBack();
+}

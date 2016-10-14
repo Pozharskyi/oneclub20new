@@ -21,7 +21,7 @@ class CreateDevImportPartiesFileAllocationTable extends Migration
             $table->integer('made_by')->unsigned();
             $table->enum('allocation_status', [
                 'Найдены ошибки', 'Файл не корректный',
-                'Готово к обработке', 'Файл обработан',
+                'Готов к обработке', 'Файл обработан',
             ]);
 
             $table->timestamps();

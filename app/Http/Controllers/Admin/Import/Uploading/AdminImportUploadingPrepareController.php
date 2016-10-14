@@ -53,11 +53,11 @@ class AdminImportUploadingPrepareController extends AdminImportUploadingPrepareV
                 ]);
             }
 
-            Allocation::actionChangeAllocationStatus($allocationId, 'Успешно загружен');
+            Allocation::actionChangeAllocationStatus($allocationId, 'Готов к обработке');
 
             return view('admin.import.uploading.prepare.alert_success', [
                 'message' => 'Файл импорта был успешно загружен',
-                'allocationId' => $allocationId,
+                'party_id' => $party_id,
             ]);
         }
     }

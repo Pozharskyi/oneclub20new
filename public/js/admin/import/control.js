@@ -134,6 +134,12 @@ function goBack()
     closePopup2();
 }
 
+function immediatelyGoBack()
+{
+    closePopup2();
+    closePopup();
+}
+
 function forceGoBack()
 {
     resetCatalog();
