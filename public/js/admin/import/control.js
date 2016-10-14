@@ -26,6 +26,12 @@ function resetCatalog()
     }
 }
 
+function goBackWithReload()
+{
+    getUploadingView();
+    closePopup2();
+}
+
 function goBack()
 {
     closePopup2();
