@@ -19,9 +19,6 @@ class CreateDevSubProductTable extends Migration
             $table->integer('dev_product_index_id')->unsigned();
             $table->foreign('dev_product_index_id')->references('id')->on('dev_product_index');
 
-            $table->integer('import_index_party_id')->unsigned();
-            $table->foreign('import_index_party_id')->references('id')->on('dev_import_index_parties');
-
             $table->integer('supplier_id')->unsigned();
             $table->foreign('supplier_id')->references('id')->on('dev_import_index_suppliers');
 

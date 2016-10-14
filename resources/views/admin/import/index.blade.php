@@ -25,20 +25,22 @@
     </div>
 
     <div class="nav">
-        <ul id="nav">
-            <li>
-                <a id="myParties" href="{{ url('#') }}">Мои Товарные партии</a>
-            </li>
-            <li>
-                <a id="allParties" href="{{ url('#') }}">Товарные партии</a>
-            </li>
-            <li>
-                <a id="allSales" href="{{ url('#') }}">Товарные акции</a>
-            </li>
-            <li>
-                <a id="user" href="{{ url('#') }}">Здравствуйте, {{ Auth::user()->name }}</a>
-            </li>
-        </ul>
+        <div class="pull-left">
+            <ul id="nav">
+                <li>
+                    <a id="myParties" href="{{ url('#') }}">Мои ТП</a>
+                </li>
+                <li>
+                    <a id="allParties" href="{{ url('#') }}">ТП</a>
+                </li>
+                <li>
+                    <a id="allSales" href="{{ url('#') }}">ТА</a>
+                </li>
+            </ul>
+        </div>
+        <div class="pull-right" id="user_nav">
+            <a id="user" href="{{ url('#') }}">Здравствуйте, {{ Auth::user()->name }}</a>
+        </div>
     </div>
 
     <div class="container content_block">

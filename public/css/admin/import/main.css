@@ -163,12 +163,12 @@
 #nav {
     margin: 0 auto;
     display: table;
-    float: none;
+    float: left;
 }
 
 #nav > li {
-    margin-left: 6vw;
-    margin-right: 6vw;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 #nav > li > a:hover {
@@ -181,6 +181,10 @@
 
 #nav > li {
     display: inline-block;
+}
+
+#user_nav {
+    margin-right: 50px;
 }
 
 #search {

@@ -15,7 +15,7 @@ class CreateDevProductIndexTable extends Migration
     {
         Schema::create('dev_product_index', function( Blueprint $table ){
             $table->increments('id');
-            $table->string('sku')->unique();
+            $table->string('sku');
             $table->string('product_store_id')->unique();
             $table->string('product_backend_id')->unique();
             $table->integer('brand_id')->unsigned();
@@ -23,6 +23,7 @@ class CreateDevProductIndexTable extends Migration
 
             $table->integer('stock_id')->unsigned();
             $table->integer('dev_index_gender_id')->unsigned();
+            $table->integer('import_index_party_id')->unsigned();
 
             $table->timestamps();
             $table->softDeletes();
@@ -35,8 +36,9 @@ class CreateDevProductIndexTable extends Migration
                 ->references('id')->on('dev_index_categories')
                 ->onDelete('cascade');
 
-
-
+            $table->foreign('import_index_party_id')
+                ->references('id')
+                ->on('dev_import_index_parties');
         });
     }
 
