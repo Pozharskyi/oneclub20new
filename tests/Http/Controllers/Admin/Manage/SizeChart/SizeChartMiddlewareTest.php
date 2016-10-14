@@ -40,6 +40,6 @@ class SizeChartMiddlewareTest extends TestCase
 
         $this->call('get', '/admin/manage/size_chart');
 
-        $this->assertSessionHas('message','Нет прав доступа');
+        $this->seeStatusCode(403);
     }
 }

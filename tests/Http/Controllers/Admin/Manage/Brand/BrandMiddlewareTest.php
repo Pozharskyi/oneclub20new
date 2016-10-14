@@ -40,6 +40,6 @@ class BrandMiddlewareTest extends TestCase
 
         $this->call('get', '/admin/manage/brands');
 
-        $this->assertSessionHas('message','Нет прав доступа');
+        $this->seeStatusCode(403);
     }
 }

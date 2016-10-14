@@ -169,7 +169,7 @@ class AdminPanelControllerTest extends TestCase
     //after update should return only new user's logs
     public function testUpdateUserMethodShouldReturnOnlyNewLogs()
     {
-        $user = \App\User::findOrFail(2);
+        $user = \App\User::findOrFail(1);
         Session::start();
 
         $this->be($user);

@@ -32,6 +32,6 @@ class ColorMiddlewareTest extends TestCase
 
         $this->call('get', '/admin/manage/colors');
 
-        $this->assertSessionHas('message','Нет прав доступа');
+        $this->seeStatusCode(403);
     }
 }

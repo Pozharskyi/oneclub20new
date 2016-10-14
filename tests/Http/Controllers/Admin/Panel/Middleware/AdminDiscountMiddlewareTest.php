@@ -40,6 +40,6 @@ class AdminDiscountMiddlewareTest extends TestCase
 
         $this->call('get', '/admin/discounts');
 
-        $this->assertSessionHas('message','Нет прав доступа');
+        $this->seeStatusCode(403);
     }
 }

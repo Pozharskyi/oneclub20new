@@ -39,6 +39,6 @@ class AdminUserInfoMiddlewareTest extends TestCase
 
         $this->call('get', '/admin/users/'.$user->id);
 
-        $this->assertSessionHas('message','Нет прав доступа');
+        $this->seeStatusCode(403);
     }
 }

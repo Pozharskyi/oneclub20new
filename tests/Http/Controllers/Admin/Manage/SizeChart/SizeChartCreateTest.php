@@ -52,7 +52,7 @@ class SizeChartCreateTest extends TestCase
         $parameters['values'][$measurementsNames->count() - 1] = '78-89';
 
         $this->call('POST', '/admin/manage/size_chart/create', $parameters);
-
+        $created_at = Carbon::now();
         //should be new sizeChart with new parameters
         $this->seeInDatabase('dev_size_chart',
             [
@@ -62,7 +62,7 @@ class SizeChartCreateTest extends TestCase
                 'category_id' => $parameters['category_id'],
             ]);
 
-        $newSizeChartId = SizeChartModel::where('created_at', Carbon::now())->first(['id']);
+        $newSizeChartId = SizeChartModel::where('created_at', $created_at)->first();
         $this->assertNotEmpty($newSizeChartId);
 
 
@@ -72,14 +72,14 @@ class SizeChartCreateTest extends TestCase
                 'measurements_names_id' => $parameters['nameIds'][0],
                 'value' => $parameters['values'][0],
                 'size_chart_id' => $newSizeChartId->id,
-                'created_at' => Carbon::now(),
+                'created_at' => $created_at,
             ]);
         $this->seeInDatabase('dev_measurements',
             [
                 'measurements_names_id' => $parameters['nameIds'][1],
                 'value' => $parameters['values'][$measurementsNames->count() - 1],
                 'size_chart_id' => $newSizeChartId->id,
-                'created_at' => Carbon::now(),
+                'created_at' => $created_at,
             ]);
 
         $this->assertResponseStatus(302);

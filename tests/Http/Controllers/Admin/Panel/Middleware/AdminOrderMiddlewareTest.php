@@ -62,6 +62,6 @@ class AdminOrderMiddlewareTest extends TestCase
 
         $this->call('get', '/admin/users/'.$user->id.'/orders/'.$order->id);
 
-        $this->assertSessionHas('message','Нет прав доступа');
+        $this->seeStatusCode(403);
     }
 }

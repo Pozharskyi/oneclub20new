@@ -40,6 +40,6 @@ class SizeMiddlewareTest extends TestCase
 
         $this->call('get', '/admin/manage/sizes');
 
-        $this->assertSessionHas('message','Нет прав доступа');
+        $this->seeStatusCode(403);
     }
 }

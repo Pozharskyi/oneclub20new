@@ -40,6 +40,6 @@ class CategoriesMiddlewareTest extends TestCase
 
         $this->call('get', '/admin/manage/categories');
 
-        $this->assertSessionHas('message','Нет прав доступа');
+        $this->seeStatusCode(403);
     }
 }
