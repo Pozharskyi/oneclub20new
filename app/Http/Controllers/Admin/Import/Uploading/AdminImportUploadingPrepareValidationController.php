@@ -138,10 +138,13 @@ abstract class AdminImportUploadingPrepareValidationController extends Controlle
                 array_push($errorStatuses, $color_error);
             }
 
-            if ( !in_array( $workLine['size'], $sizes ) )
+            if( $workLine['size'] != '' )
             {
-                $validation = false;
-                array_push($errorStatuses, $size_error);
+                if ( !in_array( $workLine['size'], $sizes ) )
+                {
+                    $validation = false;
+                    array_push($errorStatuses, $size_error);
+                }
             }
 
             if ($validation)
