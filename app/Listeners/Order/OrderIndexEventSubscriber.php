@@ -95,6 +95,17 @@ class OrderIndexEventSubscriber
 
     }
 
+    public function orderIndexCreated($orderIndex)
+    {
+        $orderLog = new LogOrderModel();
+        $orderLog->author_id = \Auth::id();
+        $orderLog->action_id = 1;
+        $orderLog->date = $orderIndex->updated_at;
+        $orderLog->order_id = $orderIndex->id;
+
+        $orderLog->loggable()->associate($orderIndex);
+        $orderLog->save();
+    }
     /**
      * Register the listeners for the subscriber.
      * @param  Illuminate\Events\Dispatcher $events
@@ -109,6 +120,11 @@ class OrderIndexEventSubscriber
         $events->listen(
             'App\Events\Order\OrderIndexUpdated',
             'App\Listeners\Order\OrderIndexEventSubscriber@orderIndexUpdated'
+        );
+
+        $events->listen(
+            'App\Events\Order\OrderIndexCreated',
+            'App\Listeners\Order\OrderIndexEventSubscriber@orderIndexCreated'
         );
     }
 

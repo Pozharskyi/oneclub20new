@@ -53,6 +53,10 @@ class OrderModel extends Model
             Event::fire('App\Events\Order\OrderIndexUpdated', $orderIndex);
         });
 
+        static:: created(function($orderIndex){
+           Event::fire('App\Events\Order\OrderIndexCreated', $orderIndex);
+        });
+
     }
 
     /**

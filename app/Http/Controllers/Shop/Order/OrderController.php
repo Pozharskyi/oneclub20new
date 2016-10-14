@@ -70,11 +70,11 @@ class OrderController extends Controller
 //        }
 
         //TODO action if products reserved
-//        if( $productsValidation === false )
-//        {
-//            // if products reserved
-//            return 'Products are already reserved';
-//        }
+        if( $productsValidation === false )
+        {
+            // if products reserved
+            return 'Products are already reserved';
+        }
 
         // getting all products from basket
         $basket_products = OrderProductsController::actionGetBasketProducts($this->user_id);
