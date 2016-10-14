@@ -38,6 +38,52 @@
                 <button type="button" id="right_btn" onclick="getConfirmView();" class="btn btn-primary">Загрузить список</button>
             </div>
 
+            <div class="logs">
+
+                <h4>История:</h4>
+
+                @if( $count_logs != 0 )
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Пользователь</th>
+                                <th>Дата</th>
+                                <th>Файл</th>
+                                <th>Статус</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach( $logs as $log )
+                                <tr>
+                                    <td>
+                                        {{ $log->madeBy->name }}
+                                    </td>
+                                    <td>
+                                        {{ $log->created_at }}
+                                    </td>
+                                    <td>
+                                        <a target="_blank"
+                                           href="{{ url('/admin/import/uploading/prepare/errors?allocationId=' . $log->id) }}">
+                                            Получить
+                                        </a>
+                                    </td>
+                                    <td>
+                                        {{ $log->allocation_status }}
+                                    </td>
+                                </tr>
+                            @endforeach
+
+                        </tbody>
+                    </table>
+                @else
+
+                    <h5 class="alert_message">Ничего не найдено.</h5>
+
+                @endif
+
+            </div>
+
         </form>
     </div>
     <div class="col-md-3"></div>

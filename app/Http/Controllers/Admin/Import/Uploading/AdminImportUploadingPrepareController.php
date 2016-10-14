@@ -34,6 +34,8 @@ class AdminImportUploadingPrepareController extends AdminImportUploadingPrepareV
 
         if (!$validation['valid'])
         {
+            Allocation::actionChangeAllocationStatus($allocationId, 'Файл не корретный');
+
             return view('admin.import.alert_error', [
                 'message' => $validation['message'],
             ]);
@@ -43,11 +45,15 @@ class AdminImportUploadingPrepareController extends AdminImportUploadingPrepareV
 
             if( $errors > 0 )
             {
+                Allocation::actionChangeAllocationStatus($allocationId, 'Найдены ошибки');
+
                 return view('admin.import.uploading.prepare.alert_error', [
                     'message' => 'В файле импорта были обнаружены ошибки',
                     'allocationId' => $allocationId,
                 ]);
             }
+
+            Allocation::actionChangeAllocationStatus($allocationId, 'Успешно загружен');
 
             return view('admin.import.uploading.prepare.alert_success', [
                 'message' => 'Файл импорта был успешно загружен',

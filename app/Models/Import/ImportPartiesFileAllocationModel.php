@@ -32,7 +32,7 @@ class ImportPartiesFileAllocationModel extends Model
     protected $fillable = [
         'import_index_party_id', 'import_file_path',
         'file_lines_processed', 'file_lines_total',
-        'made_by',
+        'made_by', 'allocation_status',
     ];
 
     public function parties()
@@ -42,7 +42,7 @@ class ImportPartiesFileAllocationModel extends Model
 
     public function madeBy()
     {
-        return $this->belongsTo(User::class, 'id');
+        return $this->belongsTo(User::class, 'made_by');
     }
 
     public function partiesCoincidenceLog()

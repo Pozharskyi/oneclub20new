@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\Import\Statuses\AdminImportStatusesPrepareControl
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Admin\Import\Uploading\AdminImportUploadingAllocationController as Allocation;
+use App\Http\Controllers\Admin\Import\Uploading\AdminImportUploadingCsvParserController as CsvParser;
 
 class AdminImportUploadingPrepareErrorsController extends Controller
 {
@@ -28,7 +29,18 @@ class AdminImportUploadingPrepareErrorsController extends Controller
         $allocationId = $request->input('allocationId');
 
         $file = Allocation::actionGetFileByAllocation($allocationId);
+
+        $fileArray = CsvParser::actionParseCsvToArray($file);
         $errors = $this->prepareStatuses->actionGetErrorsByAllocation( $allocationId );
+        $headers = CsvParser::actionGetFileHeaders($fileArray);
+
+        return view('admin.import.uploading.prepare.csv_errors', [
+            'file' => $fileArray,
+            'count' => count($fileArray),
+
+            'errors' => $errors,
+            'headers' => $headers,
+        ]);
     }
 
 }

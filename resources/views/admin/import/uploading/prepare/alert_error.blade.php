@@ -5,3 +5,5 @@
         <input type="hidden" id="allocationId" name="allocationId" value="{{ $allocationId }}" />
     </div>
 </div>
+
+<script type="text/javascript" src="{{ url('/js/admin/import/uploading/csv_errors.js') }}"></script>

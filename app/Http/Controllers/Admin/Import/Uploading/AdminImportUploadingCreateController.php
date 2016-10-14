@@ -15,6 +15,7 @@ use App\Models\Import\ImportIndexPartiesModel;
 use App\Models\Import\ImportPartiesFileAllocationModel;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Admin\Import\Uploading\AdminImportUploadingCsvParserController as CsvParser;
+use App\Http\Controllers\Admin\Import\Uploading\AdminImportUploadingAllocationController as Allocation;
 
 class AdminImportUploadingCreateController extends Controller implements AdminImportCreateInterface
 {
@@ -23,10 +24,13 @@ class AdminImportUploadingCreateController extends Controller implements AdminIm
         $party_id = $request->input('party_id');
 
         $party = ImportIndexPartiesModel::findOrFail($party_id);
+        $logs = Allocation::actionGetAllocationLogs($party_id);
 
         return view('admin.import.uploading.create', [
             'party_id' => $party_id,
             'party' => $party,
+            'logs' => $logs,
+            'count_logs' => count($logs),
         ]);
     }
 

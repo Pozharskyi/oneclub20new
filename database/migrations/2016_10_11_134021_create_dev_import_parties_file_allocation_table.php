@@ -19,6 +19,10 @@ class CreateDevImportPartiesFileAllocationTable extends Migration
             $table->integer('file_lines_processed')->unsigned();
             $table->integer('file_lines_total')->unsiged();
             $table->integer('made_by')->unsigned();
+            $table->enum('allocation_status', [
+                'Найдены ошибки', 'Файл не корректный',
+                'Готово к обработке', 'Файл обработан',
+            ]);
 
             $table->timestamps();
             $table->softDeletes();

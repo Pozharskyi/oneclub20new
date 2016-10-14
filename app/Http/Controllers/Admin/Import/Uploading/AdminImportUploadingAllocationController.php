@@ -34,7 +34,7 @@ class AdminImportUploadingAllocationController extends Controller
     public static function actionUpdateAllocation( $allocationId, $fileLinesProcessed )
     {
         $allocation = ImportPartiesFileAllocationModel::find($allocationId);
-        $allocation->file_lines_processed = $fileLinesProcessed;
+        $allocation->file_lines_processed = $fileLinesProcessed + 1;
 
         $allocation->save();
     }
@@ -44,5 +44,24 @@ class AdminImportUploadingAllocationController extends Controller
         $allocation = ImportPartiesFileAllocationModel::find($allocationId);
 
         return $allocation->import_file_path;
+    }
+
+    public static function actionGetAllocationLogs( $party_id )
+    {
+        $logs = ImportPartiesFileAllocationModel::filterParties($party_id)
+            ->with(['madeBy', 'partiesPrepareLog'])
+            ->orderBy('id', 'DESC')
+            ->limit(5)
+            ->get();
+
+        return $logs;
+    }
+
+    public static function actionChangeAllocationStatus( $allocationId, $allocationStatus )
+    {
+        $allocation = ImportPartiesFileAllocationModel::find($allocationId);
+        $allocation->allocation_status = $allocationStatus;
+
+        $allocation->save();
     }
 }

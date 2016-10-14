@@ -50,4 +50,19 @@ class AdminImportUploadingCsvParserController extends Controller
 
         return count($data) + 1; // due to headers
     }
+
+    public static function actionGetFileHeaders($import)
+    {
+        $line = 0;
+        $fields = $import[$line];
+
+        $importHeaders = array();
+
+        foreach( $fields as $field => $data )
+        {
+            array_push($importHeaders, $field);
+        }
+
+        return $importHeaders;
+    }
 }

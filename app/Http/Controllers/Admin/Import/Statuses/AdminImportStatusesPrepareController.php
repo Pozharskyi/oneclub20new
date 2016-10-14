@@ -52,17 +52,23 @@ class AdminImportStatusesPrepareController extends Controller
     public final function actionGetErrorsByAllocation( $fileAllocation )
     {
         $errors = ImportPartiesPrepareLogModel::filterByAllocation( $fileAllocation )
-            ->with['prepareStatus']
-            ->get(['file_line']);
+            ->with(['prepareStatus'])
+            ->get();
 
         $result = array();
 
         foreach($errors as $error)
         {
-            $result[$error->file_line] = array();
+            if( !isset($result[$error->file_line]) )
+            {
+                $result[$error->file_line] = array();
+            }
+
+            $columnName = $error->prepareStatus->file_column_name;
+            $result[$error->file_line][$columnName] = 'found';
         }
 
-        return $errors;
+        return $result;
     }
 
 }
