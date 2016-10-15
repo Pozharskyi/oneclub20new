@@ -15,6 +15,7 @@ class CreateDevImportPartiesWorkLogTable extends Migration
         Schema::create('dev_import_parties_work_log', function(Blueprint $table){
             $table->increments('id');
             $table->integer('file_allocation_id')->unsigned();
+            $table->integer('dev_product_index_id')->unsigned();
             $table->integer('file_line')->unsigned();
             $table->integer('work_status_id')->unsigned();
 
@@ -23,6 +24,8 @@ class CreateDevImportPartiesWorkLogTable extends Migration
 
             $table->foreign('file_allocation_id')->references('id')
                 ->on('dev_import_parties_file_allocation');
+            $table->foreign('dev_product_index_id')->references('id')
+                ->on('dev_product_index');
             $table->foreign('work_status_id')->references('id')
                 ->on('dev_import_parties_work_statuses');
         });

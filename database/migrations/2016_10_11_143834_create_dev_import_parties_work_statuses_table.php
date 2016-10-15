@@ -19,7 +19,6 @@ class CreateDevImportPartiesWorkStatusesTable extends Migration
             $table->string('import_color');
 
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

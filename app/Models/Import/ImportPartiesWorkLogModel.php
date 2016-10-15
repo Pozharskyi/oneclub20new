@@ -10,6 +10,7 @@
 
 namespace App\Models\Import;
 
+use App\Models\Product\ProductModel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -23,6 +24,16 @@ class ImportPartiesWorkLogModel extends Model
      * @var string
      */
     protected $table = 'dev_import_parties_work_log';
+
+    protected $fillable = [
+        'file_allocation_id', 'dev_product_index_id',
+        'file_line', 'work_status_id',
+    ];
+
+    public function product()
+    {
+        return $this->belongsTo(ProductModel::class, 'dev_product_index_id');
+    }
 
     public function partiesFileAllocation()
     {

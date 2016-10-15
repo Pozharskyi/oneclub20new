@@ -12,6 +12,7 @@ namespace App\Models\Product;
 use App\Models\Basic\BasicGenderModel;
 use App\Models\Category\SubCategoriesModel;
 use App\Models\Import\ImportLogPartiesModel;
+use App\Models\Import\ImportPartiesWorkLogModel;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Category\CategoryModel;
@@ -91,6 +92,11 @@ class ProductModel extends Model
     public function photos()
     {
         return $this->hasOne(ProductPhotoModel::class, 'dev_product_index_id');
+    }
+
+    public function partiesWorkLog()
+    {
+        return $this->hasMany(ImportPartiesWorkLogModel::class, 'dev_product_index_id');
     }
 
     public function scopeCategories( Builder $query, $categories )

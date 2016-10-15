@@ -24,6 +24,7 @@ class ImportPartiesWorkLogTableSeeder extends Seeder
                 [
                     'id' => 1,
                     'file_allocation_id' => '1',
+                    'dev_product_index_id' => '1',
                     'file_line' => '1',
                     'work_status_id' => '1',
                     'created_at' => date('Y-m-d H:i:s'),
@@ -32,16 +33,9 @@ class ImportPartiesWorkLogTableSeeder extends Seeder
                 [
                     'id' => 2,
                     'file_allocation_id' => '1',
+                    'dev_product_index_id' => '2',
                     'file_line' => '2',
                     'work_status_id' => '2',
-                    'created_at' => date('Y-m-d H:i:s'),
-                    'updated_at' => date('Y-m-d H:i:s'),
-                ],
-                [
-                    'id' => 3,
-                    'file_allocation_id' => '2',
-                    'file_line' => '1',
-                    'work_status_id' => '3',
                     'created_at' => date('Y-m-d H:i:s'),
                     'updated_at' => date('Y-m-d H:i:s'),
                 ],
