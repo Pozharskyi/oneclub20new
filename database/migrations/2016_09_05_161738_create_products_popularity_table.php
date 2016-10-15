@@ -19,7 +19,7 @@ class CreateProductsPopularityTable extends Migration
             $table->integer('popularity')->unsigned();
             $table->timestamps();
 
-            $table->foreign('dev_index_product_id')
+            $table->foreign('dev_product_index_id')
                 ->references('id')
                 ->on('dev_product_index');
         });

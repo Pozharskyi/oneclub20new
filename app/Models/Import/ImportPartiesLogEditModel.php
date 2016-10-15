@@ -22,6 +22,12 @@ class ImportPartiesLogEditModel extends Model
      */
     protected $table = 'dev_import_parties_log_edit';
 
+    protected $fillable = [
+        'import_index_party_id', 'field_changed',
+        'field_current_value', 'field_changed_value',
+        'made_by'
+    ];
+
     public function parties()
     {
         return $this->belongsTo(ImportIndexPartiesModel::class, 'import_index_party_id');

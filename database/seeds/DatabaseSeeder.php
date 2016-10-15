@@ -36,6 +36,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ImportSalesAssociationTableSeeder::class);
         $this->call(ImportSalesLogDeleteTableSeeder::class);
         $this->call(ImportSalesLogEditTableSeeder::class);
+        $this->call(ImportPartiesPhotosFoundsTableSeeder::class);
 
         // END IMPORT AREA
 

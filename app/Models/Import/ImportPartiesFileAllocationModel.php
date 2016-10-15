@@ -60,6 +60,11 @@ class ImportPartiesFileAllocationModel extends Model
         return $this->hasMany(ImportPartiesWorkLogModel::class, 'id', 'file_allocation_id');
     }
 
+    public function partiesPhotosFounds()
+    {
+        return $this->hasMany(ImportPartiesPhotosFoundsModel::class, 'id', 'file_allocation_id');
+    }
+
     public function scopeFilterParties(Builder $query, $party_id)
     {
         $query->where( 'import_index_party_id', $party_id );
