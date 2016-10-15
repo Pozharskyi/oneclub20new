@@ -313,3 +313,25 @@
 #sendToProd {
     right: 10%;
 }
+
+.desc_row {
+    cursor: pointer;
+}
+
+#desc {
+    border: 1px solid #e4e4e4;
+    display: none;
+}
+
+#closeDesc {
+    position: absolute;
+    right: 15px;
+    top: 5px;
+    text-decoration: none !important;
+    cursor: pointer;
+    z-index: 100001;
+}
+
+.image_row {
+    width: 100%;
+}

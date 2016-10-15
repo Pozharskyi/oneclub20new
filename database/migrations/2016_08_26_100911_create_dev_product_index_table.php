@@ -18,6 +18,7 @@ class CreateDevProductIndexTable extends Migration
             $table->string('sku');
             $table->string('product_store_id')->unique();
             $table->string('product_backend_id')->unique();
+            $table->integer('dev_product_color_id')->unsigned();
             $table->integer('brand_id')->unsigned();
             $table->integer('category_id')->unsigned();
 
@@ -31,6 +32,10 @@ class CreateDevProductIndexTable extends Migration
             $table->foreign('brand_id')
                 ->references('id')->on('dev_product_brands')
                 ->onDelete('cascade');
+
+            $table->foreign('dev_product_color_id')
+                ->references('id')
+                ->on('dev_product_color');
 
             $table->foreign('category_id')
                 ->references('id')->on('dev_index_categories')

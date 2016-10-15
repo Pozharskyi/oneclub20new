@@ -682,6 +682,11 @@ Route::post('/list/order/save', 'Shop\Order\OrderController@actionSaveOrder');
             Route::get('/prepare/errors',
                 ['uses' => 'Admin\Import\Uploading\AdminImportUploadingPrepareErrorsController@actionGetErrorsFile']
             );
+            Route::post('/allocation/row',
+                ['uses' =>
+                    'Admin\Import\Uploading\AdminImportUploadingAllocationController@actionGetAllocationDescriptionByLine'
+                ]
+            );
         });
     });
 //});

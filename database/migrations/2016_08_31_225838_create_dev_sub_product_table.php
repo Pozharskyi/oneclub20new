@@ -30,9 +30,6 @@ class CreateDevSubProductTable extends Migration
             $table->integer('dev_product_size_id')->unsigned();
             $table->foreign('dev_product_size_id')->references('id')->on('dev_product_size');
 
-            $table->integer('dev_product_color_id')->unsigned();
-            $table->foreign('dev_product_color_id')->references('id')->on('dev_product_color');
-
             $table->enum('is_approved', ['0', '1'])->default('0');
 
             $table->timestamps();

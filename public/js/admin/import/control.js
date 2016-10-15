@@ -574,3 +574,49 @@ function validateSalesForm()
 
     return error;
 }
+
+function getDescriptionRow() {
+    var primaryRow = $("#primary_desc");
+    var desc = $("#desc");
+
+    primaryRow.removeClass('col-md-12');
+    primaryRow.addClass('col-md-8');
+
+    desc.addClass('col-md-4');
+    desc.css("display", "block");
+}
+
+function hideDescriptionRow()
+{
+    var primaryRow = $("#primary_desc");
+    var desc = $("#desc");
+
+    primaryRow.removeClass('col-md-8');
+    primaryRow.addClass('col-md-12');
+
+    desc.removeClass('col-md-4');
+    desc.css("display", "none");
+}
+
+function getDescription( fileLine )
+{
+    var allocationId = $("#allocationId").val();
+
+    getLoading();
+
+    $.ajax({
+        url: "/admin/import/uploading/allocation/row",
+        data: "allocationId=" + allocationId + "&fileLine=" + fileLine,
+        type: "POST",
+        headers: {
+            'X-XSRF-TOKEN': getXsrfToken()
+        },
+        success: function ( result )
+        {
+            $("#desc").html(result);
+            getDescriptionRow();
+        }
+    });
+
+    clearLoading();
+}

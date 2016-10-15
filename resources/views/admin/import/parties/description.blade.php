@@ -4,52 +4,58 @@
 
 @if( $count != 0 )
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th></th>
-                <th>sku</th>
-                <th>barcode</th>
-                <th>product_name</th>
-                <th>brand</th>
-                <th>color</th>
-                <th>size</th>
-            </tr>
-        </thead>
-        <tbody>
-
-            @php $i = 1 @endphp
-
-            @foreach( $rows as $row )
+    <div class="row">
+        <div class="col-md-12" id="primary_desc">
+            <table class="table">
+                <thead>
                 <tr>
-                    <td>
-                        {{ $i }}
-                    </td>
-                    <td>
-                        {{ $row['sku'] }}
-                    </td>
-                    <td>
-                        {{ $row['barcode'] }}
-                    </td>
-                    <td>
-                        {{ $row['product_name'] }}
-                    </td>
-                    <td>
-                        {{ $row['brand'] }}
-                    </td>
-                    <td>
-                        {{ $row['color'] }}
-                    </td>
-                    <td>
-                        {{ $row['size'] }}
-                    </td>
+                    <th></th>
+                    <th>sku</th>
+                    <th>barcode</th>
+                    <th>product_name</th>
+                    <th>brand</th>
+                    <th>color</th>
+                    <th>size</th>
                 </tr>
+                </thead>
+                <tbody>
 
-                @php $i++ @endphp
-            @endforeach
+                @php $i = 1 @endphp
 
-        </tbody>
-    </table>
+                @foreach( $rows as $row )
+                    <tr class="desc_row" onclick="getDescription({{ $i }});">
+                        <td>
+                            {{ $i }}
+                        </td>
+                        <td>
+                            {{ $row['sku'] }}
+                        </td>
+                        <td>
+                            {{ $row['barcode'] }}
+                        </td>
+                        <td>
+                            {{ $row['product_name'] }}
+                        </td>
+                        <td>
+                            {{ $row['brand'] }}
+                        </td>
+                        <td>
+                            {{ $row['color'] }}
+                        </td>
+                        <td>
+                            {{ $row['size'] }}
+                        </td>
+                    </tr>
+
+                    @php $i++ @endphp
+                @endforeach
+
+                </tbody>
+            </table>
+        </div>
+
+        <div id="desc"></div>
+    </div>
 
     <div id="desc_nav">
         <button id="batchProcessor" class="btn btn-primary">Пакетная обработка</button>

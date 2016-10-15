@@ -12,6 +12,7 @@ namespace App\Http\Controllers\Admin\Import\Uploading;
 use App\Http\Controllers\Controller;
 use App\Models\Import\ImportPartiesFileAllocationModel;
 use App\Http\Controllers\Admin\Import\Uploading\AdminImportUploadingCsvParserController as CsvParser;
+use Illuminate\Http\Request;
 
 class AdminImportUploadingAllocationController extends Controller
 {
@@ -63,5 +64,21 @@ class AdminImportUploadingAllocationController extends Controller
         $allocation->allocation_status = $allocationStatus;
 
         $allocation->save();
+    }
+
+    public function actionGetAllocationDescriptionByLine(Request $request)
+    {
+        $allocationId = $request->input('allocationId');
+        $fileLine = $request->input('fileLine');
+
+        $allocation = ImportPartiesFileAllocationModel::find($allocationId);
+        $filePath = $allocation->import_file_path;
+
+        $file = CsvParser::actionParseCsvToArray( $filePath );
+        $data = $file[$fileLine];
+
+        return view('admin.import.uploading.allocation_row', [
+            'data' => $data,
+        ]);
     }
 }
