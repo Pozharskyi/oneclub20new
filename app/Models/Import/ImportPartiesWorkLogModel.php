@@ -11,6 +11,7 @@
 namespace App\Models\Import;
 
 use App\Models\Product\ProductModel;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -40,9 +41,16 @@ class ImportPartiesWorkLogModel extends Model
         return $this->belongsTo(ImportPartiesFileAllocationModel::class, 'file_allocation_id');
     }
 
-    public function prepareStatus()
+    public function workStatus()
     {
         return $this->belongsTo(ImportPartiesWorkStatusesModel::class, 'work_status_id');
+    }
+
+    public function scopeFilterByAllocation(Builder $query, $allocationId)
+    {
+        $query->where('file_allocation_id', $allocationId);
+
+        return $query;
     }
 
 }

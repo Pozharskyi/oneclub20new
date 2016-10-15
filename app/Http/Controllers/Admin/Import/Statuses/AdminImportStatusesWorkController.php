@@ -30,6 +30,14 @@ class AdminImportStatusesWorkController extends Controller
         return $status->id;
     }
 
+    public static final function actionGetLogsForAllocation( $allocationId )
+    {
+        $logs = ImportPartiesWorkLogModel::filterByAllocation($allocationId)
+            ->get(['file_line']);
+
+        return $logs;
+    }
+
     public final function actionLogWorkStatus( $fileAllocation, $productId, $fileLine, $workStatus )
     {
         $logArray = array(

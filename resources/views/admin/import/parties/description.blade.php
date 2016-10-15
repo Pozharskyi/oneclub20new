@@ -20,12 +20,12 @@
                 </thead>
                 <tbody>
 
-                @php $i = 1 @endphp
+                @php $i = 0 @endphp
 
                 @foreach( $rows as $row )
                     <tr class="desc_row" onclick="getDescription({{ $i }});">
                         <td>
-                            {{ $i }}
+                            {{ $i + 1 }}
                         </td>
                         <td>
                             {{ $row['sku'] }}

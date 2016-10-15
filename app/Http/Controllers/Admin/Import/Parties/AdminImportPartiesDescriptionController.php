@@ -10,6 +10,7 @@
 namespace App\Http\Controllers\Admin\Import\Parties;
 
 use App\Http\Controllers\Admin\Import\Statuses\AdminImportStatusesCoincidenceController;
+use App\Http\Controllers\Admin\Import\Statuses\AdminImportStatusesWorkController;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Admin\Import\Uploading\AdminImportUploadingAllocationController as Allocation;
@@ -34,6 +35,18 @@ class AdminImportPartiesDescriptionController extends Controller
             foreach( $logs as $log )
             {
                 $rows[$log->file_line]['validationColor'] = $log->coincidenceStatus->import_color;
+            }
+
+            $workLogs = AdminImportStatusesWorkController::actionGetLogsForAllocation($allocationId);
+
+            foreach($workLogs as $workLog)
+            {
+                $currentColor = $rows[$workLog->file_line]['validationColor'];
+
+                if($currentColor != 'green')
+                {
+                    $rows[$workLog->file_line]['validationColor'] = 'none';
+                }
             }
 
             $view = 'admin.import.parties.description_valid';

@@ -659,6 +659,7 @@ function confirmDescription()
         success: function ( result )
         {
             $("#popup_content2").html(result);
+            getPartyDescriptionView( partyId );
             setTimeout(function() {
                 closePopup2();
             }, 650);

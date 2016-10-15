@@ -20,12 +20,12 @@
                 </thead>
                 <tbody>
 
-                @php $i = 1 @endphp
+                @php $i = 0 @endphp
 
                 @foreach( $rows as $row )
                     <tr class="desc_row" onclick="getDescription({{ $i }});">
                         <td style="background-color: {{ $row['validationColor'] }}">
-                            <span style="color: rgb(240, 0, 140);">{{ $i }}</span>
+                            <span style="color: rgb(240, 0, 140);">{{ $i + 1 }}</span>
                         </td>
                         <td>
                             {{ $row['sku'] }}
