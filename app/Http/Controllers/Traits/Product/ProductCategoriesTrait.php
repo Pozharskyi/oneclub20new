@@ -1,0 +1,43 @@
+<?php
+/**
+ * Created by PHP7.
+ * User: Oleksandr Serdiuk
+ * SSF Framework 1.0
+ * Date: 15.10.2016
+ * Time: 12:49
+ */
+
+namespace App\Http\Controllers\Traits\Product;
+
+use App\Models\Category\CategoryModel;
+
+trait ProductCategoriesTrait
+{
+    public function actionGetProductLastCategories()
+    {
+        //get all categories
+        $categories = CategoryModel::get(['id', 'category_name', 'parent_id']);
+
+        //get first level
+        $categories1level = $categories->where('parent_id', 0);
+
+        //get second level
+        $categories2level = $categories->whereIn('parent_id', $categories1level->pluck('id')->toArray());
+
+        //get third level
+        $categories3level = $categories->whereIn('parent_id', $categories2level->pluck('id')->toArray());
+
+        //get fourth level
+        $categories4level = $categories->whereIn('parent_id', $categories3level->pluck('id')->toArray());
+
+        $categoriesLastLevel = array();
+
+        foreach ( $categories4level as $category )
+        {
+            array_push( $categoriesLastLevel, $category->category_name );
+        }
+
+        return $categoriesLastLevel;
+    }
+
+}

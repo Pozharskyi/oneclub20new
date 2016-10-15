@@ -116,7 +116,23 @@ class IndexCategoriesSeeder extends Seeder
                     'made_by' => 1,
                     'shortcut' => null,
                     'created_at' => date('Y-m-d H:i:s'),
-                )
+                ),
+                array(
+                    'id' => 13,
+                    'category_name' => 'Кофта',
+                    'parent_id' => 11,
+                    'made_by' => 1,
+                    'shortcut' => null,
+                    'created_at' => date('Y-m-d H:i:s'),
+                ),
+                array(
+                    'id' => 14,
+                    'category_name' => 'Джинсы',
+                    'parent_id' => 12,
+                    'made_by' => 1,
+                    'shortcut' => null,
+                    'created_at' => date('Y-m-d H:i:s'),
+                ),
             )
         );
     }

@@ -688,7 +688,7 @@ Route::post('/list/order/save', 'Shop\Order\OrderController@actionSaveOrder');
 
         Route::group(['prefix' => '/control'], function ()
         {
-            Route::post('/parties',
+            Route::get('/parties',
                 ['uses' => 'Admin\Import\Control\AdminImportControlPartiesController@actionManageParties']
             );
         });

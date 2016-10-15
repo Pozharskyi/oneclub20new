@@ -15,6 +15,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\Basic\BasicBrandsTrait;
 use App\Http\Controllers\Traits\Basic\BasicColorsTrait;
 use App\Http\Controllers\Traits\Basic\BasicSizesTrait;
+use App\Http\Controllers\Traits\Product\ProductCategoriesTrait;
 use Illuminate\Http\Request;
 
 abstract class AdminImportUploadingPrepareValidationController extends Controller
@@ -22,6 +23,7 @@ abstract class AdminImportUploadingPrepareValidationController extends Controlle
     use BasicBrandsTrait;
     use BasicColorsTrait;
     use BasicSizesTrait;
+    use ProductCategoriesTrait;
 
     const VALIDATION_LINE = 0;
 
@@ -114,10 +116,13 @@ abstract class AdminImportUploadingPrepareValidationController extends Controlle
         $brands = $this->actionGetBrands();
         $colors = $this->actionGetColors();
         $sizes = $this->actionGetSizes();
+        $categories = $this->actionGetProductLastCategories();
 
         $brand_error = $status->actionFindStatusIdByPhrase('BRAND_NOT_FOUND');
         $color_error = $status->actionFindStatusIdByPhrase('COLOR_NOT_FOUND');
         $size_error = $status->actionFindStatusIdByPhrase('SIZE_NOT_FOUND');
+        $categories_error = $status->actionFindStatusIdByPhrase('CATEGORY_NOT_FOUND');
+
         $okStatus = $status->actionFindStatusIdByPhrase('OK');
 
         while( $i < $count )
@@ -145,6 +150,12 @@ abstract class AdminImportUploadingPrepareValidationController extends Controlle
                     $validation = false;
                     array_push($errorStatuses, $size_error);
                 }
+            }
+
+            if ( !in_array( $workLine['product_name'], $categories ) )
+            {
+                $validation = false;
+                array_push($errorStatuses, $categories_error);
             }
 
             if ($validation)

@@ -109,6 +109,14 @@ class ImportPartiesPrepareStatusesTableSeeder extends Seeder
                     'created_at' => date('Y-m-d H:i:s'),
                     'updated_at' => date('Y-m-d H:i:s'),
                 ],
+                [
+                    'id' => 12,
+                    'name' => 'Категории с текущем именем на найдено',
+                    'short_phrase' => 'CATEGORY_NOT_FOUND',
+                    'file_column_name' => 'product_name',
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'updated_at' => date('Y-m-d H:i:s'),
+                ],
             ]
         );
     }

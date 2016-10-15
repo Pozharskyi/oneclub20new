@@ -21,7 +21,8 @@ class AdminManageSizeChartGetCategoriesHelper
         $categories3level = $categories->whereIn('parent_id', $categories2level->pluck('id')->toArray());
 
         //prepare 3level category for view (with all level parents)
-        foreach ($categories3level as $category) {
+        foreach ($categories3level as $category)
+        {
             $category['parent1'] = $categories2level->where('id', $category->parent_id)->first();
             $category['parent2'] = $categories1level->where('id', $category['parent1']->parent_id)->first();
         }

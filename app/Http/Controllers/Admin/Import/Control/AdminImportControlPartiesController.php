@@ -9,10 +9,13 @@
 
 namespace App\Http\Controllers\Admin\Import\Control;
 
+use App\Http\Controllers\Traits\Product\ProductCategoriesTrait;
 use Illuminate\Http\Request;
 
 class AdminImportControlPartiesController extends AdminImportControlPartiesValidationController
 {
+    use ProductCategoriesTrait;
+
     public function actionManageParties(Request $request)
     {
 
