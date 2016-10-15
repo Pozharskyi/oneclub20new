@@ -12,6 +12,14 @@ $("#sendToProd").click(function()
     sendToProd();
 });
 
+function continueWork()
+{
+    var party_id = $("#working_party_id").val();
+
+    getPartyDescriptionView( party_id );
+    closePopup2();
+}
+
 function processWork()
 {
     var party_id = $("#working_party_id").val();

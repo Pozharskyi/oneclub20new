@@ -24,8 +24,8 @@
 
                 @foreach( $rows as $row )
                     <tr class="desc_row" onclick="getDescription({{ $i }});">
-                        <td>
-                            {{ $i }}
+                        <td style="background-color: {{ $row['validationColor'] }}">
+                            <span style="color: rgb(240, 0, 140);">{{ $i }}</span>
                         </td>
                         <td>
                             {{ $row['sku'] }}

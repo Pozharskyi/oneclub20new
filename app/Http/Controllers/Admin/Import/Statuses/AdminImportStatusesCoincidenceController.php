@@ -34,4 +34,13 @@ class AdminImportStatusesCoincidenceController extends Controller
         ImportPartiesCoincidenceLogModel::create( $logArray );
     }
 
+    public static final function actionGetLogsForAllocation( $allocationId )
+    {
+        $logs = ImportPartiesCoincidenceLogModel::filterByAllocation($allocationId)
+            ->with(['coincidenceStatus'])
+            ->get(['file_line', 'coincidence_status_id']);
+
+        return $logs;
+    }
+
 }

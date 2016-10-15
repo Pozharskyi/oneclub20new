@@ -10,6 +10,7 @@
 
 namespace App\Models\Import;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -37,6 +38,13 @@ class ImportPartiesCoincidenceLogModel extends Model
     public function coincidenceStatus()
     {
         return $this->belongsTo(ImportPartiesCoincidenceStatusesModel::class, 'coincidence_status_id');
+    }
+
+    public function scopeFilterByAllocation(Builder $query, $allocationId)
+    {
+        $query->where('file_allocation_id', $allocationId);
+
+        return $query;
     }
 
 }
