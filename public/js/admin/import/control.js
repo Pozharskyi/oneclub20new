@@ -649,8 +649,6 @@ function confirmDescription()
 
     getLoading();
 
-    console.log(data);
-
     $.ajax({
         url: "/admin/import/core/product",
         data: data,
