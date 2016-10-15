@@ -10,12 +10,15 @@
 namespace App\Http\Controllers\Admin\Import\Uploading;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Traits\Product\ProductCategoriesTrait;
 use App\Models\Import\ImportPartiesFileAllocationModel;
 use App\Http\Controllers\Admin\Import\Uploading\AdminImportUploadingCsvParserController as CsvParser;
 use Illuminate\Http\Request;
 
 class AdminImportUploadingAllocationController extends Controller
 {
+    use ProductCategoriesTrait;
+
     public static function actionGetAllocation( $party_id )
     {
         $allocation = ImportPartiesFileAllocationModel::filterParties($party_id)
@@ -78,6 +81,11 @@ class AdminImportUploadingAllocationController extends Controller
 
         $file = CsvParser::actionParseCsvToArray( $filePath );
         $data = $file[$fileLine];
+
+        $categories = $this->actionFindCategoryTreeByLast( $data['product_name'] );
+        $data['cat1'] = $categories[0]['name'];
+        $data['cat2'] = $categories[1]['name'];
+        $data['cat3'] = $categories[2]['name'];
 
         return view('admin.import.uploading.allocation_row', [
             'data' => $data,

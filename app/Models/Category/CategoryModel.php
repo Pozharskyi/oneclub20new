@@ -35,12 +35,12 @@ class CategoryModel extends Model
         return $this->belongsTo(User::class, 'made_by');
     }
 
-    public function scopeParents(Builder $query)
+    public function scopeParents( Builder $query )
     {
         $query->where('parent_id', '0');
     }
 
-    public function scopeSearch( $query, $category_name, $priority_level )
+    public function scopeSearch( Builder $query, $category_name, $priority_level )
     {
         if( $priority_level == 0 )
         {
@@ -51,5 +51,12 @@ class CategoryModel extends Model
         }
 
         $query->where( 'parent_id', $priority_level );
+    }
+
+    public function scopeSearchLastCategory( Builder $query, $category )
+    {
+        $query->where( 'category_name', $category );
+
+        return $query;
     }
 }

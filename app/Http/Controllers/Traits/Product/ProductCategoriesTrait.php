@@ -58,4 +58,48 @@ trait ProductCategoriesTrait
 
         return $categories4level;
     }
+
+    public function actionGetAllCategories()
+    {
+        $categories = CategoryModel::get();
+
+        return $categories;
+    }
+
+    public function actionFindCategoryTreeByLast( $category )
+    {
+        $lastCategory = CategoryModel::searchLastCategory( $category )
+            ->first(['id']);
+
+        $categoryId = $lastCategory->id;
+
+        $categories = $this->actionGetAllCategories();
+
+        $result = array();
+
+        foreach( $categories as $category )
+        {
+            $result[$category->id] = array(
+                'name' => $category->category_name,
+                'parent_id' => $category->parent_id,
+            );
+        }
+
+        $categoryResult = array();
+
+        while (true)
+        {
+            $cat = $result[$categoryId];
+            array_push($categoryResult, $cat);
+
+            $categoryId = $result[$categoryId]['parent_id'];
+
+            if($categoryId == 0)
+            {
+                break;
+            }
+        }
+
+        return array_reverse($categoryResult);
+    }
 }
