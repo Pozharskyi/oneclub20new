@@ -38,6 +38,8 @@ abstract class AdminImportControlPartiesValidationController extends Controller
         $categories = $this->actionGetProductCategoriesWithIds();
         $products = $this->actionGetProducts( $supplierId );
 
+        $this->coincidenceStatus->actionDeleteAllocationLogs( $fileAllocation );
+
         $found_alert = $this->coincidenceStatus->actionFindStatusIdByPhrase('FOUND');
         $description_alert = $this->coincidenceStatus->actionFindStatusIdByPhrase('DESCRIPTION');
         $photo_alert = $this->coincidenceStatus->actionFindStatusIdByPhrase('PHOTO');
@@ -65,6 +67,12 @@ abstract class AdminImportControlPartiesValidationController extends Controller
                 'sku' => $data['description'],
             );
 
+            $photosArray = array(
+                'sku' => $data['sku'],
+                'brand' => $brand,
+                'color' => $color,
+            );
+
             $matches = $this->actionGetTotalMatch($products, $matchArray);
 
             if($matches)
@@ -79,12 +87,17 @@ abstract class AdminImportControlPartiesValidationController extends Controller
                     $this->coincidenceStatus->actionLogCoincidenceStatus( $fileAllocation, $i, $new_alert );
                 } else
                 {
-                    // TODO: with photos
                     $descriptionMatch = $this->actionGetDescriptionMatch($products, $newArray);
+                    $photosMatch = $this->actionGetPhotosMatch( $photosArray, $fileAllocation, $i, $supplierId );
 
                     if(!$descriptionMatch)
                     {
                         $this->coincidenceStatus->actionLogCoincidenceStatus( $fileAllocation, $i, $description_alert );
+                    }
+
+                    if(!$photosMatch)
+                    {
+                        $this->coincidenceStatus->actionLogCoincidenceStatus( $fileAllocation, $i, $photo_alert );
                     }
                 }
             }

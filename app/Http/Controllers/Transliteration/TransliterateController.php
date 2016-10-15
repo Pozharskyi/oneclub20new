@@ -39,6 +39,9 @@ class TransliterateController extends Controller
             'Ч' => 'Ch',  'Ш' => 'Sh',  'Щ' => 'Sch',
             'Ь' => '\'',  'Ы' => 'Y',   'Ъ' => '\'',
             'Э' => 'E',   'Ю' => 'Yu',  'Я' => 'Ya',
+
+            // SPECIAL
+            ' ' => '',
         );
 
         return strtr($string, $converter);

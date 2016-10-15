@@ -43,4 +43,10 @@ class AdminImportStatusesCoincidenceController extends Controller
         return $logs;
     }
 
+    public final function actionDeleteAllocationLogs( $allocationId )
+    {
+        ImportPartiesCoincidenceLogModel::filterByAllocation( $allocationId )
+            ->delete();
+    }
+
 }

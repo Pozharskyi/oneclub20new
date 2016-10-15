@@ -40,5 +40,4 @@ class AdminImportControlPartiesController extends AdminImportControlPartiesValid
             ]);
         }
     }
-
 }
