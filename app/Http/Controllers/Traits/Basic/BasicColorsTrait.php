@@ -26,4 +26,17 @@ trait BasicColorsTrait
         return $colors;
     }
 
+    public final function actionFindColorsWithIds()
+    {
+        $colorsCollection = ProductColorModel::get(['id','name']);
+        $colors = array();
+
+        foreach( $colorsCollection as $collection )
+        {
+            $colors[$collection->name] = $collection->id;
+        }
+
+        return $colors;
+    }
+
 }

@@ -23,18 +23,13 @@ class ProductPopularityTableSeeder extends Seeder
             [
                 [
                     'id' => 1,
-                    'sub_product_id' => 1,
+                    'dev_product_index_id' => 1,
                     'popularity' => 50,
                 ],
                 [
                     'id' => 2,
-                    'sub_product_id' => 2,
+                    'dev_product_index_id' => 2,
                     'popularity' => 81,
-                ],
-                [
-                    'id' => 3,
-                    'sub_product_id' => 3,
-                    'popularity' => 75,
                 ],
             ]
         );

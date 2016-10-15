@@ -17,7 +17,6 @@ class CreateDevProductDescriptionTable extends Migration
         {
             $table->increments('id');
             $table->integer('product_id')->unsigned();
-            $table->longText('product_name');
             $table->longText('supplier_product_name');
             $table->text('product_description');
             $table->text('product_composition');

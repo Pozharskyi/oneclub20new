@@ -22,7 +22,7 @@ class CreateDevProductIndexTable extends Migration
             $table->integer('brand_id')->unsigned();
             $table->integer('category_id')->unsigned();
 
-            $table->integer('stock_id')->unsigned();
+            $table->integer('stock_id')->unsigned()->default('1');
             $table->integer('dev_index_gender_id')->unsigned();
             $table->integer('import_index_party_id')->unsigned();
 

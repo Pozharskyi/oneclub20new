@@ -21,12 +21,12 @@ class ProductPopularityModel extends Model
     protected $table = 'dev_product_popularity';
 
     protected $fillable = [
-        'sub_product_id', 'popularity'
+        'dev_product_index_id', 'popularity'
     ];
 
-    public function subProduct()
+    public function product()
     {
-        return $this->hasOne( SubProductModel::class, 'id');
+        return $this->hasOne(ProductModel::class, 'id');
     }
 
 }

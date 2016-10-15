@@ -26,4 +26,17 @@ trait BasicBrandsTrait
         return $brands;
     }
 
+    public final function actionFindBrandsWithIds()
+    {
+        $brandsCollection = BasicBrandsModel::get(['id', 'brand_name']);
+        $brands = array();
+
+        foreach( $brandsCollection as $collection )
+        {
+            $brands[$collection->brand_name] = $collection->id;
+        }
+
+        return $brands;
+    }
+
 }

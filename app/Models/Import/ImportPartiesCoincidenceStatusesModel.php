@@ -10,6 +10,7 @@
 
 namespace App\Models\Import;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -29,6 +30,13 @@ class ImportPartiesCoincidenceStatusesModel extends Model
     public function partiesCoincidenceLog()
     {
         return $this->hasMany(ImportPartiesCoincidenceLogModel::class, 'id', 'coincidence_status_id');
+    }
+
+    public function scopeFindStatus(Builder $query, $prepareStatus)
+    {
+        $query->where('short_phrase', $prepareStatus);
+
+        return $query;
     }
 
 }

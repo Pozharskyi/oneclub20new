@@ -73,14 +73,24 @@ class ProductModel extends Model
         return $this->hasOne(ProductSaleModel::class, 'id');
     }
 
-    public function logParties()
-    {
-        return $this->hasMany(ImportLogPartiesModel::class, 'product_id');
-    }
-
     public function category()
     {
         return $this->belongsTo(CategoryModel::class, 'category_id');
+    }
+
+    public function color()
+    {
+        return $this->belongsTo(ProductColorModel::class, 'dev_product_color_id');
+    }
+
+    public function popularity()
+    {
+        return $this->hasOne(ProductPopularityModel::class, 'dev_product_index_id');
+    }
+
+    public function photos()
+    {
+        return $this->hasOne(ProductPhotoModel::class, 'dev_product_index_id');
     }
 
     public function scopeCategories( Builder $query, $categories )

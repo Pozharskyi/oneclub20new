@@ -10,6 +10,7 @@
 namespace App\Models\Product;
 
 use App\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -30,13 +31,20 @@ class ProductColorModel extends Model
     /**
      * Get all sub products with this color.
      */
-    public function subproducts()
+    public function product()
     {
-        return $this->hasMany(SubProductModel::class, 'dev_product_size_id');
+        return $this->hasMany(ProductModel::class, 'dev_product_color_id');
     }
 
     public function user()
     {
         return $this->belongsTo(User::class, 'made_by');
+    }
+
+    public function scopeFindByColorName(Builder $query, $colorName)
+    {
+        $query->where('name', $colorName);
+
+        return $query;
     }
 }
