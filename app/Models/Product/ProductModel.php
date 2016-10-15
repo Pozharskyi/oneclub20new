@@ -35,7 +35,8 @@ class ProductModel extends Model
     protected $fillable = [
         'sku', 'product_store_id', 'product_backend_id',
         'brand_id', 'category_id', 'dev_index_gender_id',
-        'stock_id',
+        'stock_id', 'dev_product_color_id',
+        'import_index_party_id',
     ];
 
     public function brand()

@@ -66,6 +66,14 @@ trait ProductCategoriesTrait
         return $categories;
     }
 
+    public function actionSearchLastCategory( $category )
+    {
+        $lastCategory = CategoryModel::searchLastCategory( $category )
+            ->first(['id']);
+
+        return $lastCategory->id;
+    }
+
     public function actionFindCategoryTreeByLast( $category )
     {
         $lastCategory = CategoryModel::searchLastCategory( $category )

@@ -9,6 +9,7 @@
 
 namespace App\Models\Import;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -31,6 +32,14 @@ class ImportPartiesPhotosFoundsModel extends Model
     public function partiesAllocation()
     {
         return $this->belongsTo(ImportPartiesFileAllocationModel::class, 'file_allocation_id');
+    }
+
+    public function scopeTotalMatch(Builder $query, $allocationId, $fileLine)
+    {
+        $query->where( 'file_allocation_id', $allocationId )
+            ->where( 'file_line', $fileLine );
+
+        return $query;
     }
 
 }

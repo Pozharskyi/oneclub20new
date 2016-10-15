@@ -633,3 +633,39 @@ function getDescription( fileLine )
 
     clearLoading();
 }
+
+function confirmDescription()
+{
+    getWaitingView();
+    getPopup2();
+
+    var data = $("#descForm").serialize();
+
+    var allocationId = $("#allocationId").val();
+    var filePath = $("#filePath").val();
+    var partyId = $("#working_party_id").val();
+
+    data += "&allocationId=" + allocationId + "&filePath=" + filePath + "&partyId=" + partyId;
+
+    getLoading();
+
+    console.log(data);
+
+    $.ajax({
+        url: "/admin/import/core/product",
+        data: data,
+        type: "POST",
+        headers: {
+            'X-XSRF-TOKEN': getXsrfToken()
+        },
+        success: function ( result )
+        {
+            $("#popup_content2").html(result);
+            setTimeout(function() {
+                closePopup2();
+            }, 650);
+        }
+    });
+
+    clearLoading();
+}

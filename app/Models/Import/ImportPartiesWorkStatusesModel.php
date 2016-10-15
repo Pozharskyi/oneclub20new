@@ -10,6 +10,7 @@
 
 namespace App\Models\Import;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class ImportPartiesWorkStatusesModel extends Model
@@ -19,13 +20,20 @@ class ImportPartiesWorkStatusesModel extends Model
      *
      * @var string
      */
-    protected $table = 'dev_import_parties_file_allocation';
+    protected $table = 'dev_import_parties_work_statuses';
 
     protected $fillable = [];
 
     public function partiesWorkLog()
     {
         return $this->hasMany(ImportPartiesWorkLogModel::class, 'id', 'work_status_id');
+    }
+
+    public function scopeFindStatus(Builder $query, $prepareStatus)
+    {
+        $query->where('short_phrase', $prepareStatus);
+
+        return $query;
     }
 
 }

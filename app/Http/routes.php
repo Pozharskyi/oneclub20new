@@ -692,5 +692,12 @@ Route::post('/list/order/save', 'Shop\Order\OrderController@actionSaveOrder');
                 ['uses' => 'Admin\Import\Control\AdminImportControlPartiesController@actionManageParties']
             );
         });
+
+        Route::group(['prefix' => '/core'], function ()
+        {
+            Route::post('/product',
+                ['uses' => 'Admin\Import\Core\AdminImportProductController@actionHandleImport']
+            );
+        });
     });
 //});

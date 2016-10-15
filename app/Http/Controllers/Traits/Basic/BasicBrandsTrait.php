@@ -13,6 +13,14 @@ use App\Models\Basic\BasicBrandsModel;
 
 trait BasicBrandsTrait
 {
+    public final function actionFindBrand( $brand )
+    {
+        $brand = BasicBrandsModel::where('brand_name', $brand)
+            ->first(['id']);
+
+        return $brand->id;
+    }
+
     public final function actionGetBrands()
     {
         $brandsCollection = BasicBrandsModel::get(['brand_name']);

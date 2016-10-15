@@ -13,6 +13,14 @@ use App\Models\Product\ProductColorModel;
 
 trait BasicColorsTrait
 {
+    public final function actionFindColor( $name )
+    {
+        $color = ProductColorModel::where('name', $name)
+            ->first(['id']);
+
+        return $color->id;
+    }
+
     public final function actionGetColors()
     {
         $colorsCollection = ProductColorModel::get(['name']);

@@ -13,6 +13,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\Product\ProductCategoriesTrait;
 use App\Models\Import\ImportPartiesFileAllocationModel;
 use App\Http\Controllers\Admin\Import\Uploading\AdminImportUploadingCsvParserController as CsvParser;
+use App\Http\Controllers\Admin\Import\Uploading\AdminImportUploadingPhotosFoundController as PhotoController;
 use Illuminate\Http\Request;
 
 class AdminImportUploadingAllocationController extends Controller
@@ -32,6 +33,7 @@ class AdminImportUploadingAllocationController extends Controller
         $result = new \stdClass();
         $result->file = $file;
         $result->allocationId = $allocationId;
+        $result->import_file_path = $allocation->import_file_path;
         $result->supplierId = $allocation->parties->import_supplier_id;
 
         return $result;
@@ -97,13 +99,21 @@ class AdminImportUploadingAllocationController extends Controller
         $file = CsvParser::actionParseCsvToArray( $filePath );
         $data = $file[$fileLine];
 
+        $photos = PhotoController::actionGetPhotosForProduct( $allocationId, $fileLine );
         $categories = $this->actionFindCategoryTreeByLast( $data['product_name'] );
         $data['cat1'] = $categories[0]['name'];
         $data['cat2'] = $categories[1]['name'];
         $data['cat3'] = $categories[2]['name'];
 
+        $categoryId = $this->actionSearchLastCategory( $data['product_name'] );
+
         return view('admin.import.uploading.allocation_row', [
             'data' => $data,
+            'categoryId' => $categoryId,
+            'fileLine' => $fileLine,
+
+            'photos' => $photos,
+            'photos_count' => count( $photos ),
         ]);
     }
 }

@@ -25,6 +25,7 @@ class AdminImportPartiesDescriptionController extends Controller
         $count = count( $rows );
 
         $allocationId = $allocation->allocationId;
+        $filePath = $allocation->import_file_path;
 
         $logs = AdminImportStatusesCoincidenceController::actionGetLogsForAllocation($allocationId);
 
@@ -48,6 +49,7 @@ class AdminImportPartiesDescriptionController extends Controller
 
             'party_id' => $party_id,
             'allocationId' => $allocationId,
+            'filePath' => $filePath,
         ]);
     }
 

@@ -64,8 +64,10 @@
     </div>
 
     <input type="hidden" name="allocationId" id="allocationId" value="{{ $allocationId }}" />
+    <input type="hidden" name="filePath" id="filePath" value="{{ $filePath }}" />
     <input type="hidden" name="working_party_id" id="working_party_id" value="{{ $party_id }}" />
     <script type="text/javascript" src="{{ url('/js/admin/import/uploading/description.js') }}"></script>
+    <div style="height: 250px"></div>
 
 @else
 
