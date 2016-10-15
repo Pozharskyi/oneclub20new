@@ -29,7 +29,7 @@ trait ProductTrait
         return $products;
     }
 
-    public function actionGetTotalMatch($products, $fields)
+    public function actionGetTotalMatch($products, $fields, $partyId)
     {
         foreach( $products as $product )
         {
@@ -37,11 +37,21 @@ trait ProductTrait
                 $product->brand_id == $fields['brand_id'] &&
                 $product->dev_product_color_id == $fields['dev_product_color_id']
             ) {
+                $this->actionUpdateProductParty( $product->id, $partyId );
+
                 return true;
             }
         }
 
         return false;
+    }
+
+    public function actionUpdateProductParty( $productId, $partyId )
+    {
+        $item = ProductModel::findOrFail( $productId );
+        $item->import_index_party_id = $partyId;
+
+        $item->save();
     }
 
     public function actionGetDescriptionMatch($products, $fields)

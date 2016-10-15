@@ -15,6 +15,7 @@ use App\Http\Controllers\Traits\Basic\BasicBrandsTrait;
 use App\Http\Controllers\Traits\Basic\BasicColorsTrait;
 use App\Http\Controllers\Traits\Product\ProductCategoriesTrait;
 use App\Http\Controllers\Traits\Product\ProductTrait;
+use App\Http\Controllers\Admin\Import\Uploading\AdminImportUploadingAllocationController as Allocation;
 use Illuminate\Http\Request;
 
 abstract class AdminImportControlPartiesValidationController extends Controller
@@ -38,6 +39,7 @@ abstract class AdminImportControlPartiesValidationController extends Controller
         $categories = $this->actionGetProductCategoriesWithIds();
         $products = $this->actionGetProducts( $supplierId );
 
+        $partyId = Allocation::actionGetPartyByAllocation( $fileAllocation );
         $this->coincidenceStatus->actionDeleteAllocationLogs( $fileAllocation );
 
         $found_alert = $this->coincidenceStatus->actionFindStatusIdByPhrase('FOUND');
@@ -73,7 +75,7 @@ abstract class AdminImportControlPartiesValidationController extends Controller
                 'color' => $color,
             );
 
-            $matches = $this->actionGetTotalMatch($products, $matchArray);
+            $matches = $this->actionGetTotalMatch($products, $matchArray, $partyId);
 
             if($matches)
             {
@@ -104,6 +106,8 @@ abstract class AdminImportControlPartiesValidationController extends Controller
 
             $i++;
         }
+
+        Allocation::actionChangeAllocationStatusForDone( $fileAllocation );
     }
 
     abstract public function actionManageParties(Request $request);

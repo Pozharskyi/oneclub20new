@@ -63,6 +63,21 @@ class AdminImportUploadingAllocationController extends Controller
         return $logs;
     }
 
+    public static function actionGetPartyByAllocation( $allocationId )
+    {
+        $allocation = ImportPartiesFileAllocationModel::find( $allocationId );
+
+        return $allocation->import_index_party_id;
+    }
+
+    public static function actionChangeAllocationStatusForDone( $allocationId )
+    {
+        $allocation = ImportPartiesFileAllocationModel::find( $allocationId );
+        $allocation->allocation_status = 'Файл обработан';
+
+        $allocation->save();
+    }
+
     public static function actionChangeAllocationStatus( $allocationId, $allocationStatus )
     {
         $allocation = ImportPartiesFileAllocationModel::find($allocationId);
