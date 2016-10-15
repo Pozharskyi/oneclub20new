@@ -81,16 +81,3 @@ function getConfirmView()
     $("#popup_content2").html( message );
     getPopup2();
 }
-
-function getWaitingView()
-{
-    var message =
-        '<div id="alert_status">' +
-            '<div class="text-center">' +
-                '<h2 class="alert_message">Ожидайте, скоро все будет готово...</h2>' +
-                '<img style="margin-top: 15px;" src="/images/import/loading.gif" />' +
-            '</div>' +
-        '</div>';
-
-    $("#popup_content2").html( message );
-}

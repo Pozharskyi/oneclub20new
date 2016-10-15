@@ -58,12 +58,13 @@
     </div>
 
     <div id="desc_nav">
-        <button id="batchProcessor" class="btn btn-primary">Пакетная обработка</button>
+        <button id="batchProcessor" onclick="processWork();" class="btn btn-primary">Пакетная обработка</button>
         <button id="exportExcel" class="btn btn-default">Экспорт в Excel</button>
         <button id="sendToProd" class="btn btn-warning">Отправка в продакшн</button>
     </div>
 
     <input type="hidden" name="allocationId" id="allocationId" value="{{ $allocationId }}" />
+    <input type="hidden" name="working_party_id" id="working_party_id" value="{{ $party_id }}" />
     <script type="text/javascript" src="{{ url('/js/admin/import/uploading/description.js') }}"></script>
 
 @else

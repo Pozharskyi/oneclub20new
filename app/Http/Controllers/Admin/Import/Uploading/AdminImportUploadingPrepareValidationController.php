@@ -116,7 +116,7 @@ abstract class AdminImportUploadingPrepareValidationController extends Controlle
         $brands = $this->actionGetBrands();
         $colors = $this->actionGetColors();
         $sizes = $this->actionGetSizes();
-        $categories = $this->actionGetProductLastCategories();
+        $categories = $this->actionGetProductCategories();
 
         $brand_error = $status->actionFindStatusIdByPhrase('BRAND_NOT_FOUND');
         $color_error = $status->actionFindStatusIdByPhrase('COLOR_NOT_FOUND');

@@ -24,6 +24,11 @@ class ImportPartiesCoincidenceLogModel extends Model
      */
     protected $table = 'dev_import_parties_coincidence_log';
 
+    protected $fillable = [
+        'file_allocation_id', 'file_line',
+        'coincidence_status_id',
+    ];
+
     public function partiesFileAllocation()
     {
         return $this->belongsTo(ImportPartiesFileAllocationModel::class, 'file_allocation_id');

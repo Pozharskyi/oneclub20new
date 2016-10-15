@@ -100,4 +100,11 @@ class ProductModel extends Model
             $query->whereIn( 'category_id', $categories );
         }
     }
+
+    public function scopeFilterByParties( Builder $query, $parties )
+    {
+        $query->whereIn('import_index_party_id', $parties);
+
+        return $query;
+    }
 }

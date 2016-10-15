@@ -19,8 +19,9 @@ class AdminImportUploadingAllocationController extends Controller
     public static function actionGetAllocation( $party_id )
     {
         $allocation = ImportPartiesFileAllocationModel::filterParties($party_id)
+            ->with(['parties'])
             ->orderBy('id' ,'DESC')
-            ->first(['id', 'import_file_path']);
+            ->first(['id', 'import_file_path', 'import_index_party_id']);
 
         $file = CsvParser::actionParseCsvToArray( $allocation->import_file_path );
         $allocationId = $allocation->id;
@@ -28,6 +29,7 @@ class AdminImportUploadingAllocationController extends Controller
         $result = new \stdClass();
         $result->file = $file;
         $result->allocationId = $allocationId;
+        $result->supplierId = $allocation->parties->import_supplier_id;
 
         return $result;
     }
@@ -47,7 +49,7 @@ class AdminImportUploadingAllocationController extends Controller
         return $allocation->import_file_path;
     }
 
-    public static function actionGetAllocationLogs( $party_id )
+    public static function actionGetAllocationPrepareLogs( $party_id )
     {
         $logs = ImportPartiesFileAllocationModel::filterParties($party_id)
             ->with(['madeBy', 'partiesPrepareLog'])

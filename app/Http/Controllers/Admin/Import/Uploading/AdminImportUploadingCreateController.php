@@ -24,7 +24,7 @@ class AdminImportUploadingCreateController extends Controller implements AdminIm
         $party_id = $request->input('party_id');
 
         $party = ImportIndexPartiesModel::findOrFail($party_id);
-        $logs = Allocation::actionGetAllocationLogs($party_id);
+        $logs = Allocation::actionGetAllocationPrepareLogs($party_id);
 
         return view('admin.import.uploading.create', [
             'party_id' => $party_id,

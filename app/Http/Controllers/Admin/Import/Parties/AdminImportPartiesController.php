@@ -15,9 +15,10 @@ use App\Models\Import\ImportSalesAssociationModel;
 
 class AdminImportPartiesController extends Controller
 {
-    public function actionGetAllParties()
+    public static function actionGetAllParties( $supplierId )
     {
-        $parties = ImportIndexPartiesModel::get();
+        $parties = ImportIndexPartiesModel::sortBySupplier( $supplierId )
+            ->get(['id'])->toArray();
 
         return $parties;
     }
@@ -78,6 +79,14 @@ class AdminImportPartiesController extends Controller
             ->get();
 
         return $association;
+    }
+
+    public static function actionFindPartiesBySupplier( $supplierId )
+    {
+        $parties = ImportIndexPartiesModel::sortBySupplier($supplierId)
+            ->get(['id'])->toArray();
+
+        return $parties;
     }
 
 }

@@ -90,4 +90,11 @@ class ImportIndexPartiesModel extends Model
         }
     }
 
+    public function scopeSortBySupplier( Builder $query, $supplierId )
+    {
+        $query->where( 'import_supplier_id', $supplierId );
+
+        return $query;
+    }
+
 }

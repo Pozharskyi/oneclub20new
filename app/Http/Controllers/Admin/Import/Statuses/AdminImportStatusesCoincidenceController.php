@@ -10,6 +10,7 @@
 namespace App\Http\Controllers\Admin\Import\Statuses;
 
 use App\Http\Controllers\Controller;
+use App\Models\Import\ImportPartiesCoincidenceLogModel;
 use App\Models\Import\ImportPartiesCoincidenceStatusesModel;
 
 class AdminImportStatusesCoincidenceController extends Controller
@@ -20,6 +21,17 @@ class AdminImportStatusesCoincidenceController extends Controller
             ->first(['id']);
 
         return $status->id;
+    }
+
+    public final function actionLogCoincidenceStatus( $fileAllocation, $fileLine, $coincidenceStatus )
+    {
+        $logArray = array(
+            'file_allocation_id' => $fileAllocation,
+            'file_line' => $fileLine,
+            'coincidence_status_id' => $coincidenceStatus,
+        );
+
+        ImportPartiesCoincidenceLogModel::create( $logArray );
     }
 
 }

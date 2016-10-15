@@ -13,7 +13,33 @@ use App\Models\Category\CategoryModel;
 
 trait ProductCategoriesTrait
 {
-    public function actionGetProductLastCategories()
+    public function actionGetProductCategories()
+    {
+        $categories4level = $this->actionGetProductLastCategories();
+        $categoriesLastLevel = array();
+
+        foreach ( $categories4level as $category )
+        {
+            array_push( $categoriesLastLevel, $category->category_name );
+        }
+
+        return $categoriesLastLevel;
+    }
+
+    public function actionGetProductCategoriesWithIds()
+    {
+        $categories4level = $this->actionGetProductLastCategories();
+        $categoriesLastLevel = array();
+
+        foreach ( $categories4level as $category )
+        {
+            $categoriesLastLevel[$category->category_name] = $category->id;
+        }
+
+        return $categoriesLastLevel;
+    }
+
+    private function actionGetProductLastCategories()
     {
         //get all categories
         $categories = CategoryModel::get(['id', 'category_name', 'parent_id']);
@@ -30,14 +56,6 @@ trait ProductCategoriesTrait
         //get fourth level
         $categories4level = $categories->whereIn('parent_id', $categories3level->pluck('id')->toArray());
 
-        $categoriesLastLevel = array();
-
-        foreach ( $categories4level as $category )
-        {
-            array_push( $categoriesLastLevel, $category->category_name );
-        }
-
-        return $categoriesLastLevel;
+        return $categories4level;
     }
-
 }
