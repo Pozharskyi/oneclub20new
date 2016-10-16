@@ -66,6 +66,7 @@ class AdminImportPartiesDescriptionController extends Controller
 
             'party_id' => $party_id,
             'availability' => $availability,
+
             'allocationId' => $allocationId,
             'filePath' => $filePath,
         ]);
