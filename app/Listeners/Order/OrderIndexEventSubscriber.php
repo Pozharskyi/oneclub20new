@@ -68,7 +68,7 @@ class OrderIndexEventSubscriber
                     } elseif($attribute == "discount_id"){
                         $newDiscount = DiscountsModel::findOrFail($orderIndex->getAttribute($attribute));
                         $to = $newDiscount->discount_id;
-                        if(self::$original[$attribute] == null){
+                        if(!isset(self::$original[$attribute])){
                             $from = null;
 
                         } else{

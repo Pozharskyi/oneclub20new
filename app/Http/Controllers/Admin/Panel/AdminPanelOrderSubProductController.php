@@ -61,8 +61,8 @@ class AdminPanelOrderSubProductController extends Controller
             '0' => $data
         ));
 
-        $estimated_delivery_timestamp = strtotime( date('Y-m-d') . " +" . $collection->description->product_delivery_days . " days" );
-        $estimated_delivery_date = date( 'Y-m-d', $estimated_delivery_timestamp );
+//        $estimated_delivery_timestamp = strtotime( date('Y-m-d') . " +" . $collection->description->product_delivery_days . " days" );
+//        $estimated_delivery_date = date( 'Y-m-d', $estimated_delivery_timestamp );
 
         //var_dump( $collection->subProducts[0]->price[0]->final_price );
 
@@ -81,7 +81,7 @@ class AdminPanelOrderSubProductController extends Controller
             'collection' => $collection,
             'product_photo' => $collection->subProducts[0]->photos[0]->photo,
             'product_id' => $product->id,
-            'estimated_delivery_date' => $estimated_delivery_date,
+//            'estimated_delivery_date' => $estimated_delivery_date,
 
             'color_id' => $color_id,
             'sizes' => $sizes,

@@ -15,6 +15,7 @@ use App\Models\Shop\Basket\BasketModel;
 use App\Models\Product\SubProductModel;
 use App\Models\Product\ProductIndexPricesModel;
 use App\Models\Order\OrderIndexSubProductModel;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
  * Getting all user's basket products
@@ -98,6 +99,9 @@ class OrderProductsController extends Controller
         {
             $data = SubProductModel::findOrFail( $product->sub_product_id );
 
+            if($data->quantity < $product->sub_product_quantity){
+                throw (new ModelNotFoundException)->setModel(SubProductModel::class);
+            }
             $data->quantity -= $product->sub_product_quantity;
 
             $data->save();

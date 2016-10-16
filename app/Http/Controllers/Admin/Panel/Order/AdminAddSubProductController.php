@@ -54,17 +54,19 @@ class AdminAddSubProductController extends Controller
         } catch (\Exception $e) {
             // else rollback all queries
             DB::rollBack();
+            Session::flash('message', 'Произошла ошибка попробуйте добавить еще раз');
+
+            //if discount validation failed
             if ($e instanceof ModelNotFoundException) {
                 $e->getModel();
                 if($e->getModel() == DiscountsModel::class){
                     Session::flash('message', 'При добавлении товара текущая скидка будет недоступна, необходимо сначала убрать скидку');
                 }
 
-            } else {
-                Session::flash('message', 'Произошла ошибка попробуйте добавить еще раз');
             }
             return redirect()->route('adminPanel.order.index', ['user' => $userId, 'order' => $orderId]);
         }
+
         Session::flash('message', 'Продукт успешно добавлен');
         return redirect()->route('adminPanel.order.index', ['user' => $userId, 'order' => $orderId]);
 
@@ -79,10 +81,11 @@ class AdminAddSubProductController extends Controller
         $total = $this->actionGetPricesWithNoDiscountBySubProduct($subProduct, $quantity);
 
         $this->actionUpdateOrder($orderId, $total);
-        $this->actionInsertSubProducts($orderId, $subProduct);
+        $this->actionInsertSubProducts($orderId, $subProduct, $quantity);
 
     }
 
+    //Update Order by Adding prices and quantity to appropriate fields
     public function actionUpdateOrder($orderId, $total)
     {
         $order = OrderModel::findOrFail($orderId);
@@ -112,14 +115,23 @@ class AdminAddSubProductController extends Controller
         return $total;
     }
 
-    public function actionInsertSubProducts($orderId, $subProduct)
+    //create OrderIndexSubProductModel with subProducts that added info
+    public function actionInsertSubProducts($orderId, $subProduct, $quantity)
     {
-        OrderIndexSubProductModel::create([
-            'dev_sub_product_id' => $subProduct->id,
-            'dev_order_index_id' => $orderId,
-            'price_for_one_product' => $subProduct->price()->first()->special_price,
-            'qty' => $subProduct->quantity,
-        ]);
+        $orderSubProduct = OrderIndexSubProductModel::where('dev_order_index_id', $orderId)
+            ->where('dev_sub_product_id', $subProduct->id)->first();
+
+        //if orderSubProduct exists update qty field
+        if($orderSubProduct){
+            $orderSubProduct->update(['qty' => $orderSubProduct->qty + $quantity]);
+        } else {    //if don't exists - create new one
+            OrderIndexSubProductModel::create([
+                'dev_sub_product_id' => $subProduct->id,
+                'dev_order_index_id' => $orderId,
+                'price_for_one_product' => $subProduct->price()->first()->special_price,
+                'qty' => $quantity,
+            ]);
+        }
     }
 
     public function actionOrderConfirmWithDiscount($subProduct, $quantity, $orderId)
@@ -147,7 +159,7 @@ class AdminAddSubProductController extends Controller
         //update order with $totalWithAllPrices
         $this->actionUpdateOrderWithAllPrices($totalWithAllPrices, $order);
 
-        $this->actionInsertSubProducts($orderId, $subProduct);
+        $this->actionInsertSubProducts($orderId, $subProduct, $quantity);
 
     }
 
