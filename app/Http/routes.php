@@ -165,6 +165,11 @@ Route::get('test_form_liqpay', 'Payments\Receive\TestFormPaymentsReceiveLiqpay@a
 
 Route::group(['prefix'=>'cabinet','namespace'=>'User\Cabinet'], function(){
     /**********
+     * Default route
+     */
+    Route::get('','UserInfoController@ActionIndex');
+
+    /**********
      *  View list user orders
      */
     Route::get('orders','UserOrdersController@ActionIndex');
@@ -611,157 +616,101 @@ Route::group(['middleware' => ['auth','admin']], function () {
     Route::group(['prefix' => 'admin/import'], function () {
         Route::get('/', ['uses' => 'Admin\Import\AdminImportIndexController@actionIndex']);
 
-        // SUPPLIERS AREA
-        Route::group(['prefix' => '/suppliers'], function () {
-            Route::get('/', ['uses' => 'Admin\Import\Suppliers\AdminImportSuppliersReadController@actionRead']);
-            Route::put('/find', ['uses' => 'Admin\Import\Suppliers\AdminImportSuppliersSearchController@actionSearch']);
-
-            Route::get('/create',
-                ['uses' => 'Admin\Import\Suppliers\AdminImportSuppliersCreateController@actionGetCreateView']);
-            Route::post('/create',
-                ['uses' => 'Admin\Import\Suppliers\AdminImportSuppliersCreateController@actionCreate']);
-
-            Route::get('/desc/{supplier_id}',
-                ['uses' => 'Admin\Import\Suppliers\AdminImportSuppliersDescriptionController@actionGetDescription'])
-                ->where(['supplier_id' => '[0-9]+']);
-
-            Route::get('/update/{supplier_id}',
-                ['uses' => 'Admin\Import\Suppliers\AdminImportSuppliersUpdateController@actionGetView'])
-                ->where(['supplier_id' => '[0-9]+']);
-
-            Route::post('/update',
-                ['uses' => 'Admin\Import\Suppliers\AdminImportSuppliersUpdateController@actionUpdate'])
-                ->where(['supplier_id' => '[0-9]+']);
-
-            Route::delete('/delete',
-                ['uses' => 'Admin\Import\Suppliers\AdminImportSuppliersDeleteController@actionDelete']);
-        });
-        // END SUPPLIERS AREA
-
-        // PARTIES AREA
         Route::group(['prefix' => '/parties'], function () {
-            Route::get('/', ['uses' => 'Admin\Import\Parties\AdminImportPartiesReadController@actionRead']);
-
-            Route::get('/create',
-                ['uses' => 'Admin\Import\Parties\AdminImportPartiesCreateController@actionGetCreateView']);
-            Route::post('/create', ['uses' => 'Admin\Import\Parties\AdminImportPartiesCreateController@actionCreate']);
+            Route::put('/search/{buyer_id?}',
+                ['uses' => 'Admin\Import\Parties\AdminImportPartiesReadController@actionGetViewForRead']
+            );
+            Route::put('/create',
+                ['uses' => 'Admin\Import\Parties\AdminImportPartiesCreateController@actionGetViewForCreate']
+            );
+            Route::post('/create',
+                ['uses' => 'Admin\Import\Parties\AdminImportPartiesCreateController@actionCreate']
+            );
+            Route::put('/edit',
+                ['uses' => 'Admin\Import\Parties\AdminImportPartiesEditController@actionGetViewForEdit']
+            );
+            Route::post('/edit',
+                ['uses' => 'Admin\Import\Parties\AdminImportPartiesEditController@actionEdit']
+            );
+            Route::put('/delete',
+                ['uses' => 'Admin\Import\Parties\AdminImportPartiesDeleteController@actionGetViewForDelete']
+            );
             Route::delete('/delete',
-                ['uses' => 'Admin\Import\Parties\AdminImportPartiesDeleteController@actionDelete']);
-
-            Route::get('/desc/{party_id}',
-                ['uses' => 'Admin\Import\Parties\AdminImportPartiesDescriptionController@actionGetPartyDescription'])
-                ->where(['party_id' => '[0-9]+']);
-
-            Route::get('/fat/{party_id}',
-                ['uses' => 'Admin\Import\Parties\AdminImportPartiesFatStatusController@actionGetFatStatusView'])
-                ->where(['party_id' => '[0-9]+']);
-            Route::put('/fat/search/{party_id}/{search}',
-                ['uses' => 'Admin\Import\Parties\AdminImportPartiesFatStatusController@actionSearchFatStatus'])
-                ->where(['party_id' => '[0-9]+'])
-                ->where(['fat_status_id' => '[0-9]+']);
-            Route::post('/confirm/party',
-                ['uses' => 'Admin\Import\Parties\AdminImportPartiesEditController@actionConfirmParty'])
-                ->where(['party_id' => '[0-9]+']);
-            Route::put('/fat/file/parsing',
-                ['uses' => 'Admin\Import\Parties\AdminImportPartiesFatDescriptionController@actionIndex']);
-            Route::put('/fat/handler',
-                ['uses' => 'Admin\Import\Parties\Handler\AdminImportPartiesHandlerController@actionIndex']);
-            Route::put('/fat/work',
-                ['uses' => 'Admin\Import\Parties\Handler\AdminImportPartiesWorkController@actionGetWorkView']);
-            Route::put('/fat/edit',
-                ['uses' => 'Admin\Import\Parties\Handler\AdminImportPartiesFixController@actionGetFixView']);
-
-            Route::get('/search',
-                ['uses' => 'Admin\Import\Parties\AdminImportPartiesSearchController@actionGetSearchView']);
-            Route::put('/search', ['uses' => 'Admin\Import\Parties\AdminImportPartiesSearchController@actionSearch']);
-
-            Route::put('/search/barcode',
-                ['uses' => 'Admin\Import\Parties\AdminImportPartiesDescriptionSearchController@actionSearchByBarcode']);
-            Route::put('/search/sku',
-                ['uses' => 'Admin\Import\Parties\AdminImportPartiesDescriptionSearchController@actionSearchBySku']);
-            Route::delete('/search/product',
-                ['uses' => 'Admin\Import\Parties\AdminImportPartiesSubProductsDeleteController@actionDelete']);
-
-            Route::get('/edit/{party_id}',
-                ['uses' => 'Admin\Import\Parties\AdminImportPartiesEditController@actionGetEditView']);
-            Route::post('/edit/{party_id}',
-                ['uses' => 'Admin\Import\Parties\AdminImportPartiesEditController@actionEditParty']);
-
-            Route::group(['prefix' => '/stats'], function () {
-                Route::get('', ['uses' => 'Admin\Import\Parties\AdminImportPartiesStatsController@actionRead']);
-                Route::put('/parties',
-                    ['uses' => 'Admin\Import\Parties\AdminImportPartiesStatsController@actionGetPartiesView']);
-                Route::put('/info/{party_id}',
-                    ['uses' => 'Admin\Import\Parties\AdminImportPartiesStatsController@actionGetPartyDescription'])
-                    ->where(['party_id' => '[0-9]+']);
-            });
-
-            Route::get('/export/{party_id}',
-                ['uses' => 'Admin\Import\Parties\Export\AdminImportPartiesExportController@actionExportPartyForSupplier'])
-                ->where(['party_id' => '[0-9]+']);
-            //Route::get('/parse', [ 'uses' => 'Admin\Import\Parties\AdminImportPartiesParserController@actionMakeImport' ]);
-        });
-        // END PARTIES AREA
-
-        // PARTIES SHARE
-        Route::group(['prefix' => '/share'], function () {
-            Route::get('/', ['uses' => 'Admin\Import\Share\AdminImportShareReadController@actionRead']);
-
-            Route::get('/create',
-                ['uses' => 'Admin\Import\Share\AdminImportShareCreateController@actionGetCreateView']);
-            Route::post('/create', ['uses' => 'Admin\Import\Share\AdminImportShareCreateController@actionCreate']);
-            Route::delete('/delete', ['uses' => 'Admin\Import\Share\AdminImportShareDeleteController@actionDelete']);
-
-            Route::get('/desc/{share_id}',
-                ['uses' => 'Admin\Import\Share\AdminImportShareDescriptionController@actionGetShareDescription'])
-                ->where(['share_id' => '[0-9]+']);
-
-            Route::get('/stats/{shareId}',
-                ['uses' => 'Admin\Import\Share\AdminImportShareStatsController@actionGetStatsView'])
-                ->where(['shareId' => '[0-9]+']);
-
-            Route::post('/update', ['uses' => 'Admin\Import\Share\AdminImportShareUpdateController@actionUpdate']);
-
-            Route::put('/search', ['uses' => 'Admin\Import\Share\AdminImportShareSearchController@actionSearch']);
-        });
-        // END PARTIES AREA
-
-        // UPDATE AREA
-
-        Route::group(['prefix' => '/update'], function () {
-            Route::get('/', ['uses' => 'Admin\Import\Update\AdminImportUpdateReadController@actionRead']);
-
-            Route::get('/create',
-                ['uses' => 'Admin\Import\Update\AdminImportUpdateCreateController@actionGetCreateView']);
-            Route::post('/create', ['uses' => 'Admin\Import\Update\AdminImportUpdateCreateController@actionCreate']);
-            Route::delete('/delete', ['uses' => 'Admin\Import\Update\AdminImportUpdateDeleteController@actionDelete']);
-
-            Route::get('/desc/{update_id}',
-                ['uses' => 'Admin\Import\Update\AdminImportUpdateDescriptionController@actionGetFatStatusView'])
-                ->where(['update_id' => '[0-9]+']);
-
-            Route::put('/desc/search/{update_id}/{fat_status_id}',
-                ['uses' => 'Admin\Import\Update\AdminImportUpdateDescriptionController@actionSearchFatStatus'])
-                ->where(['update_id' => '[0-9]+'])
-                ->where(['fat_status_id' => '[0-9]+']);
-
-            Route::get('/search',
-                ['uses' => 'Admin\Import\Update\AdminImportUpdateSearchController@actionGetSearchView']);
-            Route::put('/search', ['uses' => 'Admin\Import\Update\AdminImportUpdateSearchController@actionSearch']);
-            //Route::put('/search', [ 'uses' => 'Admin\Import\Update\AdminImportUpdateSearchController@actionSearchSaleShare' ]);
-
-            Route::put('/fat/file/parsing',
-                ['uses' => 'Admin\Import\Update\AdminImportUpdateFatDescriptionController@actionIndex']);
-
-            //Route::get('/parse', [ 'uses' => 'Admin\Import\Update\AdminImportUpdateParserController@actionMakeImport' ]);
+                ['uses' => 'Admin\Import\Parties\AdminImportPartiesDeleteController@actionDelete']
+            );
+            Route::put('/description',
+                ['uses' => 'Admin\Import\Parties\AdminImportPartiesDescriptionController@actionGetDescription']
+            );
         });
 
-        // END UPDATE AREA
+        Route::group(['prefix' => '/sales'], function () {
+            Route::put('/search',
+                ['uses' => 'Admin\Import\Sales\AdminImportSalesReadController@actionGetViewForRead']
+            );
+            Route::put('/create',
+                ['uses' => 'Admin\Import\Sales\AdminImportSalesCreateController@actionGetViewForCreate']
+            );
+            Route::post('/create',
+                ['uses' => 'Admin\Import\Sales\AdminImportSalesCreateController@actionCreate']
+            );
+            Route::put('/edit',
+                ['uses' => 'Admin\Import\Sales\AdminImportSalesEditController@actionGetViewForEdit']
+            );
+            Route::post('/edit',
+                ['uses' => 'Admin\Import\Sales\AdminImportSalesEditController@actionEdit']
+            );
+            Route::put('/delete',
+                ['uses' => 'Admin\Import\Sales\AdminImportSalesDeleteController@actionGetViewForDelete']
+            );
+            Route::delete('/delete',
+                ['uses' => 'Admin\Import\Sales\AdminImportSalesDeleteController@actionDelete']
+            );
+            Route::put('/association',
+                ['uses' => 'Admin\Import\Sales\AdminImportSalesAssociationController@actionGetViewForAssociation']
+            );
+            Route::put('/association/confirm',
+                ['uses' => 'Admin\Import\Sales\AdminImportSalesAssociationController@actionConfirmParty']
+            );
+            Route::put('/association/cancel',
+                ['uses' => 'Admin\Import\Sales\AdminImportSalesAssociationController@actionCancelParty']
+            );
+        });
 
+        Route::group(['prefix' => '/uploading'], function () {
+            Route::put('/create',
+                ['uses' => 'Admin\Import\Uploading\AdminImportUploadingCreateController@actionGetViewForCreate']
+            );
+            Route::post('/create',
+                ['uses' => 'Admin\Import\Uploading\AdminImportUploadingCreateController@actionCreate']
+            );
+            Route::post('/prepare',
+                ['uses' => 'Admin\Import\Uploading\AdminImportUploadingPrepareController@actionParse']
+            );
+            Route::get('/prepare/errors',
+                ['uses' => 'Admin\Import\Uploading\AdminImportUploadingPrepareErrorsController@actionGetErrorsFile']
+            );
+            Route::post('/allocation/row',
+                ['uses' =>
+                    'Admin\Import\Uploading\AdminImportUploadingAllocationController@actionGetAllocationDescriptionByLine'
+                ]
+            );
+        });
+
+        Route::group(['prefix' => '/control'], function ()
+        {
+            Route::post('/parties',
+                ['uses' => 'Admin\Import\Control\AdminImportControlPartiesController@actionManageParties']
+            );
+        });
+
+        Route::group(['prefix' => '/core'], function ()
+        {
+            Route::post('/product',
+                ['uses' => 'Admin\Import\Core\AdminImportProductController@actionHandleImport']
+            );
+            Route::put('/validate',
+                ['uses' => 'Admin\Import\Core\AdminImportProdValidationController@actionValidateProd']
+            );
+        });
     });
-
-    Route::get('/test/test', 'Shop\Catalog\ShopCatalogCategoriesController@actionIndex');
-    // END IMPORT AREA
-
-});
-/** END ADMIN AREA */
+//});

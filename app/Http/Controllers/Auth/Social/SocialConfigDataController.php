@@ -39,7 +39,7 @@ class SocialConfigDataController extends Controller implements SocialConfigDataI
                 $params = array(
                     'client_id'     => '1643893395924319',
                     'client_secret' => '55eeea56b29ad62cec68db89eab14aef',
-                    'redirect_uri'  => 'http://localhost:8081/social/facebook',
+                    'redirect_uri'  => 'http://oneclub20.dev.smartdevelopers.eu/social/facebook',
                     'code' => $code,
                     'response_type' => 'code',
                     'scope'         => 'email,public_profile,user_location,user_hometown',
@@ -54,7 +54,7 @@ class SocialConfigDataController extends Controller implements SocialConfigDataI
                 $params = array(
                     'client_id'     => '1086351434225-sbcfrbfi8t7kbe8kma9bvi9mse44a6m8.apps.googleusercontent.com',
                     'client_secret' => 'GExWI55OdJhM3aFb8YlpnPlR',
-                    'redirect_uri'  => 'http://localhost:8081/social/google',
+                    'redirect_uri'  => 'http://oneclub20.dev.smartdevelopers.eu/social/google',
                     'grant_type'    => 'authorization_code',
                     'code'          => $code
                 );

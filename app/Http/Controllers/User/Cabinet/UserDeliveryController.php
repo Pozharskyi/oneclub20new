@@ -8,10 +8,11 @@
 
 namespace App\Http\Controllers\User\Cabinet;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Order\OrderModel;
 
-class UserDeliveryController
+class UserDeliveryController extends Controller
 {
     /*
      * Get user address

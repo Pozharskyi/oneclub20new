@@ -24,7 +24,6 @@ class ProductDescriptionTableSeeder extends Seeder
                 array(
                     'id' => 1,
                     'product_id' => 1,
-                    'product_name' => 'XXX Taylor',
                     'supplier_product_name' => 'ZZZ Taylor',
                     'product_description' => 'Test product 1',
                     'product_composition' => 'Test composition 1',
@@ -38,7 +37,6 @@ class ProductDescriptionTableSeeder extends Seeder
                 array(
                     'id' => 2,
                     'product_id' => 2,
-                    'product_name' => 'YYY Homie',
                     'supplier_product_name' => 'ZZZ Homie',
                     'product_description' => 'Test product 2',
                     'product_composition' => 'Test composition 2',

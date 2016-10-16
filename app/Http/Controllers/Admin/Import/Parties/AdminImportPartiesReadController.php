@@ -1,56 +1,43 @@
 <?php
+
 /**
  * Created by PHP7.
  * User: Oleksandr Serdiuk
  * SSF Framework 1.0
- * Date: 22.09.2016
- * Time: 16:36
+ * Date: 12.10.2016
+ * Time: 12:45
  */
 
 namespace App\Http\Controllers\Admin\Import\Parties;
 
 use App\Http\Controllers\Controller;
-use App\Interfaces\Controllers\Admin\Import\AdminImportReadInterface;
-use App\Models\Import\ImportPartiesModel;
-use Illuminate\Http\Request;
+use App\Interfaces\Controllers\Import\AdminImportReadInterface;
+use App\Models\Import\ImportIndexPartiesModel;
 
-/**
- * Handler of parties read information
- * for UI
- * Class AdminImportPartiesReadController
- * @package App\Http\Controllers\Admin\Import\Parties
- */
 class AdminImportPartiesReadController extends Controller implements AdminImportReadInterface
 {
-    /**
-     * Getting all available parties
-     * @param Request $request
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function actionRead( Request $request )
-    {
-        $catalog = $this->actionGetPartiesData( 1 );
-        $sale = $this->actionGetPartiesData( 2 );
+    private $partiesStatus;
 
-        return view('admin.import.parties.read', [
-            'catalog' => $catalog,
-            'sale' => $sale,
-        ]);
+    public function __construct()
+    {
+        $this->partiesStatus = new AdminImportPartiesStatusController;
     }
 
-    /**
-     * Getting parties data
-     * based on party category
-     * @param $party_category_id
-     * @return mixed
-     */
-    private function actionGetPartiesData( $party_category_id )
+    public function actionGetViewForRead( $buyer_id = null )
     {
-        $parties = ImportPartiesModel::where( 'party_category_id', $party_category_id )
-            ->with(['user', 'supplier', 'partiesProcess'])
-            ->get();
+        $parties = ImportIndexPartiesModel::sortByBuyer( $buyer_id )
+            ->with([
+                'partiesStatus', 'buyer',
+                'supplier', 'importCategory',
+            ])->get();
 
-        return $parties;
+        $deleted = $this->partiesStatus->actionGetStatusIdByPhrase('DELETED');
+
+        return view( 'admin.import.parties.read', [
+            'parties' => $parties,
+            'deleted' => $deleted,
+            'count' => count( $parties ),
+        ]);
     }
 
 }

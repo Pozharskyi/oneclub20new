@@ -1,20 +1,337 @@
-.attendance {
-    color: rgb( 240, 0, 140 );
+#modal_form {
+    width: 90%;
+    height: 90%; /* fixed dimensions */
+    border-radius: 5px;
+    background: #fff;
+    position: fixed; /* displays everywhere */
+    top: 5% !important; /* move from 5% */
+    left: 5%; /* left 5% */
+    right: 0;
+    display: none; /* basically none */
+    opacity: 0; /* opacity to zero for animation */
+    z-index: 1001; /* greater z-index */
+    padding: 20px 10px;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
-.documentation > li {
-    font-size: 18px;
-    margin-bottom: 10px;
+/* close button */
+#modal_form #modal_close {
+    width: 21px;
+    height: 21px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    display: block;
 }
 
-.success {
-    color: lightgreen;
+/* overlay */
+#overlay {
+    z-index: 1000; /* greater than others */
+    position:fixed; /* overlay the window */
+    background-color:#000; /* black */
+    opacity:0.8; /* partly opacity */
+    -moz-opacity:0.8; /* fix for old browsers */
+    filter:alpha(opacity=80);
+    width:100%;
+    height:100%; /* full screen */
+    top:0; /* top as zero */
+    left:0;
+    cursor:pointer;
+    display:none; /* basically none */
 }
 
-.underlined {
-    text-decoration: underline;
+#modal_form2 {
+    width: 90%;
+    height: 90%; /* fixed dimensions */
+    border-radius: 5px;
+    /*background: #fff;*/
+    position: fixed; /* displays everywhere */
+    top: 5% !important; /* move from 5% */
+    left: 5%; /* left 5% */
+    right: 0;
+    display: none; /* basically none */
+    opacity: 0; /* opacity to zero for animation */
+    z-index: 2005; /* greater z-index */
+    padding: 20px 10px;
 }
 
-.uppercase {
-    text-transform: uppercase;
+#alert_status {
+    z-index: 5001;
+    margin-top: 13%;
+}
+
+.custom-combobox {
+    position: relative;
+    display: inline-block;
+}
+.custom-combobox-toggle {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin-left: -1px;
+    padding: 0;
+}
+.custom-combobox-input {
+    margin: 0;
+    padding: 5px 10px;
+}
+
+/* close button */
+#modal_form2 #modal_close2 {
+    width: 21px;
+    height: 21px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    display: block;
+}
+
+/* overlay */
+#overlay2 {
+    z-index: 2000; /* greater than others */
+    position:fixed; /* overlay the window */
+    background-color:#000; /* black */
+    opacity:0.8; /* partly opacity */
+    -moz-opacity:0.8; /* fix for old browsers */
+    filter:alpha(opacity=80);
+    width:100%;
+    height:100%; /* full screen */
+    top:0; /* top as zero */
+    left:0;
+    cursor:pointer;
+    display:none; /* basically none */
+}
+
+/* close button */
+#modal_form3 #modal_close3 {
+    width: 21px;
+    height: 21px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    display: block;
+}
+
+#modal_form3 {
+    width: 90%;
+    height: 90%; /* fixed dimensions */
+    border-radius: 5px;
+    position: fixed; /* displays everywhere */
+    top: 5% !important; /* move from 5% */
+    left: 5%; /* left 5% */
+    right: 0;
+    display: none; /* basically none */
+    opacity: 0; /* opacity to zero for animation */
+    z-index: 2005; /* greater z-index */
+    padding: 20px 10px;
+}
+
+/* overlay */
+#overlay3 {
+    z-index: 2000; /* greater than others */
+    position:fixed; /* overlay the window */
+    background-color:#000; /* black */
+    opacity:0.8; /* partly opacity */
+    -moz-opacity:0.8; /* fix for old browsers */
+    filter:alpha(opacity=80);
+    width:100%;
+    height:100%; /* full screen */
+    top:0; /* top as zero */
+    left:0;
+    cursor:pointer;
+    display:none; /* basically none */
+}
+
+.dropup {
+    position: fixed;
+    bottom: 0;
+    left: 40px;
+}
+
+.content_block {
+    padding-top: 40px;
+}
+
+.none_found {
+    display: none;
+}
+
+#nav {
+    margin: 0 auto;
+    display: table;
+    float: left;
+}
+
+#nav > li {
+    padding: 0 10px 0 10px;
+    border-right: 1px solid #000;
+}
+
+#description {
+    margin-bottom: 25px;
+}
+
+.close {
+    width: 16px;
+    height: 16px;
+    margin-left: 7px;
+    margin-top: 3px;
+}
+
+.super_link, .super_link:hover {
+    color: #954120 !important;
+    text-decoration: none !important;
+}
+
+.active_link, .active_link:hover {
+    color: rgb(240, 0, 140) !important;
+    text-decoration: none !important;
+}
+
+#nav > li:last-child {
+    border-right: none;
+}
+
+#nav > li > a:hover {
+    text-decoration: none;
+}
+
+.nav {
+    margin-top: 15px;
+}
+
+#nav > li {
+    display: inline-block;
+}
+
+#user_nav {
+    margin-right: 50px;
+}
+
+#search {
+    border-box: box-sizing;
+    background-image: url('/images/import/searchicon.png');
+    background-position: 14px 8px;
+    background-repeat: no-repeat;
+    background-size: 18px 18px;
+    font-size: 16px;
+    padding: 5px 20px 1px 45px;
+    outline: none !important;
+    border: none;
+}
+
+.dropdown-menu .divider {
+    margin: 7px 0 0 0;
+}
+
+#loading {
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    display: none;
+    z-index: 100001;
+}
+
+#user, #user:hover {
+    color: black;
+}
+
+.alert_message {
+    color: rgb(240, 0, 140);
+}
+
+.deleted {
+    background-color: darkred;
+}
+
+.form_label {
+    margin-top: 15px;
+}
+
+.btn_confirm {
+    margin: 25px 0 25px 0;
+}
+
+#go_back {
+    margin-right: 25px;
+}
+
+.row_tr {
+    cursor: pointer;
+}
+
+.row_active {
+    background-color: #ce8483 !important;
+}
+
+.btn-man {
+    margin-left: 25px;
+    margin-right: 25px;
+}
+
+.manipulations_block {
+    margin-top: 35px;
+}
+
+#upload_label {
+    margin-top: 45px;
+}
+
+#list {
+    margin-top: 25px;
+}
+
+#left_btn {
+    margin-right: 15px;
+}
+
+#right_btn {
+    margin-left: 15px;
+}
+
+.logs {
+    margin-top: 35px;
+}
+
+#batchProcessor, #exportExcel, #sendToProd {
+    position: fixed;
+    bottom: 0;
+}
+
+#batchProcessor {
+    right: 40%;
+}
+
+#exportExcel {
+    right: 27%;
+}
+
+#sendToProd {
+    right: 10%;
+}
+
+.desc_row {
+    cursor: pointer;
+}
+
+#desc {
+    border: 1px solid #e4e4e4;
+    display: none;
+}
+
+#closeDesc {
+    position: absolute;
+    right: 15px;
+    top: 5px;
+    text-decoration: none !important;
+    cursor: pointer;
+    z-index: 1500;
+}
+
+.image_row {
+    width: 100%;
 }

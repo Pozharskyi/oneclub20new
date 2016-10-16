@@ -15,13 +15,13 @@ class CreateProductsPopularityTable extends Migration
     {
         Schema::create('dev_product_popularity', function(Blueprint $table){
             $table->increments('id');
-            $table->integer('sub_product_id')->unsigned();
+            $table->integer('dev_product_index_id')->unsigned();
             $table->integer('popularity')->unsigned();
             $table->timestamps();
 
-            $table->foreign('sub_product_id')
+            $table->foreign('dev_product_index_id')
                 ->references('id')
-                ->on('dev_sub_product');
+                ->on('dev_product_index');
         });
     }
 

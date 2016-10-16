@@ -11,8 +11,7 @@ namespace App\Models\Product;
 
 
 
-use App\Models\Import\ImportLogPartiesProcessModel;
-use App\Models\Import\ImportPartiesModel;
+use App\Models\Import\ImportIndexSuppliersModel;
 use App\Models\Order\OrderIndexSubProductModel;
 use App\Models\Order\OrderStatusModel;
 use App\Models\Shop\Basket\BasketModel;
@@ -45,19 +44,19 @@ class SubProductModel extends Model
         return $this->hasOne(ProductIndexPricesModel::class, 'sub_product_id');
     }
 
-    public function color()
-    {
-        return $this->belongsTo(ProductColorModel::class, 'dev_product_color_id');
-    }
-
     public function size()
     {
         return $this->belongsTo(ProductSizeModel::class, 'dev_product_size_id');
     }
 
+    public function supplier()
+    {
+        return $this->belongsTo(ImportIndexSuppliersModel::class, 'supplier_id');
+    }
+
     public function photos()
     {
-        return $this->hasMany(ProductPhotoModel::class, 'sub_product_id');
+        return $this->hasMany(ProductPhotoModel::class, 'dev_product_index_id');
     }
     /**
      * Relation with LogOrderModel
@@ -79,7 +78,7 @@ class SubProductModel extends Model
     }
 
     public function subProductSupplier(){
-        return $this->hasMany(ProductSupplierModel::class, 'sub_product_id');
+        return $this->hasMany(ImportIndexSuppliersModel::class, 'sub_product_id');
     }
 
     public function orderProducts()
@@ -95,21 +94,6 @@ class SubProductModel extends Model
     public function statusOrderSubProduct()
     {
         return $this->belongsToMany(OrderStatusModel::class, 'dev_order_index_sub_product','dev_sub_product_id', 'dev_order_status_list_id');
-    }
-
-    public function popularity()
-    {
-        return $this->hasOne(ProductPopularityModel::class, 'sub_product_id');
-    }
-
-    public function importParties()
-    {
-        return $this->belongsTo(ImportPartiesModel::class, 'dev_import_parties_id');
-    }
-
-    public function importPartiesLog()
-    {
-        return $this->belongsTo(ImportLogPartiesProcessModel::class, 'sub_product_id');
     }
 
     public function scopeSizes( $query, $sizes )

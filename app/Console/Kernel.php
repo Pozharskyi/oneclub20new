@@ -14,8 +14,6 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         \App\Console\Commands\ClearBasketCommand::class,
-        \App\Console\Commands\MakeImportCommand::class,
-        \App\Console\Commands\MakeUpdateCommand::class,
     ];
 
     /**
@@ -28,11 +26,5 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('clear_basket')
             ->dailyAt('04:00');
-
-        $schedule->command('import')
-            ->hourly();
-
-        $schedule->command('update')
-            ->hourly();
     }
 }

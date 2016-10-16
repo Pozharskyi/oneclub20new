@@ -3,94 +3,73 @@
  * Created by PHP7.
  * User: Oleksandr Serdiuk
  * SSF Framework 1.0
- * Date: 26.09.2016
- * Time: 14:15
+ * Date: 14.10.2016
+ * Time: 19:28
  */
 
 namespace App\Http\Controllers\Admin\Import\Parties;
 
-use App\Http\Controllers\Admin\Import\Core\AdminImportFatStatusController;
-use App\Http\Controllers\Admin\Import\Core\AdminImportSubProductTrait;
+use App\Http\Controllers\Admin\Import\Statuses\AdminImportStatusesCoincidenceController;
+use App\Http\Controllers\Admin\Import\Statuses\AdminImportStatusesPartiesController as PartiesStatus;
+use App\Http\Controllers\Admin\Import\Statuses\AdminImportStatusesWorkController;
 use App\Http\Controllers\Controller;
-use App\Interfaces\Controllers\Admin\Import\Parties\AdminImportPartiesDescriptionInterface;
-use App\Models\Import\ImportLogPartiesProcessModel;
-use App\Models\Import\ImportPartiesModel;
-use DB;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Admin\Import\Uploading\AdminImportUploadingAllocationController as Allocation;
 
-/**
- * Getting parties description
- * Handle for party info with allocation
- * Fat information to handle
- * Class AdminImportPartiesDescriptionController
- * @package App\Http\Controllers\Admin\Import\Parties
- */
-class AdminImportPartiesDescriptionController extends Controller implements AdminImportPartiesDescriptionInterface
+class AdminImportPartiesDescriptionController extends Controller
 {
-    use AdminImportSubProductTrait;
-    /**
-     * Getting party description
-     * based on party identify
-     * @param $party_id
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function actionGetPartyDescription( $party_id )
+    public function actionGetDescription(Request $request)
     {
-        // getting info about party
-        $info = $this->actionGetPartyInfo( $party_id );
+        $party_id = $request->input('party_id');
 
-        // getting fat info about party
-        $fat = $this->actionGetFatInfo( $party_id );
+        $allocation = Allocation::actionGetAllocation($party_id);
+        $rows = $allocation->file;
+        $count = count( $rows );
 
-        // getting products in party
-        $products = $this->actionGetProducts( $party_id );
+        $allocationId = $allocation->allocationId;
+        $filePath = $allocation->import_file_path;
 
-        // count percent of succeed
-        $succeed = round( ($info->partiesProcess->in_process_atm / $info->partiesProcess->in_process_total) * 100, 2 );
+        $logs = AdminImportStatusesCoincidenceController::actionGetLogsForAllocation($allocationId);
 
-        // getting view
-        return view('admin.import.parties.description', [
-            'info' => $info,
-            'succeed' => $succeed,
-            'fat' => $fat,
-            'products' => $products,
+        if( count($logs) != 0 )
+        {
+            foreach( $logs as $log )
+            {
+                $rows[$log->file_line]['validationColor'] = $log->coincidenceStatus->import_color;
+            }
+
+            $workLogs = AdminImportStatusesWorkController::actionGetLogsForAllocation($allocationId);
+
+            foreach($workLogs as $workLog)
+            {
+                $currentColor = $rows[$workLog->file_line]['validationColor'];
+
+                if($currentColor != 'green')
+                {
+                    $rows[$workLog->file_line]['validationColor'] = 'none';
+                }
+            }
+
+            $view = 'admin.import.parties.description_valid';
+
+        } else
+        {
+            $view = 'admin.import.parties.description';
+        }
+
+        $partiesStatus = new PartiesStatus;
+        $availability = $partiesStatus->actionGetPartyStatusAvailability( $party_id );
+
+        return view($view, [
+            'rows' => $rows,
+            'count' => $count,
+
+            'party_id' => $party_id,
+            'availability' => $availability,
+
+            'allocationId' => $allocationId,
+            'filePath' => $filePath,
         ]);
-    }
-
-    /**
-     * Getting party info based on
-     * party identify
-     * @param $party_id
-     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
-     */
-    public function actionGetPartyInfo( $party_id )
-    {
-        $info = ImportPartiesModel::with([
-                'supplier', 'user',
-                'partiesCategory', 'partiesProcess',
-            ])->findOrFail( $party_id );
-
-        return $info;
-    }
-
-    /**
-     * Getting file allocation table information
-     * With grouping as total
-     * @param $party_id
-     * @return mixed
-     */
-    public function actionGetFatInfo( $party_id )
-    {
-        $fat = new AdminImportFatStatusController();
-        $code_error = $fat->actionSearchStatusByPhrase( 'SYSTEM_ERROR' );
-
-        $info = ImportLogPartiesProcessModel::where( 'party_id', $party_id )
-            ->where( 'fat_status_id', '<>', $code_error )
-            ->with(['fat'])
-            ->groupBy('fat_status_id')
-            ->select('fat_status_id', DB::raw('count(*) as total'))
-            ->get();
-
-        return $info;
     }
 
 }

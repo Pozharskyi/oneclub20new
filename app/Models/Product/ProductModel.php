@@ -12,6 +12,7 @@ namespace App\Models\Product;
 use App\Models\Basic\BasicGenderModel;
 use App\Models\Category\SubCategoriesModel;
 use App\Models\Import\ImportLogPartiesModel;
+use App\Models\Import\ImportPartiesWorkLogModel;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Category\CategoryModel;
@@ -34,7 +35,8 @@ class ProductModel extends Model
     protected $fillable = [
         'sku', 'product_store_id', 'product_backend_id',
         'brand_id', 'category_id', 'dev_index_gender_id',
-        'stock_id',
+        'stock_id', 'dev_product_color_id',
+        'import_index_party_id',
     ];
 
     public function brand()
@@ -73,14 +75,29 @@ class ProductModel extends Model
         return $this->hasOne(ProductSaleModel::class, 'id');
     }
 
-    public function logParties()
-    {
-        return $this->hasMany(ImportLogPartiesModel::class, 'product_id');
-    }
-
     public function category()
     {
         return $this->belongsTo(CategoryModel::class, 'category_id');
+    }
+
+    public function color()
+    {
+        return $this->belongsTo(ProductColorModel::class, 'dev_product_color_id');
+    }
+
+    public function popularity()
+    {
+        return $this->hasOne(ProductPopularityModel::class, 'dev_product_index_id');
+    }
+
+    public function photos()
+    {
+        return $this->hasOne(ProductPhotoModel::class, 'dev_product_index_id');
+    }
+
+    public function partiesWorkLog()
+    {
+        return $this->hasMany(ImportPartiesWorkLogModel::class, 'dev_product_index_id');
     }
 
     public function scopeCategories( Builder $query, $categories )
@@ -89,5 +106,12 @@ class ProductModel extends Model
         {
             $query->whereIn( 'category_id', $categories );
         }
+    }
+
+    public function scopeFilterByParties( Builder $query, $parties )
+    {
+        $query->whereIn('import_index_party_id', $parties);
+
+        return $query;
     }
 }

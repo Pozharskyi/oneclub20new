@@ -3,49 +3,65 @@
  * Created by PHP7.
  * User: Oleksandr Serdiuk
  * SSF Framework 1.0
- * Date: 22.09.2016
- * Time: 16:36
+ * Date: 12.10.2016
+ * Time: 17:07
  */
 
 namespace App\Http\Controllers\Admin\Import\Parties;
 
 use App\Http\Controllers\Controller;
-use App\Interfaces\Controllers\Admin\Import\AdminImportDeleteInterface;
-use App\Models\Import\ImportPartiesModel;
+use App\Models\Import\ImportIndexPartiesModel;
+use App\Models\Import\ImportPartiesLogDeleteModel;
 use Illuminate\Http\Request;
 
-/**
- * Handler of parties deletion
- * Class AdminImportPartiesDeleteController
- * @package App\Http\Controllers\Admin\Import\Parties
- */
-class AdminImportPartiesDeleteController extends Controller implements AdminImportDeleteInterface
+class AdminImportPartiesDeleteController extends Controller
 {
-    /**
-     * Deleting party based on request
-     * By party identify
-     * @param Request $request
-     * @return string
-     */
-    public function actionDelete( Request $request )
+    private $message;
+    private $partiesStatus;
+
+    public function __construct()
     {
-        // getting party identify
+        $this->partiesStatus = new AdminImportPartiesStatusController;
+    }
+
+    public function actionGetViewForDelete(Request $request)
+    {
         $party_id = $request->input('party_id');
 
+        $party = ImportIndexPartiesModel::findOrFail($party_id);
+
+        return view('admin.import.parties.delete', [
+            'party' => $party,
+        ]);
+    }
+
+    public function actionDelete(Request $request)
+    {
         try
         {
-            // trying to delete party
-            ImportPartiesModel::findOrFail( $party_id )
-                ->delete();
+            $party_id = $request->input('import_index_party_id');
+            $comment = $request->input('comment');
 
-            // if succeed return nice response
-            return 'true';
+            ImportPartiesLogDeleteModel::create([
+                'import_index_party_id' => $party_id,
+                'comment' => $comment,
+                'made_by' => \Auth::user()->id,
+            ]);
 
-        } catch ( \Exception $e )
+            $party = ImportIndexPartiesModel::findOrFail($party_id);
+            $party->import_parties_status_id = $this->partiesStatus->actionGetStatusIdByPhrase('ASKED_FOR_DELETION');
+            $party->save();
+
+            $this->message = 'Заявка на удаление была подана.';
+
+        } catch( \Exception $e )
         {
-            // else return bad response
-            return 'false';
+            $this->message = 'Что-то пошло не так. Попробуйте чуть позже.';
         }
+
+        return view('admin.import.alert', [
+            'message' => $this->message,
+        ]);
     }
 
 }

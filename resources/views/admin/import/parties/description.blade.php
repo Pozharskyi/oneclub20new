@@ -1,129 +1,82 @@
-@extends('layouts/adminPanel')
+<div class="text-center" id="description">
+    <h3>Описание ТП #{{ $party_id }}</h3>
+</div>
 
-@section('title') Страница добавления товарных партий @stop
+@if( $count != 0 )
 
-@section('content')
-
-    @include('admin.import.sub-nav')
-    @include('admin.import.parties.nav.nav')
-
-    <div class="container" style="margin-top: 10px; margin-bottom: 25px;">
-        <div class="text-center">
-            <h2>
-                Подробная информация о товарной партии "{{ $info->party_name }}", <br />
-                категория "{{ $info->partiesCategory->type }}"
-            </h2>
-        </div>
-
-        <div class="row">
-            <div class="col-md-1"></div>
-            <div class="col-md-10">
-                <h4>Название партии: <span style="color: rgb(240, 0, 140);">{{ $info->party_name }}</span></h4>
-                <h4>Поставщик: <span style="color: rgb(240, 0, 140);">{{ $info->supplier->name }}</span></h4>
-                <h4>Рекомендованный старт: <span style="color: rgb(240, 0, 140);">{{ $info->recommended_start }}</span></h4>
-                <h4>Рекомендованный конец: <span style="color: rgb(240, 0, 140);">{{ $info->recommended_end }}</span></h4>
-                <h4>Сделано: <span style="color: rgb(240, 0, 140);">{{ $info->user->name }}</span></h4>
-                <h4>Категория: <span style="color: rgb(240, 0, 140);">{{ $info->partiesCategory->type }}</span></h4>
-
-                <div class="pull-right">
-                    <a href="{{ url( '/admin/import/parties/edit/' . $info->id ) }}">
-                        <button class="btn btn-default">Редактировать</button>
-                    </a>
-                </div>
-            </div>
-            <div class="col-md-1"></div>
-        </div>
-
-        <div class="text-center">
-            <div class="divider"></div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-1"></div>
-            <div class="col-md-10">
-                <h4>Статус: <span style="color: rgb(240, 0, 140);">{{ $info->partiesProcess->fat_status }}</span></h4>
-                <h4>Загружено товаров: <span style="color: rgb(240, 0, 140);">{{ $info->partiesProcess->in_process_atm }}</span> ( {{ $succeed }}% )</h4>
-                <h4>Всего товаров: <span style="color: rgb(240, 0, 140);">{{ $info->partiesProcess->in_process_total }}</span></h4>
-                <h4>Файл импорта: <a href="/{{ $info->partiesProcess->file_base_path }}">получить {{ $info->party_name }}</a></h4>
-            </div>
-            <div class="col-md-1"></div>
-        </div>
-
-        <div class="text-center">
-            <div class="divider"></div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-1"></div>
-            <div class="col-md-10">
-
-                <h3 style="color: rgb(240, 0, 140);">Успешность импорта:</h3>
-
-                @foreach( $fat as $status )
-                    <h4>{{ $status->fat->fat_status }}: {{ $status->total }}</h4>
-                @endforeach
-
-                    <a href="{{ url('/admin/import/parties/fat/' . $info->id ) }}">Посмотреть детальнее...</a>
-            </div>
-            <div class="col-md-1"></div>
-        </div>
-
-        <div class="text-center">
-            <div class="divider"></div>
-        </div>
-
-        <div class="row" style="margin-bottom: 30px;">
-            <div class="col-md-4">
-                <label for="sku">Поиск по артикулу</label>
-                <input type="text" id="sku" name="sku" class="form-control" />
-
-                <button type="button" style="margin-top: 10px;" class="btn btn-primary" onclick="searchBySku();">Найти совпадения</button>
-                <button type="button" style="margin-top: 10px;" class="btn btn-warning" onclick="clearSearch();">Отменить</button>
-            </div>
-            <div class="col-md-2"></div>
-            <div class="col-md-4">
-                <label for="barcode">Поиск по баркоду</label>
-                <input type="text" id="barcode" name="barcode" class="form-control" />
-
-                <button type="button" style="margin-top: 10px;" class="btn btn-primary" onclick="searchByBarcode();">Найти совпадения</button>
-                <button type="button" style="margin-top: 10px;" class="btn btn-warning" onclick="clearSearch();">Отменить</button>
-            </div>
-            <div class="col-md-2"></div>
-        </div>
-
-        <div id="result">
-            <table class="table table-striped">
+    <div class="row">
+        <div class="col-md-12" id="primary_desc">
+            <table class="table">
                 <thead>
-                <tr>
-                    <th>Sku</th>
-                    <th>Barcode</th>
-                    <th>Цена</th>
-                    <th>Цена продажи</th>
-                    <th>Цвет</th>
-                    <th>Размер</th>
-                    <th></th>
-                </tr>
+                    <tr>
+                        <th></th>
+                        <th>sku</th>
+                        <th>barcode</th>
+                        <th>product_name</th>
+                        <th>brand</th>
+                        <th>color</th>
+                        <th>size</th>
+                    </tr>
                 </thead>
                 <tbody>
-                @foreach( $products as $product )
-                    <tr id="product_{{ $product->id }}">
-                        <td>{{ $product->product->sku }}</td>
-                        <td>{{ $product->barcode }}</td>
-                        <td>{{ $product->price->final_price }} грн.</td>
-                        <td>{{ $product->price->special_price }} грн.</td>
-                        <td>{{ $product->color->name }}</td>
-                        <td>{{ $product->size->name }}</td>
+
+                @php $i = 0 @endphp
+
+                @foreach( $rows as $row )
+                    <tr class="desc_row" onclick="getDescription({{ $i }});">
                         <td>
-                            <a href="javascript: void(0);" onclick="deleteSubProduct({{ $product->id }});">X</a>
+                            {{ $i + 1 }}
+                        </td>
+                        <td>
+                            {{ $row['sku'] }}
+                        </td>
+                        <td>
+                            {{ $row['barcode'] }}
+                        </td>
+                        <td>
+                            {{ $row['product_name'] }}
+                        </td>
+                        <td>
+                            {{ $row['brand'] }}
+                        </td>
+                        <td>
+                            {{ $row['color'] }}
+                        </td>
+                        <td>
+                            {{ $row['size'] }}
                         </td>
                     </tr>
+
+                    @php $i++ @endphp
                 @endforeach
+
                 </tbody>
             </table>
         </div>
 
+        <div id="desc"></div>
     </div>
 
-    <script type="text/javascript" src="{{ url('/js/admin/import/parties/descriptionSearch.js') }}"></script>
+    <div id="desc_nav">
+        @if($availability != 'denied')
+            <button id="batchProcessor" onclick="processWork();" class="btn btn-primary">Пакетная обработка</button>
+        @endif
 
-@endsection
+        <button id="exportExcel" class="btn btn-default">Экспорт в Excel</button>
+
+        @if($availability != 'denied')
+            <button id="sendToProd" class="btn btn-warning">Отправка в продакшн</button>
+        @endif
+    </div>
+
+    <input type="hidden" name="allocationId" id="allocationId" value="{{ $allocationId }}" />
+    <input type="hidden" name="filePath" id="filePath" value="{{ $filePath }}" />
+    <input type="hidden" name="working_party_id" id="working_party_id" value="{{ $party_id }}" />
+    <script type="text/javascript" src="{{ url('/js/admin/import/uploading/description.js') }}"></script>
+    <div style="height: 250px"></div>
+
+@else
+
+    <h3 class="alert_message">Информации не найдено.</h3>
+
+@endif

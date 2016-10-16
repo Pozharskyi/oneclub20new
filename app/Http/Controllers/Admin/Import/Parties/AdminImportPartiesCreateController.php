@@ -3,132 +3,80 @@
  * Created by PHP7.
  * User: Oleksandr Serdiuk
  * SSF Framework 1.0
- * Date: 22.09.2016
- * Time: 16:35
+ * Date: 12.10.2016
+ * Time: 14:14
  */
 
 namespace App\Http\Controllers\Admin\Import\Parties;
 
-use App\Http\Controllers\Admin\Import\Core\AdminImportFileParserTrait;
 use App\Http\Controllers\Controller;
-use App\Interfaces\Controllers\Admin\Import\AdminImportCreateInterface;
-use App\Models\Import\ImportPartiesCategoriesModel;
+use App\Http\Controllers\Traits\Import\AdminImportDaysControlTrait;
+use App\Http\Controllers\Traits\Import\AdminImportIndexCategoriesTrait;
+use App\Http\Controllers\Traits\Import\AdminImportIndexSuppliersTrait;
+use App\Models\Import\ImportIndexPartiesModel;
 use Illuminate\Http\Request;
+use App\Interfaces\Controllers\Import\AdminImportCreateInterface;
 
-use Illuminate\Support\Facades\Auth;
-use DB;
-
-use App\Models\Supplier\SupplierModel;
-use App\Models\Import\ImportPartiesModel;
-use App\Models\Import\ImportPartiesProcessModel;
-
-/**
- * Parties creation handler
- * Includes creation of party, count csv,
- * getting parties creation view
- * Class AdminImportPartiesCreateController
- * @package App\Http\Controllers\Admin\Import\Parties
- */
 class AdminImportPartiesCreateController extends Controller implements AdminImportCreateInterface
 {
-    use AdminImportFileParserTrait;
-    /**
-     * Getting parties creation View
-     * If alert exists display in UI
-     * @param Request $request
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function actionGetCreateView( Request $request )
+    use AdminImportIndexSuppliersTrait;
+    use AdminImportIndexCategoriesTrait;
+    use AdminImportDaysControlTrait;
+
+    protected $fields = [
+        'party_name', 'import_supplier_id',
+        'buyer_id', 'support_id',
+        'party_start_date', 'party_end_date',
+        'import_index_categories_id',
+    ];
+
+    private $message;
+    private $partiesStatus;
+
+    public function __construct()
     {
-        $suppliers = SupplierModel::get();
+        $this->partiesStatus = new AdminImportPartiesStatusController;
+    }
 
-        $alert = $request->input('alert');
-
-        // if no alerts
-        if( !isset( $alert ) )
-        {
-            $alert = null;
-        }
-
-        // getting parties types
-        $parties_types = ImportPartiesCategoriesModel::get();
+    public function actionGetViewForCreate(Request $request)
+    {
+        $suppliers = $this->actionGetAllSuppliers();
+        $categories = $this->actionGetImportCategories();
 
         return view('admin.import.parties.create', [
             'suppliers' => $suppliers,
-            'alert' => $alert,
-            'parties_types' => $parties_types,
+            'categories' => $categories,
         ]);
     }
 
-    /**
-     * Handler for creating of parties
-     * based on request
-     * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
-     */
-    public function actionCreate( Request $request )
+    public function actionCreate(Request $request)
     {
-        // if no user auth getting redirect to login page
-        if( !isset( Auth::user()->id ) )
-        {
-            return redirect('/login');
-        }
-
-        // make database transaction
-        DB::beginTransaction();
+        $fields = array();
 
         try
         {
-            // creating party basic info
-            $party = ImportPartiesModel::create([
-                'party_name' => $request->input('party_name'),
-                'supplier_id' => $request->input('supplier'),
-                'party_category_id' => $request->input('party_category_id'),
-                'recommended_start' => $request->input('recommended_start'),
-                'recommended_end' => $request->input('recommended_end'),
-                'made_by' => Auth::user()->id,
-            ]);
+            foreach( $this->fields as $field )
+            {
+                $row = $request->input($field);
+                $fields[$field] = $row;
+            }
 
-            $input = $request->file('import');
+            $fields['made_by'] = \Auth::user()->id;
+            $fields['party_days_count'] = $this->actionCountDaysBetweenDate(
+                $fields['party_end_date'], $fields['party_start_date']
+            );
+            $fields['import_parties_status_id'] = $this->partiesStatus->actionGetStatusIdByPhrase('NEW');
 
-            // SET UPLOAD PATH
-            $destinationPath = 'uploads';
-
-            // GET THE FILE EXTENSION
-            $extension = $input->getClientOriginalExtension();
-
-            // RENAME THE UPLOAD WITH RANDOM NUMBER
-            $fileName = date('Y-m-d') . 'V' . date('His') . '.' . $extension;
-
-            // MOVE THE UPLOADED FILES TO THE DESTINATION DIRECTORY
-            $input->move($destinationPath, $fileName);
-
-            $file = $destinationPath . '/' . $fileName;
-            $fileCount = $this->actionCountCsv( $file ) - 1; // Without header, minus one line
-
-            // getting parties process
-            ImportPartiesProcessModel::create([
-                'party_id' => $party->id,
-                'in_process_atm' => 0,
-                'in_process_total' => $fileCount,
-                'file_base_path' => $file,
-                'fat_status' => 'В процессе',
-            ]);
-
-            // if succeed insert into the database
-            DB::commit();
+            ImportIndexPartiesModel::create( $fields );
+            $this->message = 'Вы успешно создали товарную партию';
 
         } catch( \Exception $e )
         {
-            // if failed deny transaction
-            DB::rollBack();
-
-            // return bad request redirect
-            return redirect('/admin/import/parties/create?alert=failed');
+            $this->message = 'Что-то пошло не так. Попробуйте чуть позже.';
         }
 
-        // return nice request redirect
-        return redirect('/admin/import/parties/create?alert=success');
+        return view('admin.import.alert', [
+            'message' => $this->message,
+        ]);
     }
-
 }

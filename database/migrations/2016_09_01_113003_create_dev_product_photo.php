@@ -16,10 +16,12 @@ class CreateDevProductPhoto extends Migration
         Schema::create('dev_product_photo', function(Blueprint $table){
             $table->increments('id');
             $table->text('photo');
-            $table->integer('sub_product_id')->unsigned();
-            $table->foreign('sub_product_id')->references('id')->on('dev_sub_product');
+            $table->integer('dev_product_index_id')->unsigned();
             $table->timestamps();
 
+            $table->foreign('dev_product_index_id')
+                ->references('id')
+                ->on('dev_product_index');
         });
     }
 

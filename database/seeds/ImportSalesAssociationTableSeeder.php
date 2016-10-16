@@ -20,35 +20,35 @@ class ImportSalesAssociationTableSeeder extends Seeder
          * Inserting
          */
         DB::table('dev_import_sales_association')->insert(
-            array(
-                array(
+            [
+                [
                     'id' => 1,
-                    'party_id' => 1,
-                    'share_id' => 1,
-                    'made_by' => 1,
-
+                    'import_index_sale_id' => '1',
+                    'import_index_party_id' => '1',
+                    'made_by' => '1',
                     'created_at' => date('Y-m-d H:i:s'),
                     'updated_at' => date('Y-m-d H:i:s'),
-                ),
-                array(
+                    'deleted_at' => null,
+                ],
+                [
                     'id' => 2,
-                    'party_id' => 2,
-                    'share_id' => 1,
-                    'made_by' => 2,
-
+                    'import_index_sale_id' => '2',
+                    'import_index_party_id' => '1',
+                    'made_by' => '2',
                     'created_at' => date('Y-m-d H:i:s'),
                     'updated_at' => date('Y-m-d H:i:s'),
-                ),
-                array(
+                    'deleted_at' => date('Y-m-d H:i:s'),
+                ],
+                [
                     'id' => 3,
-                    'party_id' => 1,
-                    'share_id' => 2,
-                    'made_by' => 1,
-
+                    'import_index_sale_id' => '1',
+                    'import_index_party_id' => '2',
+                    'made_by' => '2',
                     'created_at' => date('Y-m-d H:i:s'),
                     'updated_at' => date('Y-m-d H:i:s'),
-                ),
-            )
+                    'deleted_at' => null,
+                ],
+            ]
         );
     }
 }

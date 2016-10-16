@@ -1,78 +1,76 @@
-@extends('layouts/adminPanel')
+<div class="row">
 
-@section('title') Страница добавления товарных партий @stop
+    <div class="text-center">
+        <h3>Создание товарной партии</h3>
+    </div>
 
-@section('content')
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <form action="#" method="post" id="partyCreateForm">
+            <label class="form_label" for="party_name">Название товарной партии</label>
+            <input type="text" name="party_name" id="party_name" class="form-control" />
+            <p class="alert_message" id="invalid_party_name"></p>
 
-    @if( !is_null( $alert ) )
+            <label class="form_label" for="import_supplier_id">Выберите поставщика</label>
+            <select id="import_supplier_id" name="import_supplier_id" class="form-control">
+                <option value=""></option>
+                @foreach( $suppliers as $supplier )
+                    <option value="{{ $supplier->id }}">{{ $supplier->name }}</option>
+                @endforeach
+            </select>
+            <p class="alert_message" id="invalid_import_supplier_id"></p>
 
-        @if( $alert == 'success' )
-            <div class="alert alert-success" style="margin-top: -22px;">
-                <strong>Успех!</strong> Товарная партия была добавлена
-            </div>
-        @elseif( $alert == 'failed' )
-            <div class="alert alert-danger" style="margin-top: -22px;">
-                <strong>Ошибка!</strong> Товарная партия не была добавлена
-            </div>
-        @endif
+            <label class="form_label" for="buyer_id">Выберите ответственного баера</label>
 
-    @endif
+            <!-- TODO -->
+            <select id="buyer_id" name="buyer_id" class="form-control">
+                <option value=""></option>
+                <option value="1">Александр Сердюк</option>
+            </select>
+            <p class="alert_message" id="invalid_buyer_id"></p>
 
-    <div style="margin-top: 22px;"></div>
+            <label class="form_label" for="support_id">Выберите ответственного контенщика</label>
 
-    @include('admin.import.sub-nav')
-    @include('admin.import.parties.nav.nav')
+            <!-- TODO -->
+            <select id="support_id" name="support_id" class="form-control">
+                <option value=""></option>
+                <option value="2">Дмитрий Волков</option>
+            </select>
+            <p class="alert_message" id="invalid_support_id"></p>
 
-    <form action="{{ url('/admin/import/parties/create') }}" method="post" enctype="multipart/form-data">
-
-        {{ csrf_field() }}
-
-        <div class="container">
             <div class="row">
-                <div class="col-md-4"></div>
-                <div class="col-md-4">
-                    <label for="party_name" style="margin-top: 25px;">Название товарной партии</label>
-                    <input type="text" class="form-control" name="party_name" id="party_name" required />
-
-                    <label for="supplier" style="margin-top: 25px;">Выберите поставщика</label>
-                    <select id="supplier" name="supplier" class="form-control" required>
-
-                        <option></option>
-
-                        @foreach( $suppliers as $supplier )
-                            <option value="{{ $supplier->id }}">{{ $supplier->name }}</option>
-                        @endforeach
-
-                    </select>
-
-                    <label for="recommended_start" style="margin-top: 25px;">Выберите рекомендованую дату начала</label>
-                    <input type="text" class="form-control" placeholder="2016-09-10 10:10:10" name="recommended_start" id="recommended_start" required />
-
-                    <label for="recommended_end" style="margin-top: 25px;">Выберите рекомендованую дату конца</label>
-                    <input type="text" class="form-control" placeholder="2016-09-20 10:10:10" name="recommended_end" id="recommended_end" required />
-
-                    <label for="party_category_id" style="margin-top: 25px;">Выберите категорию товарной партии</label><br />
-
-                    @foreach( $parties_types as $parties_type )
-
-                        <input type="radio" id="party_category_id" name="party_category_id" value="{{ $parties_type->id }}" required> {{ $parties_type->type }}
-
-                    @endforeach
-
-                    <br />
-
-                    <label for="import" style="margin-top: 25px;">Выберите файл загрузки</label>
-                    <input type="file" name="import" id="import" required />
-
+                <div class="col-md-6">
+                    <label class="form_label" for="party_start_date">Дата старта</label>
+                    <input type="text" name="party_start_date" id="party_start_date" class="form-control" />
+                    <p class="alert_message" id="invalid_party_start_date"></p>
                 </div>
-                <div class="col-md-4"></div>
+                <div class="col-md-6">
+                    <label class="form_label" for="party_end_date">Дата окончания</label>
+                    <input type="text" name="party_end_date" id="party_end_date" class="form-control" />
+                    <p class="alert_message" id="invalid_party_end_date"></p>
+                </div>
             </div>
 
-            <div class="text-center" style="margin-top: 30px; margin-bottom: 30px;">
-                <button class="btn btn-warning">Создать товарную партию</button>
+            <label class="form_label" for="import_index_categories_id">Выберите категорию</label><br />
+
+            @foreach( $categories as $category )
+                <input type="radio" name="import_index_categories_id" id="import_index_categories_id" value="{{ $category->id }}"
+
+                       @if($category->id == 1)
+                       checked
+                        @endif
+
+                />
+                {{ $category->name }} <br />
+            @endforeach
+
+            <div class="text-center">
+                <button type="button" id="go_back" onclick="closePopup();" class="btn btn-default">Отменить</button>
+                <button type="button" onclick="createParty();" class="btn btn-primary btn_confirm">Создать товарную партию</button>
             </div>
+        </form>
+    </div>
+    <div class="col-md-2"></div>
+</div>
 
-        </div>
-    </form>
-
-@endsection
+<script type="text/javascript" src="{{ url('/js/admin/import/parties/create.js') }}"></script>

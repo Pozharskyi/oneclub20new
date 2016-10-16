@@ -8,13 +8,13 @@
 
 namespace App\Http\Controllers\User\Cabinet;
 
-use App\Models\Loging\LogUserBonuses;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Loging\LogUserModel;
 use App\Models\User\UsersBonusesModel;
 use App\Models\Order\OrderModel;
-use Illuminate\Support\Facades\Auth;
 
-class UserBonusController
+class UserBonusController extends Controller
 {
     /*
      * View assessed and use user of bonuses
@@ -82,7 +82,7 @@ class UserBonusController
      * Get user bonuses amount
      */
     private function getUserBonusesAmount(){
-        $data = UsersBonusesModel::where('user_id', Auth::id())
+        $data = UsersBonusesModel::where('user_id', Auth::user()->id)
             ->get();
 
         return $data;
@@ -102,7 +102,7 @@ class UserBonusController
     }
 
     private function getUserBonuses(){
-        $result = LogUserModel::where('user_id',Auth::id())
+        $result = LogUserModel::where('user_id',Auth::user()->id)
             ->where(function($query){
                 $query->where('field_changed','bonuses_amount');
                 $query->orWhere('field_changed','bonuses_comment');
@@ -179,7 +179,7 @@ class UserBonusController
      */
     private function getUserDiscountsLog(){
         $data = OrderModel::whereHas('discount', function($query) {
-            $query->where('user_id', Auth::id());
+            $query->where('user_id', Auth::user()->id);
         })
         ->with('discount')
         ->get();

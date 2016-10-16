@@ -39,7 +39,7 @@ class SocialLinksAdapterController extends Controller
             case 'facebook':
                 $client_id = '1643893395924319'; // Client ID
                 //$client_secret = '55eeea56b29ad62cec68db89eab14aef'; // Client secret
-                $redirect_uri = 'http://localhost:8081/social/facebook'; // Redirect URIs
+                $redirect_uri = 'http://oneclub20.dev.smartdevelopers.eu/social/facebook'; // Redirect URIs
 
                 $url = 'https://www.facebook.com/dialog/oauth';
 
@@ -60,7 +60,7 @@ class SocialLinksAdapterController extends Controller
             case 'google':
                 $client_id = '1086351434225-sbcfrbfi8t7kbe8kma9bvi9mse44a6m8.apps.googleusercontent.com'; // Client ID
                 //$client_secret = 'GExWI55OdJhM3aFb8YlpnPlR'; // Client secret
-                $redirect_uri = 'http://localhost:8081/social/google'; // Redirect URI
+                $redirect_uri = 'http://oneclub20.dev.smartdevelopers.eu/social/google'; // Redirect URI
 
                 $url = 'https://accounts.google.com/o/oauth2/auth';
 

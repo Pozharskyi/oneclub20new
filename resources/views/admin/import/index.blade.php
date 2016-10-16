@@ -1,328 +1,81 @@
-@extends('layouts.adminPanel')
+@extends('layouts.import')
 
-@section('title') Страница импорта @stop
+@section('title') Страница управления импортом Oneclub2.0 @stop
 
 @section('content')
 
-    @include('admin.import.sub-nav')
+    <div id="modal_form"><!-- Popup window -->
+        <span id="modal_close" onclick="closePopup();">X</span> <!-- Close button -->
+        <div id="popup_content"></div>
+    </div>
+    <div id="overlay"></div><!-- Overlay -->
 
-    <link rel="stylesheet" type="text/css" href="{{ url('/css/admin/import/main.css') }}" />
+    <div id="modal_form2"><!-- Popup window -->
+        <div id="popup_content2"></div>
+    </div>
+    <div id="overlay2"></div><!-- Overlay -->
 
-    <div class="container">
-        <div class="row">
+    <div id="modal_form3"><!-- Popup window -->
+        <div id="popup_content3"></div>
+    </div>
+    <div id="overlay3"></div><!-- Overlay -->
 
-            <div class="text-center">
-                <h2>Документация</h2>
+    <div id="loading">
+        <img src="{{ url('/images/import/loading.gif') }}" />
+    </div>
 
-                <div class="divider"></div>
-            </div>
-
-            <div class="documentation">
-                <h3 style="color: #f0ad4e;">Новая Глава: Работа с поставщиками</h3>
-
-                <ul class="documentation">
-                    <li>
-                        У вас есть возможность просмотра всех поставщиков по данной странице:
-                        <a target="_blank" href="{{ url('/admin/import/suppliers') }}">просмотреть</a>, так же есть
-                        возможность поиска по <b>Id поставщика</b>, <b>Имени поставщика</b>,
-                        <b>Комментарию</b> который закреплен к определенному поставщику, написаным баером.
-                        Данная кнопка как <span class="attendance">X</span> - удаляет поставщика из списка,
-                        <span class="attendance">без возвратно</span>
-                    </li>
-                    <li>
-                        Вы можете добавлять поставщиков на данной странице:
-                        <a target="_blank" href="{{ url('/admin/import/suppliers/create') }}">посмотреть</a>.
-                        Комментарий Вы можете оставлять произвольный, после чего Вы его сможете прочитать на странице
-                        просмотра всех поставщиков <a target="_blank" href="{{ url('/admin/import/suppliers') }}">тут</a>.
-                        Имя поставщика является <span class="attendance">уникальным</span>
-                    </li>
-                </ul>
-
-            </div>
-
-            <div class="documentation">
-                <h3 style="color: #f0ad4e;">Новая Глава: Работа с товарными партиями</h3>
-
-                <ul class="documentation">
-                    <li>
-                        Вы можете просматривать все товарные партии ( как и для постоянного товарного асортимента,
-                        так и для акций ), которые были созданы
-                        <a target="_blank" href="{{ url('/admin/import/parties') }}">тут</a>.
-                        Товарная патрия имеет такие атрибуты как: 1.Название <span class="attendance">уникальное</span>,
-                        2. только <span class="attendance">одного</span> поставщика, 3. Рекомендованую дату старта и конца
-                        для маркетинга в виде <span class="attendance">YYYY-MM-DD HH:MM:SS</span>
-                        ( Год - Месяц - День, Часы - Минуты - Секунды ), 4. Каким баеров было
-                        <span class="attendance">сделано</span>, 5. Статус подтвердженности (
-                        Товар в каталоге ( или в Акциях ) после импорта появится там только при подтверждении
-                        группы товаров ( к остальным можно вернутся потом ), 6. Дату создания товарной партии.
-                    </li>
-                    <li>
-                        На странице просмотра, Вы можете так же посмотреть детальную информацию нажав на кнопку
-                        <span class="attendance">Просмотра</span>. Данная кнопка как <span class="attendance">X</span> -
-                        удаляет товарную партию из списка, <span class="attendance">без возвратно</span>
-                    </li>
-                    <li>
-                        На странице просмотра описания товарной партии Вы можете ( нажав кнопку
-                        <span class="attendance">Просмотр</span> ): 1. Посмотреть полное описание товарной партии
-                        2. Посмотреть статус обработки товарной патии ( 2 статуса: 1. Готово 2. В процессе ).
-                        В случае если <span class="attendance">готово</span> - весь CSV файл был
-                        обработан, в случае если <span class="attendance">В процессе</span>
-                        файл или не был еще обработан или обрабатывается в данное время. 3. Вы можете
-                        <span class="attendance">редактировать</span> информацию о товарной партии, нажав на кнопку
-                        <b>Редактировать</b>. 4. Вы можете посмотреть успешность импорта ( и так же страницу
-                        редактирования и обработки товарной партии ) нажав на кнопку
-                        <span class="attendance">Посмореть детальнее</span> в разделе <b>Успешность импорта</b>,
-                        там же Вы можете увидеть краткую статиску относительно импорта.
-                        5. В самом низу страницы, Вы можете посмотреть весь список загружаемого товара, а так же
-                        найти нужный Вам товар по таким данным как <span class="attendance">Sku</span>
-                        или <span class="attendance">Barcode</span>.
-                    </li>
-                    <li>
-                        На странице <span class="attendance">Детального просмотра</span> успешности импорта Вы можете
-                        найти различные виды статусов такие как:
-                        1. Найден у текущего поставщика ( <span class="success">зеленые цвет</span> )
-                        2. Найден у другого поставщика ( <span class="success">желтые цвет</span> )
-                        3. Новый товар или товар с ошибками ( <span class="success">красный цвет</span> )
-                    </li>
-                    <li>
-                        В случае, если товар был <span class="attendance">найден у текущего поставщика</span>,
-                        Мы можете: 1. Отправить его на <span class="underlined">доработку</span>
-                        2. Оставить <span class="underlined">текущий</span> вариант продукта ( без изменений )
-                        3. <span class="underlined">Заменить</span> информацию о текущем продукте,
-                        информацией продукта с которым он <span class="success">совпал</span>
-                        ( <span class="attendance">Абсолютное совпадение по Sku, Barcode, Цвет</span> )
-                        4. <span class="underlined">Показать совпадения</span>
-                    </li>
-                    <li>
-                        В случае если товар был отправлен на доработку, баер
-                        <span class="attendance">обязан написать комментарий</span>
-                        и выбрать кому он отправляет на доработку ( В отдел фотосьемки или в отдел контента,
-                        или в оба отдела ).<br />
-                        В случае если товар без ошибок и не найден, он автоматически становится как
-                        <span class="attendance">Новый товар</span>. Его нужно подтвердить или отправить на доработку.
-                    </li>
-                    <li>
-                        В случае если товар был с ошибкой импортирован, Нужно
-                        <span class="attendance">исправить конфликт</span> редактировав информацию, так же в
-                        заголовке Вы можете найти сообщение, которое расскажет Вам, почему существует конфликт
-                        у данного товара. После того как Вы исправите конфликт, товар появится в том же каталоге,
-                        только как Новый товар и Вы сможете дальше манипулировать им.
-                    </li>
-                    <li>
-                        <span class="underlined">
-                            После того как Вы работаете с товаром, в случае для
-                            <span class="attendance">Найденого в товарах поставщика</span> и
-                            <span class="attendance">Найденного в товарах другого поставщика</span>,
-                            при таких действиях как: 1) Заменить на существующий
-                            2) Оставить без замены 3) Отправить на доработку. В случае для
-                            <span class="attendance">Нового товара</span>,
-                            при 1) отправлении на доработку, или при 2) Подтверждении товара.<br />
-                        </span>
-                        Обработанные продукты попадают на вкладку такую как "Новый товар", в которой Вы можете посмотреть
-                        результаты обработки продуктов текущей товарной партии.
-                    </li>
-
-                    <li>
-                        <span class="attendance">
-                            После того как все продукты были подготовлены ( обработаны ),
-                            нужно нажать кнопку Подвердить товарную партию,
-                            Так как без этого действия, продукты в каталоге не появятся
-                        </span>
-                    </li>
-
-                    <li>
-                        Так же, существует поиск по товарным партиям
-                        <a href="{{ url('/admin/import/parties/search') }}">
-                            тут
-                        </a>, Вы можете найти товарную партию по заданым параметрам:
-                        по <b>#Id</b> партии, <b>Названию партии</b>, <b>Поставщику</b>,
-                        <b>по Создателю ( баеру )</b>, <b>По рекомендованой дате старта или конца</b>
-                    </li>
-
-                    <li>
-                        Вы можете добавлять товарные партии по указанным данным
-                        <a target="_blank" href="{{ url('/admin/import/parties/create') }}">тут</a>.
-                        Обязательные параметры: 1) Название 2) Поставщик 3) Рекомендованая дата старта и конца
-                        4) Выбрать тип товарной партии ( <span class="attendance">для Каталога или Акций</span> )
-                        5) Выбрать файл для импорта
-                    </li>
-
-                    <li>
-                        <span class="underlined">Распространенные ( критические ) Типы ошибок:</span><br />
-                        1) Не правельный формат файла. Столбец не найден <span class="attendance">barcode</span><br />
-                        2) Не правельный формат файла. Кличество столбцов
-                           перевышает нужно количество. Данные столбцы лишние: <span class="attendance">test1</span> <br />
-                        3) Обязательный параметр не заполнен <span class="attendance">sku</span> <br />
-                        4) Не известный параметр проверки <span class="attendance">test</span> <br />
-                        5) Бренда с названием <span class="attendance">brand</span> не существует <br />
-                        6) Все категории должны быть заполнены. Не заполнена <span class="attendance">cat1</span> <br />
-                        7) <span class="attendance">Категория</span> товара не найдена <br />
-                        8) <span class="attendance">Размер</span> не найден <br />
-                        9) <span class="attendance">Гендер</span> не найден <br />
-                        10) <span class="attendance">Цвет</span> не найден <br />
-                        11) Данный продукт с баркодом номер <span class="attendance">barcode</span> уже существует <br />
-                        12) Все фотограции <span class="attendance">пустые</span>
-                    </li>
-                    <li>
-                        <span class="underlined">Распространенные ( не критические ) Типы уведомлений:</span><br />
-                        1) <span class="attendance">Описание</span> продукта уже существует <br />
-                        2) Файл с путем: <span class="attendance">path</span> не найден ( для фотографий ) <br />
-                        3) Данный <span class="attendance">sku</span> был найден <br />
-                    </li>
-
-                    <li>
-                        <span class="attendance uppercase">Важно!</span><br />
-                        Все столбцы ( такие как ): <br />
-                        sku, barcode, supplier_product_name, cat1, cat2, cat3, <br />
-                        product_name, size, quantity, purchase_price, retail_price, top_price, <br />
-                        special_price, discount, brand, gender, color, <br />
-                        material, description, img1, img2, img3, img4, img5, img6, <br />
-                        comment_admin, comment_frontend, country_manufacturer <br />
-                        <span class="attendance">
-                            Обязательно должны присутствовать в файле для импорта, <br />
-                            в другом случае будет ошибка импортирования.
-                        </span>
-                    </li>
-
-                    <li>
-                        Получить пример файла для импорта <a target="_blank" href="{{ url('/uploads/2016-10-03V015530.csv') }}">Получить</a>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="documentation">
-                <h3 style="color: #f0ad4e;">Новая Глава: Работа с товарными акциями</h3>
-
-                <ul class="documentation">
-                    <li>
-                        У вас есть возможность просмотра всех товарных партий по данной странице:
-                        <a target="_blank" href="{{ url('/admin/import/share') }}">просмотреть</a>, так же есть
-                        возможность поиска по <b>Id товарной акции</b>, <b>Названию товарной акции</b>,
-                        <b>Рекоммендованой дате начала и конца</b>. Вы можете изменить информацию о товарной акции
-                        нажав на кнопку <span class="attendance">Изменить</span>
-                        Данная кнопка как <span class="attendance">X</span> - удаляет товарную акцию из списка,
-                        <span class="attendance">без возвратно</span>
-                    </li>
-                    <li>
-                        На странице изменения товарных акций Вы можете изменить Название товарной акции,
-                        рекомендованные даты начала и конца.<br />
-                        <span class="attendance">
-                            Одна товарная партия может относится только к одной
-                            товарной акции.<br />
-                        </span>
-                        Есть 3 вида Статуса партий на странице изменения товарной акции:<br />
-                        1) <span class="attendance">Партия не выбрана</span> для данной товарной акции но активна <br />
-                        2) <span class="attendance">Партия выбрана</span> и на данный момент в этой товарной акции <br />
-                        3) <span class="attendance">Партия не доступна</span>
-                        ( так как <span class="underlined">находится в другой</span> товарной акции )
-                    </li>
-                    <li>
-                        На странице изменения товарной акции, Вы можете спокойно добавлять товарные партии (
-                        <span class="attendance">кликнув</span> на Checkbox )
-                        и убрать товарную партию ( <span class="attendance">Убрав</span> галочку с Checkbox )
-                    </li>
-                    <li>
-                        Вы можете добавлять товарную акцию на данной странице:
-                        <a target="_blank" href="{{ url('/admin/import/share/create') }}">посмотреть</a>.<br />
-                        <span class="attendance">Обязательные поля</span>:
-                        Название и рекомендованые даты выхода/окончания товарной акции.
-                        Имя товарной акции является <span class="attendance">уникальным</span>
-                    </li>
-                    <li>
-                        <span class="underlined">
-                            Вы можете сделать поиск по товарным акциям
-                            по параметрам:
-                        </span> <br />
-                        1) #Id обновления <br />
-                        2) Названию <br />
-                        3) Создателю <br />
-                        4) Рекомендованой дате старта <br />
-                        5) Рекомендованой дате конца
-                    </li>
-                </ul>
-
-            </div>
-
-            <div class="documentation">
-                <h3 style="color: #f0ad4e;">Новая Глава: Работа с обновлениями цен и остатков</h3>
-
-                <ul class="documentation">
-                    <li>
-                        Вы можете просматривать все товарные обновления ( как и для постоянного товарного асортимента,
-                        так и для акций ), которые были созданы
-                        <a target="_blank" href="{{ url('/admin/import/update') }}">тут</a>.
-                        Товарное обновление имеет такие атрибуты как: 1.Название <span class="attendance">уникальное</span>,
-                        2. Рекомендованую дату старта <span class="attendance">YYYY-MM-DD HH:MM:SS</span>
-                        ( Год - Месяц - День, Часы - Минуты - Секунды ), 3. Дату создания товарной партии.
-                        4. Кем было сделано обновление
-                    </li>
-
-                    <li>
-                        На странице просмотра, Вы можете так же посмотреть детальную информацию нажав на кнопку
-                        <span class="attendance">Просмотра</span>. Данная кнопка как <span class="attendance">X</span> -
-                        удаляет товарную партию из списка, <span class="attendance">без возвратно</span>
-                    </li>
-
-                    <li>
-                        <span class="underlined">Вы можете сделать поиск по товарным обновлениям
-                            <a target="_blank" href="{{ url('/admin/import/update/search') }}">тут</a>
-                            по параметрам:
-                        </span> <br />
-                        1) #Id обновления <br />
-                        2) Названию <br />
-                        3) Создателю <br />
-                        4) Рекомендованой дате старта <br />
-                    </li>
-
-                    <li>
-                        Вы можете добавлять товарные обновления по указанным данным
-                        <a target="_blank" href="{{ url('/admin/import/update/create') }}">тут</a>.<br />
-                        Обязательные параметры:
-                        1) Название <br />
-                        2) Рекомендованая дата старта <br />
-                        3) Выбрать файл для импорта <br />
-                    </li>
-
-                    <li>
-                        На странице детальной информации можно найти такие статусы обновления: <br />
-                        1) Товар был обновлен ( найденный и успешно обновленный товар ) <br />
-                        2) Товар не был обновлен
-                           ( системная ошибка или не правельный формат файла, или данные не корректны ) <br />
-                        3) Товар не найден ( если не найдено совпадений по Sku, Barcode, Цвет, Размер ) <br />
-                    </li>
-
-                    <li>
-                        <span class="attendance uppercase">Важно!</span><br />
-                        Обязательными полями для Обновления товарных партий являются: <br />
-                        1) Sku ( артикул ) <br />
-                        2) Barcode <br />
-                        3) Цвет <br />
-                        4) Размер <br />
-                    </li>
-
-                    <li>
-                        <span class="attendance uppercase">Важно!</span><br />
-                        Если поля в импорте остаются пустыми ( т.е 0 символов ), эти поля для <br />
-                        Импорта обновлений партий <span class="attendance uppercase">не берутся</span>
-                    </li>
-
-                    <li>
-                        <span class="attendance uppercase">Важно!</span><br />
-                        Все столбцы ( такие как ): <br />
-                        sku, barcode, supplier_product_name, cat1, cat2, cat3, <br />
-                        product_name, size, quantity, purchase_price, retail_price, top_price, <br />
-                        special_price, discount, brand, gender, color, <br />
-                        material, description, img1, img2, img3, img4, img5, img6, <br />
-                        comment_admin, comment_frontend, country_manufacturer <br />
-                        <span class="attendance">
-                            Обязательно должны присутствовать в файле для импорта, <br />
-                            в другом случае будет ошибка импортирования.
-                        </span>
-                    </li>
-                </ul>
-            </div>
-
+    <div class="nav">
+        <div class="pull-left">
+            <ul id="nav">
+                <li>
+                    <a id="myParties" href="{{ url('#') }}">Мои ТП</a>
+                </li>
+                <li>
+                    <a id="allParties" href="{{ url('#') }}">ТП</a>
+                </li>
+                <li>
+                    <a id="allSales" href="{{ url('#') }}">ТА</a>
+                </li>
+            </ul>
+        </div>
+        <div class="pull-right" id="user_nav">
+            <a id="user" href="{{ url('#') }}">Здравствуйте, {{ Auth::user()->name }}</a>
         </div>
     </div>
+
+    <div class="container content_block">
+        <div id="result"></div>
+    </div>
+
+    <div class="dropup">
+        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Управление импортом
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenu2" id="importMenu">
+            <li><a id="tp_creation" href="{{ url('#tp_creation') }}">Создание товарной партии</a></li>
+            <li><a id="tp_edit" href="{{ url('#tp_edition') }}">Редактирование товарной партии</a></li>
+            <li><a id="tp_deletion" href="{{ url('#tp_deletion') }}">Удаление товарной партии</a></li>
+            <li><a id="uploading" href="{{ url('#uploading') }}">Загрузка списка</a></li>
+            <li><a id="ta_creation" href="{{ url('#ta_creation') }}">Создание товарной акции</a></li>
+            <li><a id="ta_edition" href="{{ url('#ta_edition') }}">Редактирование товарной акции</a></li>
+            <li><a id="ta_deletion" href="{{ url('#ta_deletion') }}">Удаление товарной акции</a></li>
+            <li><a id="linking" href="{{ url('#linking') }}">Привязка ТП к ТА</a></li>
+            <li><a href="{{ url('#exporting') }}">Выгрузка файла в Excel</a></li>
+            <li><a href="{{ url('#updating') }}">Обновление цен и остатков</a></li>
+            <li class="none_found">
+                <a class="none_found" href="#">Результатов не найдено</a>
+            </li>
+            <li role="separator" class="divider"></li>
+            <li>
+                <input type="text" placeholder="Поиск.." id="search" onkeyup="filterFunction()">
+            </li>
+        </ul>
+    </div>
+
+    <input type="hidden" id="user_id" name="user_id" value="{{ Auth::user()->id }}" />
+    <input type="hidden" id="current" name="current" value="self" />
+    <input type="hidden" id="party_id" name="party_id" value="" />
+    <input type="hidden" id="sale_id" name="sale_id" value="" />
 
 @endsection

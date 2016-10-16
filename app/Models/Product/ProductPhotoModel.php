@@ -21,14 +21,14 @@ class ProductPhotoModel extends Model
     protected $table = 'dev_product_photo';
 
     protected $fillable = [
-        'sub_product_id', 'photo'
+        'dev_product_index_id', 'photo'
     ];
 
     /**
      * Get all sub products with this size.
      */
-    public function subProduct()
+    public function product()
     {
-        return $this->belongsTo(SubProductModel::class, 'sub_product_id');
+        return $this->belongsTo(ProductModel::class, 'dev_product_index_id');
     }
 }

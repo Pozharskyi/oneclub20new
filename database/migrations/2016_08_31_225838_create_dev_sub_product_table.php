@@ -17,26 +17,16 @@ class CreateDevSubProductTable extends Migration
             $table->increments('id');
             $table->string('barcode')->unique();
             $table->integer('dev_product_index_id')->unsigned();
-            $table->foreign('dev_product_index_id')->references('id')->on('dev_product_index');
-
-            $table->integer('dev_import_parties_id')->unsigned();
-            $table->foreign('dev_import_parties_id')->references('id')->on('dev_import_parties');
-
-            $table->integer('supplier_id')->unsigned();
-            $table->foreign('supplier_id')->references('id')->on('dev_supplier');
-
-            $table->decimal('markup_price');
-
             $table->integer('quantity')->unsigned();
-            $table->integer('delivery_days')->unsigned();
-
             $table->integer('dev_product_size_id')->unsigned();
-            $table->foreign('dev_product_size_id')->references('id')->on('dev_product_size');
+            //$table->enum('is_approved', ['0', '1'])->default('0');
 
-            $table->integer('dev_product_color_id')->unsigned();
-            $table->foreign('dev_product_color_id')->references('id')->on('dev_product_color');
-
-            $table->enum('is_approved', ['0', '1'])->default('0');
+            $table->foreign('dev_product_index_id')
+                ->references('id')
+                ->on('dev_product_index');
+            $table->foreign('dev_product_size_id')
+                ->references('id')
+                ->on('dev_product_size');
 
             $table->timestamps();
             $table->softDeletes();

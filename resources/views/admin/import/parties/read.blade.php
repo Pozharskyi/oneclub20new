@@ -1,126 +1,62 @@
-@extends('layouts/adminPanel')
+@if( $count != 0 )
 
-@section('title') Страница просмотра товарных партий @stop
+    <div class="row">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <td># ТП</td>
+                    <td>Ответственный баер</td>
+                    <td>Поставщик</td>
+                    <td>Название ТП</td>
+                    <td>Дата старта</td>
+                    <td>Дата окончания</td>
+                    <td>Категория</td>
+                    <td>Статус</td>
+                </tr>
+            </thead>
+            <tbody>
 
-@section('content')
+                @foreach( $parties as $party )
+                    <tr ondblclick="getPartyDescription({{ $party->id }});" class="row_tr
 
-    <div id="result_row"></div>
+                    @if($party->import_parties_status_id == $deleted)
+                        deleted
+                    @endif
 
-    @include('admin.import.sub-nav')
-    @include('admin.import.parties.nav.nav')
-
-    <div class="container">
-        <div class="row">
-            <div class="text-center" style="margin: 25px 0 25px 0;">
-                <h2>Товарные партии категории "Каталог"</h2>
-            </div>
-
-            <div class="col-md-12">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Id партии</th>
-                            <th>Название</th>
-                            <th>Поставщик</th>
-                            <th>Рекомендованая дата старта</th>
-                            <th>Рекомендованая дата конца</th>
-                            <th>Сделано</th>
-                            <th>Подтверждение</th>
-                            <th>Дата создания</th>
-                            <th>Просмотр</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                        @foreach( $catalog as $item )
-                            <tr id="party_{{ $item->id }}">
-                                <td>#{{ $item->id }}</td>
-                                <td>{{ $item->party_name }}</td>
-                                <td>{{ $item->supplier->name }}</td>
-                                <td>{{ $item->recommended_start }}</td>
-                                <td>{{ $item->recommended_end }}</td>
-                                <td>{{ $item->user->name }}</td>
-                                <td>
-                                    @if( $item->partiesProcess->is_processed == 0 )
-                                        Не подтвержден
-                                    @else
-                                        Подтверджен
-                                    @endif
-                                </td>
-                                <td>{{ $item->created_at }}</td>
-                                <td>
-                                    <a href="{{ url( '/admin/import/parties/desc/' . $item->id ) }}">
-                                        <button class="btn btn-default">Просмотр</button>
-                                    </a>
-                                </td>
-                                <td>
-                                    <a href="javascript: void(0);" onclick="deleteParty({{ $item->id }});">X</a>
-                                </td>
-                            </tr>
-                        @endforeach
-
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="text-center" style="margin: 25px 0 25px 0;">
-                <h2>Товарные партии категории "Акции"</h2>
-            </div>
-
-            <div class="col-md-12">
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th>Id партии</th>
-                        <th>Название</th>
-                        <th>Поставщик</th>
-                        <th>Рекомендованая дата старта</th>
-                        <th>Рекомендованая дата конца</th>
-                        <th>Сделано</th>
-                        <th>Подтверждение</th>
-                        <th>Дата создания</th>
-                        <th>Просмотр</th>
-                        <th></th>
+                    " id="row_{{ $party->id }}" onclick="makePartyActive({{ $party->id }});">
+                        <td>
+                            #{{ $party->id }}
+                        </td>
+                        <td>
+                            {{ $party->buyer->name }}
+                        </td>
+                        <td>
+                            {{ $party->supplier->name }}
+                        </td>
+                        <td>
+                            {{ $party->party_name }}
+                        </td>
+                        <td>
+                            {{ $party->party_start_date }}
+                        </td>
+                        <td>
+                            {{ $party->party_end_date }}
+                        </td>
+                        <td>
+                            {{ $party->importCategory->name }}
+                        </td>
+                        <td>
+                            {{ $party->partiesStatus->parties_status }}
+                        </td>
                     </tr>
-                    </thead>
-                    <tbody>
+                @endforeach
 
-                    @foreach( $sale as $item )
-                        <tr id="party_{{ $item->id }}">
-                            <td>#{{ $item->id }}</td>
-                            <td>{{ $item->party_name }}</td>
-                            <td>{{ $item->supplier->name }}</td>
-                            <td>{{ $item->recommended_start }}</td>
-                            <td>{{ $item->recommended_end }}</td>
-                            <td>{{ $item->user->name }}</td>
-                            <td>
-                                @if( $item->partiesProcess->is_processed == 0 )
-                                    Не подтвержден
-                                @else
-                                    Подтверджен
-                                @endif
-                            </td>
-                            <td>{{ $item->created_at }}</td>
-                            <td>
-                                <a href="{{ url( '/admin/import/parties/desc/' . $item->id ) }}">
-                                    <button class="btn btn-default">Просмотр</button>
-                                </a>
-                            </td>
-                            <td>
-                                <a href="javascript: void(0);" onclick="deleteParty({{ $item->id }});">X</a>
-                            </td>
-                        </tr>
-                    @endforeach
-
-                    </tbody>
-                </table>
-            </div>
-        </div>
+            </tbody>
+        </table>
     </div>
 
-    <script type="text/javascript" src="{{ url('/js/admin/import/parties/main.js') }}"></script>
+@else
 
-@endsection
+    <h3 class="alert_message">Результатов не найдено.</h3>
+
+@endif
