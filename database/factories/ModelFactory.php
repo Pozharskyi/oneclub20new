@@ -275,3 +275,18 @@ $factory->define(\App\Models\Discount\CouponRuleModel::class, function (Faker\Ge
         'max_used_user' => 3,
     ];
 });
+
+$factory->define(\App\Models\User\UserBalanceModel::class, function (Faker\Generator $faker) {
+    return [
+//        'user_id' => 1,
+        'balance_amount' => 1000,
+        'balance_comment' => 'new comment',
+    ];
+});
+$factory->define(\App\Models\Order\OrderBalanceModel::class, function (Faker\Generator $faker) {
+    return [
+//        'user_id' => 1,
+        'balance_count' => 1000,
+//        'dev_order_index_id' => 1,
+    ];
+});

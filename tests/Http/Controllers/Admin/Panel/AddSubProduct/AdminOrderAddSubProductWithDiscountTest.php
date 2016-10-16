@@ -1,53 +1,22 @@
 <?php
 
+use App\Http\Controllers\Shop\Order\OrderPricesController;
+use App\Models\Order\OrderModel;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class AdminOrderAddSubProductTest extends TestCase
+class AdminOrderAddSubProductWithDiscountTest extends TestCase
 {
     use DatabaseTransactions;
-
     /**
      * A basic test example.
      *
      * @return void
      */
-    public function testSeeAddSubProductViewSucceed()
+    public function testAddSubProductToOrderWithDiscountSucceed()
     {
-        list($user, $order, $product, $subProduct) = $this->setData();
-
-
-        $parameters = [
-            'searchString' => $product->product_store_id,
-            '_token' => csrf_token(),
-        ];
-
-        $this->call('post', route('adminPanel.subproduct.add.show', ['user' => $user->id, 'order' => $order->id]),
-            $parameters);
-
-        $this->seePageIs('/admin/users/' . $user->id . '/orders/' . $order->id . '/add_product');
-    }
-
-    public function testSeeAddSubProductViewFailed()
-    {
-        list($user, $order, $product, $subProduct) = $this->setData();
-
-
-        $parameters = [
-            'searchString' => 'not valid product id',
-            '_token' => csrf_token(),
-        ];
-
-        $this->call('post', route('adminPanel.subproduct.add.show', ['user' => $user->id, 'order' => $order->id]),
-            $parameters);
-        $this->seeInSession('message', 'Не верный № продукта');
-
-    }
-
-    public function testAddSubProductToOrderWithNoDiscountSucceed()
-    {
-        list($user, $order, $product, $subProduct) = $this->setData();
+        list($user, $order, $product, $subProduct, $discount) = $this->setData();
 
         $parameters = [
             'quantity' => 1,        //TODO check what quantity is available
@@ -71,26 +40,36 @@ class AdminOrderAddSubProductTest extends TestCase
         $this->seeInDatabase('dev_order_index', ['id' => $order->id, 'original_sum' => $original_sum]);
 
         //Update total_sum Succeed
-        $total_sum = $order->total_sum + $subProduct->price()->first()->special_price * $parameters['quantity'];
-        $this->seeInDatabase('dev_order_index', ['id' => $order->id, 'total_sum' => $total_sum]);
+        $total_sum = $order->original_sum + $subProduct->price()->first()->special_price * $parameters['quantity']; //get new price without discount
+
+        $total_price_with_discount = OrderPricesController::actionCalculateDiscount($total_sum, $discount); //TODO test actionCalculateDiscount function
+
+        $newOrder = OrderModel::find($order->id);
+        $this->assertEquals($newOrder->total_sum, $total_price_with_discount);
+        $this->seeInDatabase('dev_order_index', ['id' => $order->id, 'total_sum' => $total_price_with_discount]);
 
         //Update quantity in sub_product_table
         $quantity = $subProduct->quantity - $parameters['quantity'];
         $this->seeInDatabase('dev_sub_product', ['id' => $subProduct->id, 'quantity' => $quantity]);
     }
 
-    //if quantity don't valid - rollBack transaction
-    public function testAddSubProductToOrderWithNoDiscountFailed()
+    /**
+     * failed because current discount not valid for new price
+     */
+    public function testAddSubProductToOrderWithDiscountFailed()
     {
-        list($user, $order, $product, $subProduct) = $this->setData();
+        list($user, $order, $product, $subProduct, $discount) = $this->setData();
 
         $parameters = [
-            'quantity' => 100,        //not valid quantity
+            'quantity' => 1,        //TODO check what quantity is available
             'color' => $subProduct->color()->first()->id,
             'size' => $subProduct->size()->first()->id,
             'product_id' => $product->id,
             '_token' => csrf_token(),
         ];
+
+        $discount->max_basket_sum = $order->original_sum + 1;   //set max_basket_sum for no more subProducts adding
+        $discount->save();
 
         $this->call('post', route('adminPanel.subproduct.add', ['user' => $user->id, 'order' => $order->id]),
             $parameters);
@@ -109,64 +88,18 @@ class AdminOrderAddSubProductTest extends TestCase
         $subProductNew = \App\Models\Product\SubProductModel::find($subProduct->id);
         $this->seeInDatabase('dev_sub_product', ['id' => $subProduct->id, 'quantity' => $subProductNew->quantity]);
 
-        $this->seeInSession('message', 'Произошла ошибка попробуйте добавить еще раз');
+        $this->seeInSession('message', 'При добавлении товара текущая скидка будет недоступна, необходимо сначала убрать скидку');
     }
 
-    //create orderSubProduct after added subProduct if there was NO orderSubProduct (for this order and subProduct)
-    public function testAfterAddedSubProductShouldCreateOrderSubProductSucceed()
-    {
-        list($user, $order, $product, $subProduct) = $this->setData();
-
-        $parameters = [
-            'quantity' => 1,        //TODO check what quantity is available
-            'color' => $subProduct->color()->first()->id,
-            'size' => $subProduct->size()->first()->id,
-            'product_id' => $product->id,
-            '_token' => csrf_token(),
-        ];
+//    /**
+//     * should add subProduct to order with discount and balance amount
+//     */
+//    public function testAddSubProductWithBalanceSucceed()
+//    {
+//        list($user, $order, $product, $subProduct, $discount) = $this->setData();
+//    }
 
 
-        $this->call('post', route('adminPanel.subproduct.add', ['user' => $user->id, 'order' => $order->id]),
-            $parameters);
-
-        $this->seeInDatabase('dev_order_index_sub_product',
-            [
-                'qty' => $parameters['quantity'],
-                'dev_order_index_id' => $order->id,
-                'dev_sub_product_id' => $subProduct->id,
-            ]);
-    }
-
-    //update orderSubProduct after added subProduct if there was orderSubProduct (for this order and subProduct)
-    public function testAfterAddedSubProductShouldUpdateOrderSubProduct()
-    {
-        list($user, $order, $product, $subProduct) = $this->setData();
-
-        $parameters = [
-            'quantity' => 1,        //TODO check what quantity is available
-            'color' => $subProduct->color()->first()->id,
-            'size' => $subProduct->size()->first()->id,
-            'product_id' => $product->id,
-            '_token' => csrf_token(),
-        ];
-
-        //create orderSubProduct in DB
-        $orderSubProduct = factory(\App\Models\Order\OrderIndexSubProductModel::class)->make();
-        $orderSubProduct->order()->associate($order);
-        $orderSubProduct->subProduct()->associate($subProduct);
-        $orderSubProduct->save();
-
-        $this->call('post', route('adminPanel.subproduct.add', ['user' => $user->id, 'order' => $order->id]),
-            $parameters);
-
-        $this->seeInDatabase('dev_order_index_sub_product',
-            [
-                'id' => $orderSubProduct->id,
-                'qty' => $orderSubProduct->qty + $parameters['quantity'],
-                'dev_order_index_id' => $order->id,
-                'dev_sub_product_id' => $subProduct->id,
-            ]);
-    }
 
     /**
      * @return array
@@ -221,9 +154,20 @@ class AdminOrderAddSubProductTest extends TestCase
         $prices = factory(\App\Models\Product\ProductIndexPricesModel::class)->make();
         $prices->subProduct()->associate($subProduct);
         $prices->save();
-
-        return array($user, $order, $product, $subProduct);
         //END SUB_PRODUCT SAVE IN DB SECTION
-    }
 
+        //START DISCOUNT SECTION
+        $couponRule = factory(\App\Models\Discount\CouponRuleModel::class)->create();
+        $discount = factory(\App\Models\Discount\DiscountsModel::class)->make();
+        $discount->couponRule()->associate($couponRule);
+        $discount->save();
+        $order->discount()->associate($discount);
+
+        //calculate order total_sum with discount
+        $discountClone = $discount->replicate();
+        $order->total_sum = OrderPricesController::actionCalculateDiscount($order->total_sum, $discountClone);
+        $order->save();
+
+        return array($user, $order, $product, $subProduct, $discount);
+    }
 }
