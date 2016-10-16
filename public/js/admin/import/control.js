@@ -645,6 +645,8 @@ function confirmDescription()
     var filePath = $("#filePath").val();
     var partyId = $("#working_party_id").val();
 
+    var fileLine = $("#fileLine").val();
+
     data += "&allocationId=" + allocationId + "&filePath=" + filePath + "&partyId=" + partyId;
 
     getLoading();
@@ -659,7 +661,11 @@ function confirmDescription()
         success: function ( result )
         {
             $("#popup_content2").html(result);
-            getPartyDescriptionView( partyId );
+            if( result.search('Успех') != -1 )
+            {
+                $("#validationRow_" + fileLine).css("background-color", "#fff");
+                $("#desc_" + fileLine).css("background-color", "#fff");
+            }
             setTimeout(function() {
                 closePopup2();
             }, 650);

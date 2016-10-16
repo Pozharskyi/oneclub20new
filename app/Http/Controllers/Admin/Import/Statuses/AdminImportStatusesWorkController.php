@@ -38,6 +38,14 @@ class AdminImportStatusesWorkController extends Controller
         return $logs;
     }
 
+    public static final function actionGetLogsCountByParams( $allocationId, $fileLine )
+    {
+        $logs = ImportPartiesWorkLogModel::filterByParams( $allocationId, $fileLine )
+            ->count();
+
+        return $logs;
+    }
+
     public final function actionLogWorkStatus( $fileAllocation, $productId, $fileLine, $workStatus )
     {
         $logArray = array(

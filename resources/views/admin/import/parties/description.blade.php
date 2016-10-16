@@ -58,9 +58,15 @@
     </div>
 
     <div id="desc_nav">
-        <button id="batchProcessor" onclick="processWork();" class="btn btn-primary">Пакетная обработка</button>
+        @if($availability != 'denied')
+            <button id="batchProcessor" onclick="processWork();" class="btn btn-primary">Пакетная обработка</button>
+        @endif
+
         <button id="exportExcel" class="btn btn-default">Экспорт в Excel</button>
-        <button id="sendToProd" class="btn btn-warning">Отправка в продакшн</button>
+
+        @if($availability != 'denied')
+            <button id="sendToProd" class="btn btn-warning">Отправка в продакшн</button>
+        @endif
     </div>
 
     <input type="hidden" name="allocationId" id="allocationId" value="{{ $allocationId }}" />

@@ -698,6 +698,9 @@ Route::post('/list/order/save', 'Shop\Order\OrderController@actionSaveOrder');
             Route::post('/product',
                 ['uses' => 'Admin\Import\Core\AdminImportProductController@actionHandleImport']
             );
+            Route::put('/validate',
+                ['uses' => 'Admin\Import\Core\AdminImportProdValidationController@actionValidateProd']
+            );
         });
     });
 //});

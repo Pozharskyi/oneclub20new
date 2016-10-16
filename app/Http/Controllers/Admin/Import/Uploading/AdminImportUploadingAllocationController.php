@@ -9,6 +9,7 @@
 
 namespace App\Http\Controllers\Admin\Import\Uploading;
 
+use App\Http\Controllers\Admin\Import\Statuses\AdminImportStatusesWorkController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\Product\ProductCategoriesTrait;
 use App\Models\Import\ImportPartiesFileAllocationModel;
@@ -105,6 +106,7 @@ class AdminImportUploadingAllocationController extends Controller
         $data['cat2'] = $categories[1]['name'];
         $data['cat3'] = $categories[2]['name'];
 
+        $logs = AdminImportStatusesWorkController::actionGetLogsCountByParams( $allocationId, $fileLine );
         $categoryId = $this->actionSearchLastCategory( $data['product_name'] );
 
         return view('admin.import.uploading.allocation_row', [
@@ -112,6 +114,7 @@ class AdminImportUploadingAllocationController extends Controller
             'categoryId' => $categoryId,
             'fileLine' => $fileLine,
 
+            'logs' => $logs,
             'photos' => $photos,
             'photos_count' => count( $photos ),
         ]);

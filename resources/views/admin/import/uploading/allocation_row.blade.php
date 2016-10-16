@@ -86,30 +86,38 @@
                 </div>
             </div>
 
-            <h3>Задание</h3>
+            @if( $logs == 0 )
 
-            <div class="row">
+                <h3>Задание</h3>
 
-                <form action="#" method="post" id="descForm">
+                <div class="row">
 
-                    <div class="col-md-12">
-                        <input type="checkbox" name="tasks[]" value="2" /> Отправить на фотосьемку <br/>
-                        <input type="checkbox" name="tasks[]" value="3" /> Отправить на контент <br/>
-                    </div>
+                    <form action="#" method="post" id="descForm">
 
-                    <div class="text-center">
-                        <button type="button" onclick="confirmDescription();" style="margin-top: 15px;"
-                                class="btn btn-default">
-                            Подтвердить
-                        </button>
-                    </div>
+                        <div class="col-md-12">
+                            <input type="checkbox" name="tasks[]" value="2" /> Отправить на фотосьемку <br/>
+                            <input type="checkbox" name="tasks[]" value="3" /> Отправить на контент <br/>
+                        </div>
 
-                    <input type="hidden" name="fileLine" id="fileLine" value="{{ $fileLine }}" />
-                    <input type="hidden" name="categoryId" id="categoryId" value="{{ $categoryId }}" />
+                        <div class="text-center">
+                            <button type="button" onclick="confirmDescription();" style="margin-top: 15px;"
+                                    class="btn btn-default">
+                                Подтвердить
+                            </button>
+                        </div>
 
-                </form>
+                        <input type="hidden" name="fileLine" id="fileLine" value="{{ $fileLine }}" />
+                        <input type="hidden" name="categoryId" id="categoryId" value="{{ $categoryId }}" />
 
-            </div>
+                    </form>
+
+                </div>
+
+            @else
+
+                <h3>Задание уже было поставлено</h3>
+
+            @endif
         </div>
     </div>
 </div>

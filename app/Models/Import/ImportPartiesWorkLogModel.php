@@ -53,4 +53,12 @@ class ImportPartiesWorkLogModel extends Model
         return $query;
     }
 
+    public function scopeFilterByParams(Builder $query, $allocationId, $fileLine)
+    {
+        $query->where('file_allocation_id', $allocationId)
+            ->where('file_line', $fileLine);
+
+        return $query;
+    }
+
 }

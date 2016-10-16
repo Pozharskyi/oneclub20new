@@ -10,6 +10,7 @@
 namespace App\Http\Controllers\Admin\Import\Parties;
 
 use App\Http\Controllers\Admin\Import\Statuses\AdminImportStatusesCoincidenceController;
+use App\Http\Controllers\Admin\Import\Statuses\AdminImportStatusesPartiesController as PartiesStatus;
 use App\Http\Controllers\Admin\Import\Statuses\AdminImportStatusesWorkController;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -56,11 +57,15 @@ class AdminImportPartiesDescriptionController extends Controller
             $view = 'admin.import.parties.description';
         }
 
+        $partiesStatus = new PartiesStatus;
+        $availability = $partiesStatus->actionGetPartyStatusAvailability( $party_id );
+
         return view($view, [
             'rows' => $rows,
             'count' => $count,
 
             'party_id' => $party_id,
+            'availability' => $availability,
             'allocationId' => $allocationId,
             'filePath' => $filePath,
         ]);
