@@ -113,10 +113,6 @@
                     <b>Описание:</b> {{ $collection->description->product_description }}
                 </h5>
 
-                <h5>
-                    <b>Ожидаемая дата доставки:</b> {{ $estimated_delivery_date }}
-                </h5>
-
             </div>
         </div>
     </div>
