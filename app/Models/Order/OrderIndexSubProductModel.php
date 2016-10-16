@@ -44,6 +44,11 @@ class OrderIndexSubProductModel extends Model
         return $this->belongsTo(SubProductModel::class, 'dev_sub_product_id');
     }
 
+    public function order()
+    {
+        return $this->belongsTo(OrderModel::class, 'dev_order_index_id');
+    }
+
     public function getQtyAttribute($value)
     {
         return round($value);

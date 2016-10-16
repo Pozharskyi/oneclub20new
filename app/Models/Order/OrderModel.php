@@ -109,6 +109,11 @@ class OrderModel extends Model
         return $this->belongsToMany(SubProductModel::class, 'dev_order_index_sub_product', 'dev_order_index_id', 'dev_sub_product_id')->withPivot('dev_order_status_list_id', 'price_for_one_product', 'qty');
     }
 
+    public function orderSubProducts()
+    {
+        return $this->hasMany(OrderIndexSubProductModel::class, 'dev_order_index_id');
+    }
+
     public function orderStatus(){
         return $this->belongsToMany(OrderStatusModel::class, 'dev_order_index_sub_product', 'dev_order_index_id', 'dev_order_status_list_id');
     }
@@ -126,6 +131,7 @@ class OrderModel extends Model
             ->min('dev_order_index_sub_product.dev_order_status_list_id');
         return $query;
     }
+
     public function user()
     {
         return $this->belongsTo(User::class);

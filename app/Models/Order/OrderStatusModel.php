@@ -32,5 +32,9 @@ class OrderStatusModel extends Model
         return $this->morphMany(LogOrderModel::class, 'loggable');
     }
 
+    public function order()
+    {
+        return $this->hasMany();
+    }
 
 }

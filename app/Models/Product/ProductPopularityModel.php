@@ -26,7 +26,7 @@ class ProductPopularityModel extends Model
 
     public function subProduct()
     {
-        return $this->hasOne( SubProductModel::class, 'id');
+        return $this->hasOne( SubProductModel::class, 'sub_product_id');
     }
 
 }
