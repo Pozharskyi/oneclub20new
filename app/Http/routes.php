@@ -317,7 +317,10 @@ Route::post('/list/auto_discount', 'Shop\Basic\DiscountsController@actionGetAuto
 Route::post('/list/order/save', 'Shop\Order\OrderController@actionSaveOrder');
 
 /** START ADMIN PANEL AREA */
-Route::group(['middleware' => ['auth','admin']], function () {
+//Route::group(['middleware' => ['auth','admin']], function () {
+    Route::group([], function () {
+
+
     Route::group(['prefix' => '/admin'], function () {
         Route::get('', 'Admin\Stats\AdminStatsIndexController@actionGetStatsView');
 
@@ -713,4 +716,4 @@ Route::group(['middleware' => ['auth','admin']], function () {
             );
         });
     });
-//});
+});
